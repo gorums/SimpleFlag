@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -16,6 +16,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\SimpleFlag.Core\SimpleFlag.Core.csproj" />
+    <ProjectReference Include="..\..\src\SimpleFlag.PostgreSQL\SimpleFlag.PostgreSQL.csproj" />
+    <ProjectReference Include="..\..\src\SimpleFlag\SimpleFlag.csproj" />
     <ProjectReference Include="..\DemoApi.ServiceDefaults\DemoApi.ServiceDefaults.csproj" />
   </ItemGroup>
 
