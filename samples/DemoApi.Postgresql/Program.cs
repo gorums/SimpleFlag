@@ -9,9 +9,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 
-
-
-
 // add the pg database context
 builder.Services.AddDbContext<DemoApiDbContext>(options =>
 {
@@ -20,7 +17,11 @@ builder.Services.AddDbContext<DemoApiDbContext>(options =>
 
 builder.Services.AddSimpleFlag(options =>
 {
-    options.UsePostgreSQL(builder.Configuration.GetConnectionString("PostgresConnection"));
+    //options.UsePostgreSQL(builder.Configuration.GetConnectionString("PostgresConnection")); // this is the same as the next line
+    options.UsePostgreSQL(pgOptions =>
+    {
+        pgOptions.ConnectionString = builder.Configuration.GetConnectionString("PostgresConnection");
+    });
 });
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -42,6 +43,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.MapSimpleFlagEndpoints();
 
 TodoFeature.MapEndpoints(app);
 
