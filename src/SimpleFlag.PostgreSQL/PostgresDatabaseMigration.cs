@@ -11,8 +11,8 @@ internal class PostgresDatabaseMigration : IDatabaseMigration
 
     public static IDatabaseMigration Instance => _databaseMigration.Value;
 
-    public Task InitializeIfDoesNotExitAsync()
+    public void Run(string connectionString)
     {
-        throw new NotImplementedException();
+        // TODO: Implement database migration
     }
 }

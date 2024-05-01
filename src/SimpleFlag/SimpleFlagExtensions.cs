@@ -11,10 +11,17 @@ public static class SimpleFlagExtensions
         // setting the options
         var simpleFlagOptionsBuilder = new SimpleFlagOptionsBuilder();
         configureOptions?.Invoke(simpleFlagOptionsBuilder);
-        SimpleFlagOptions simpleFlagOptions = simpleFlagOptionsBuilder.Build();
+
+        ISimpleFlagDataSource simpleFlagDataSource = new SimpleFlagDataSource(simpleFlagOptionsBuilder.BuildDataSourceOptions());
 
         // adding the service
-        serviceCollection.AddSingleton<ISimpleFlagService>(new SimpleFlagService(simpleFlagOptions));
+        serviceCollection.AddSingleton<ISimpleFlagService>
+        (
+            new SimpleFlagService(simpleFlagDataSource, simpleFlagOptionsBuilder.BuildServiceOptions())
+        );
+
+        // TODO: check if is necessary to run the migration here
+        simpleFlagDataSource.RunMigration();
 
         return serviceCollection;
     }

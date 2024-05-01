@@ -1,11 +1,11 @@
 ﻿using SimpleFlag.Core;
 
-namespace SimpleFlag.PostgreSQL;
-public class PostgresSimpleFlagOptionsBuilder
+namespace SimpleFlag.CustomDataSource;
+public class SimpleFlagCustomDataSourceOptionsBuilder
 {
     private SimpleFlagOptionsBuilder _simpleFlagOptionsBuilder;
 
-    public string ConnectionString
+    public string? ConnectionString
     {
         set
         {
@@ -21,9 +21,16 @@ public class PostgresSimpleFlagOptionsBuilder
         }
     }
 
-    public PostgresSimpleFlagOptionsBuilder(SimpleFlagOptionsBuilder simpleFlagOptionsBuilder)
+    public IDatabaseMigration DatabaseMigration
+    {
+        set
+        {
+            _simpleFlagOptionsBuilder.AddDatabaseMigration(value);
+        }
+    }
+
+    public SimpleFlagCustomDataSourceOptionsBuilder(SimpleFlagOptionsBuilder simpleFlagOptionsBuilder)
     {
         _simpleFlagOptionsBuilder = simpleFlagOptionsBuilder;
-        _simpleFlagOptionsBuilder.AddDatabaseMigration(PostgresDatabaseMigration.Instance);
     }
 }

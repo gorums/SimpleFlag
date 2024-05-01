@@ -1,13 +1,14 @@
 ﻿using SimpleFlag.Core;
 
 namespace SimpleFlag;
-
 public class SimpleFlagService : ISimpleFlagService
 {
-    private SimpleFlagOptions _simpleFlagOptions;
+    private readonly ISimpleFlagDataSource _simpleFlagDataSource;
+    private readonly SimpleFlagOptions _simpleFlagOptions;
 
-    public SimpleFlagService(SimpleFlagOptions simpleFlagOptions)
+    public SimpleFlagService(ISimpleFlagDataSource simpleFlagDataSource, SimpleFlagOptions simpleFlagOptions)
     {
+        _simpleFlagDataSource = simpleFlagDataSource;
         _simpleFlagOptions = simpleFlagOptions;
     }
 }

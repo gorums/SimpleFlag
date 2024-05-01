@@ -1,9 +1,11 @@
+using DemoApi.Postgresql;
 using DemoApi.Postgresql.Features.Services;
 using DemoApi.PostgreSQL.Features;
 using DemoApi.PostgreSQL.Infrastructure.Persistence;
+using DemoApi.ServiceDefaults;
 using Microsoft.EntityFrameworkCore;
 using SimpleFlag;
-using SimpleFlag.PostgreSQL;
+using SimpleFlag.CustomDataSource;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,10 +20,19 @@ builder.Services.AddDbContext<DemoApiDbContext>(options =>
 builder.Services.AddSimpleFlag(options =>
 {
     //options.UsePostgreSQL(builder.Configuration.GetConnectionString("PostgresConnection")); // this is the same as the next line
-    options.UsePostgreSQL(pgOptions =>
+
+    // using custom data source
+    options.UseCustomDataSource(customDataSourceOptions =>
+    {
+        customDataSourceOptions.PrefixSchema = "flag.";
+        customDataSourceOptions.ConnectionString = builder.Configuration.GetConnectionString("PostgresConnection");
+        customDataSourceOptions.DatabaseMigration = MyDataSourceDatabaseMigration.Instance;
+    });
+
+    /*options.UsePostgreSQL(pgOptions =>
     {
         pgOptions.ConnectionString = builder.Configuration.GetConnectionString("PostgresConnection");
-    });
+    });*/
 });
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

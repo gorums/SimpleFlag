@@ -1,5 +1,5 @@
 ﻿namespace SimpleFlag.Core;
 public interface IDatabaseMigration
 {
-    Task InitializeIfDoesNotExitAsync();
+    void Run(string connectionString);
 }

@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SimpleFlag.Core\SimpleFlag.Core.csproj" />
     <ProjectReference Include="..\SimpleFlag\SimpleFlag.csproj" />
   </ItemGroup>
 
