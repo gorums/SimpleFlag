@@ -18,6 +18,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\SimpleFlag.PostgreSQL\SimpleFlag.PostgreSQL.csproj" />
     <ProjectReference Include="..\..\src\SimpleFlag\SimpleFlag.csproj" />
+    <ProjectReference Include="..\..\src\SimpleFlaq.AspNetCore\SimpleFlaq.AspNetCore.csproj" />
     <ProjectReference Include="..\DemoApi.ServiceDefaults\DemoApi.ServiceDefaults.csproj" />
   </ItemGroup>
 

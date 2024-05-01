@@ -14,6 +14,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemoApi.ServiceDefaults", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemoApi.AppHost", "samples\DemoApi.AppHost\DemoApi.AppHost.csproj", "{0D3E890F-59CF-4CFA-8958-B2F943C075FF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleFlaq.AspNetCore", "src\SimpleFlaq.AspNetCore\SimpleFlaq.AspNetCore.csproj", "{7A8966D1-A825-4D9C-85AE-19F98B858B55}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +34,10 @@ Global
 		{6DD55F00-274B-4A92-8A87-71202120982A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6DD55F00-274B-4A92-8A87-71202120982A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6DD55F00-274B-4A92-8A87-71202120982A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A8966D1-A825-4D9C-85AE-19F98B858B55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A8966D1-A825-4D9C-85AE-19F98B858B55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A8966D1-A825-4D9C-85AE-19F98B858B55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A8966D1-A825-4D9C-85AE-19F98B858B55}.Release|Any CPU.Build.0 = Release|Any CPU
 		{87A2883C-C2CA-44FD-B031-EB80C9B190EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{87A2883C-C2CA-44FD-B031-EB80C9B190EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{87A2883C-C2CA-44FD-B031-EB80C9B190EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -52,18 +58,4 @@ Global
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {17492350-E50A-401B-9443-2C1E970404F4}
 	EndGlobalSection
-EndGlobal
-
-		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{0D3E890F-59CF-4CFA-8958-B2F943C075FF} = {1094F916-9929-4DDD-A91E-49928F297F9E}
-		{6DD55F00-274B-4A92-8A87-71202120982A} = {1094F916-9929-4DDD-A91E-49928F297F9E}
-		{87A2883C-C2CA-44FD-B031-EB80C9B190EA} = {1094F916-9929-4DDD-A91E-49928F297F9E}
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {17492350-E50A-401B-9443-2C1E970404F4}
-	EndGlobalSection
-EndGlobal
-
 EndGlobal

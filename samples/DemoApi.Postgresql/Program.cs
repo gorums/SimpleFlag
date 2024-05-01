@@ -6,6 +6,7 @@ using DemoApi.ServiceDefaults;
 using Microsoft.EntityFrameworkCore;
 using SimpleFlag;
 using SimpleFlag.Custom;
+using SimpleFlaq.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 

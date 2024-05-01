@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using SimpleFlag.Core;
 using SimpleFlag.Core.DataSource;
 
@@ -25,10 +24,5 @@ public static class SimpleFlagExtensions
         simpleFlagDataSource.RunMigration();
 
         return serviceCollection;
-    }
-
-    public static IApplicationBuilder MapSimpleFlagEndpoints(this IApplicationBuilder app)
-    {
-        return app;
     }
 }
