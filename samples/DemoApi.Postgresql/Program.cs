@@ -5,7 +5,7 @@ using DemoApi.PostgreSQL.Infrastructure.Persistence;
 using DemoApi.ServiceDefaults;
 using Microsoft.EntityFrameworkCore;
 using SimpleFlag;
-using SimpleFlag.CustomDataSource;
+using SimpleFlag.Custom;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,11 +22,11 @@ builder.Services.AddSimpleFlag(options =>
     //options.UsePostgreSQL(builder.Configuration.GetConnectionString("PostgresConnection")); // this is the same as the next line
 
     // using custom data source
-    options.UseCustomDataSource(customDataSourceOptions =>
+    options.UseCustom(customOptions =>
     {
-        customDataSourceOptions.PrefixSchema = "flag.";
-        customDataSourceOptions.ConnectionString = builder.Configuration.GetConnectionString("PostgresConnection");
-        customDataSourceOptions.DatabaseMigration = MyDataSourceDatabaseMigration.Instance;
+        customOptions.PrefixSchema = "flag.";
+        customOptions.ConnectionString = builder.Configuration.GetConnectionString("PostgresConnection");
+        customOptions.DatabaseMigration = MyDataSourceDatabaseMigration.Instance;
     });
 
     /*options.UsePostgreSQL(pgOptions =>

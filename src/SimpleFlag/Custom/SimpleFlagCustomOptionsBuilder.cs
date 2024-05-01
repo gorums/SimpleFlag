@@ -1,7 +1,8 @@
 ﻿using SimpleFlag.Core;
+using SimpleFlag.Core.DataSource;
 
-namespace SimpleFlag.CustomDataSource;
-public class SimpleFlagCustomDataSourceOptionsBuilder
+namespace SimpleFlag.Custom;
+public class SimpleFlagCustomOptionsBuilder
 {
     private SimpleFlagOptionsBuilder _simpleFlagOptionsBuilder;
 
@@ -21,7 +22,7 @@ public class SimpleFlagCustomDataSourceOptionsBuilder
         }
     }
 
-    public IDatabaseMigration DatabaseMigration
+    public ISimpleFlagDataSourceMigration DatabaseMigration
     {
         set
         {
@@ -29,7 +30,7 @@ public class SimpleFlagCustomDataSourceOptionsBuilder
         }
     }
 
-    public SimpleFlagCustomDataSourceOptionsBuilder(SimpleFlagOptionsBuilder simpleFlagOptionsBuilder)
+    public SimpleFlagCustomOptionsBuilder(SimpleFlagOptionsBuilder simpleFlagOptionsBuilder)
     {
         _simpleFlagOptionsBuilder = simpleFlagOptionsBuilder;
     }

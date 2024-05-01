@@ -1,13 +1,14 @@
-﻿
+﻿using SimpleFlag.Core.DataSource;
+
 namespace SimpleFlag.Core;
 
 public class SimpleFlagOptionsBuilder
 {
-    private IDatabaseMigration? _databaseMigration;
+    private ISimpleFlagDataSourceMigration? _databaseMigration;
     private string? _connectionString;
     private string? _prefixSchema;
 
-    internal void AddDatabaseMigration(IDatabaseMigration databaseMigration)
+    internal void AddDatabaseMigration(ISimpleFlagDataSourceMigration databaseMigration)
     {
         _databaseMigration = databaseMigration;
     }
@@ -28,7 +29,7 @@ public class SimpleFlagOptionsBuilder
         {
             ConnectionString = _connectionString ?? throw new ArgumentException("The connection string is required."),
             PrefixSchema = _prefixSchema ?? "dbo.",
-            DatabaseMigration = _databaseMigration ?? throw new NotImplementedException($"{nameof(IDatabaseMigration)} does not have implementation.")
+            DatabaseMigration = _databaseMigration ?? throw new NotImplementedException($"{nameof(ISimpleFlagDataSourceMigration)} does not have implementation.")
         };
     }
 

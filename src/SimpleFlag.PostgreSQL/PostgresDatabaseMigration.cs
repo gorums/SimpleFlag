@@ -1,15 +1,15 @@
-﻿using SimpleFlag.Core;
+﻿using SimpleFlag.Core.DataSource;
 
 namespace SimpleFlag.PostgreSQL;
-internal class PostgresDatabaseMigration : IDatabaseMigration
+internal class PostgresDatabaseMigration : ISimpleFlagDataSourceMigration
 {
-    private static readonly Lazy<IDatabaseMigration> _databaseMigration = new Lazy<IDatabaseMigration>(() => new PostgresDatabaseMigration());
+    private static readonly Lazy<ISimpleFlagDataSourceMigration> _databaseMigration = new Lazy<ISimpleFlagDataSourceMigration>(() => new PostgresDatabaseMigration());
 
     private PostgresDatabaseMigration()
     {
     }
 
-    public static IDatabaseMigration Instance => _databaseMigration.Value;
+    public static ISimpleFlagDataSourceMigration Instance => _databaseMigration.Value;
 
     public void Run(string connectionString)
     {
