@@ -3,7 +3,7 @@
 namespace SimpleFlag.PostgreSQL.Migrations;
 
 [VersionTableMetaData]
-public class CustomVersionTableMetaData : IVersionTableMetaData
+internal class CustomVersionTableMetaData : IVersionTableMetaData
 {
     public object ApplicationContext { get; set; }
 

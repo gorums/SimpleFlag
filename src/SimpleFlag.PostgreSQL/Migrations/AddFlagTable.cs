@@ -3,7 +3,7 @@
 namespace SimpleFlag.PostgreSQL.Migrations;
 
 [Migration(20240502121800)]
-public class AddFlagTable : Migration
+internal class AddFlagTable : Migration
 {
     public override void Up()
     {
