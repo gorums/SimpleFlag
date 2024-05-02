@@ -14,11 +14,19 @@ public class SimpleFlagCustomOptionsBuilder
         }
     }
 
-    public string PrefixSchema
+    public string? SchemaName
     {
         set
         {
-            _simpleFlagOptionsBuilder.AddPrefixSchema(value);
+            _simpleFlagOptionsBuilder.AddSchemaName(value);
+        }
+    }
+
+    public string? TablePrefix
+    {
+        set
+        {
+            _simpleFlagOptionsBuilder.AddTablePrefix(value);
         }
     }
 

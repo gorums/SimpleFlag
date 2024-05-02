@@ -12,7 +12,7 @@ public class MyDataSourceDatabaseMigration : ISimpleFlagDataSourceMigration
 
     public static ISimpleFlagDataSourceMigration Instance => _databaseMigration.Value;
 
-    public void Run(string connectionString)
+    public void Run(SimpleFlagDataSourceOptions simpleFlagDataSourceOptions)
     {
         //TODO: Implement database migration
     }

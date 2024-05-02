@@ -13,6 +13,6 @@ public class SimpleFlagDataSource : ISimpleFlagDataSource
 
     public void RunMigration()
     {
-        _simpleFlagDataSourceOptions.DatabaseMigration.Run(_simpleFlagDataSourceOptions.ConnectionString);
+        _simpleFlagDataSourceOptions.DatabaseMigration.Run(_simpleFlagDataSourceOptions);
     }
 }

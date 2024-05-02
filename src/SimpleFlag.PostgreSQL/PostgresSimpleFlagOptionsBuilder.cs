@@ -5,7 +5,7 @@ public class PostgresSimpleFlagOptionsBuilder
 {
     private SimpleFlagOptionsBuilder _simpleFlagOptionsBuilder;
 
-    public string ConnectionString
+    public string? ConnectionString
     {
         set
         {
@@ -13,11 +13,19 @@ public class PostgresSimpleFlagOptionsBuilder
         }
     }
 
-    public string PrefixSchema
+    public string? SchemaName
     {
         set
         {
-            _simpleFlagOptionsBuilder.AddPrefixSchema(value);
+            _simpleFlagOptionsBuilder.AddSchemaName(value);
+        }
+    }
+
+    public string? TablePrefix
+    {
+        set
+        {
+            _simpleFlagOptionsBuilder.AddTablePrefix(value);
         }
     }
 

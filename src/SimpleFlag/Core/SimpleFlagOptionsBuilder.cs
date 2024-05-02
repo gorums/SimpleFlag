@@ -6,7 +6,8 @@ public class SimpleFlagOptionsBuilder
 {
     private ISimpleFlagDataSourceMigration? _databaseMigration;
     private string? _connectionString;
-    private string? _prefixSchema;
+    private string? _schemaName;
+    private string? _tablePrefix;
 
     internal void AddDatabaseMigration(ISimpleFlagDataSourceMigration databaseMigration)
     {
@@ -18,9 +19,14 @@ public class SimpleFlagOptionsBuilder
         _connectionString = connectionString;
     }
 
-    internal void AddPrefixSchema(string? prefixSchema)
+    internal void AddSchemaName(string? schemaName)
     {
-        _prefixSchema = prefixSchema;
+        _schemaName = schemaName;
+    }
+
+    internal void AddTablePrefix(string? tablePrefix)
+    {
+        _tablePrefix = tablePrefix;
     }
 
     internal SimpleFlagDataSourceOptions BuildDataSourceOptions()
@@ -28,7 +34,8 @@ public class SimpleFlagOptionsBuilder
         return new SimpleFlagDataSourceOptions
         {
             ConnectionString = _connectionString ?? throw new ArgumentException("The connection string is required."),
-            PrefixSchema = _prefixSchema ?? "dbo.",
+            SchemaName = _schemaName,
+            TablePrefix = _tablePrefix,
             DatabaseMigration = _databaseMigration ?? throw new NotImplementedException($"{nameof(ISimpleFlagDataSourceMigration)} does not have implementation.")
         };
     }
