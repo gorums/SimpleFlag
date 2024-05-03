@@ -4,19 +4,21 @@ using SimpleFlag.Core.DataSource;
 using SimpleFlag.PostgreSQL.Migrations;
 
 namespace SimpleFlag.PostgreSQL;
-internal class PostgresDatabaseMigration : ISimpleFlagDataSourceMigration
+internal class PostgresDataSourceMigration : ISimpleFlagDataSourceMigration
 {
-    private static readonly Lazy<ISimpleFlagDataSourceMigration> _databaseMigration = new Lazy<ISimpleFlagDataSourceMigration>(() => new PostgresDatabaseMigration());
+    private static readonly Lazy<ISimpleFlagDataSourceMigration> _databaseMigration = new Lazy<ISimpleFlagDataSourceMigration>(() => new PostgresDataSourceMigration());
 
-    private PostgresDatabaseMigration()
+    private PostgresDataSourceMigration()
     {
     }
 
     public static ISimpleFlagDataSourceMigration Instance => _databaseMigration.Value;
 
-    public void Run(SimpleFlagDataSourceOptions simpleFlagDataSourceOptions)
+    public SimpleFlagMigrationOptions SimpleFlagMigrationOptions { get; set; }
+
+    public void Run()
     {
-        using (var serviceProvider = CreateServices(simpleFlagDataSourceOptions))
+        using (var serviceProvider = CreateServices(SimpleFlagMigrationOptions))
         using (var scope = serviceProvider.CreateScope())
         {
             // Put the database update into a scope to ensure
@@ -28,7 +30,7 @@ internal class PostgresDatabaseMigration : ISimpleFlagDataSourceMigration
     /// <summary>
     /// Configure the dependency injection services
     /// </summary>
-    private static ServiceProvider CreateServices(SimpleFlagDataSourceOptions simpleFlagDataSourceOptions)
+    private static ServiceProvider CreateServices(SimpleFlagMigrationOptions simpleFlagDataSourceOptions)
     {
         CustomMigrationMetaData.SchemaName = simpleFlagDataSourceOptions.SchemaName;
         if (!string.IsNullOrEmpty(simpleFlagDataSourceOptions.TablePrefix))

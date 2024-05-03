@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="FluentMigrator.Runner.Postgres" Version="5.2.0" />
+	<PackageReference Include="Npgsql" Version="8.0.2" />
   </ItemGroup>
 
   <ItemGroup>

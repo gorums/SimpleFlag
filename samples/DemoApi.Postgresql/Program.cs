@@ -27,7 +27,8 @@ builder.Services.AddSimpleFlag(options =>
         customOptions.SchemaName = "flag";
         customOptions.TablePrefix = "sf";
         customOptions.ConnectionString = builder.Configuration.GetConnectionString("PostgresConnection");
-        customOptions.DatabaseMigration = MyDataSourceDatabaseMigration.Instance;
+        customOptions.DataSourceMigration = MyDataSourceDatabaseMigration.Instance;
+        customOptions.DataSourceRepository = MyDataSourceRepository.Instance;
     });*/
 
     options.UsePostgreSQL(pgOptions =>
