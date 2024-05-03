@@ -32,6 +32,7 @@ public class PostgresSimpleFlagOptionsBuilder
     public PostgresSimpleFlagOptionsBuilder(SimpleFlagOptionsBuilder simpleFlagOptionsBuilder)
     {
         _simpleFlagOptionsBuilder = simpleFlagOptionsBuilder;
-        _simpleFlagOptionsBuilder.AddDatabaseMigration(PostgresDatabaseMigration.Instance);
+        _simpleFlagOptionsBuilder.AddDataSourceMigration(PostgresDataSourceMigration.Instance);
+        _simpleFlagOptionsBuilder.AddDataSourceRepository(PostgresDataSourceRepository.Instance);
     }
 }

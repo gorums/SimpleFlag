@@ -2,7 +2,7 @@
 
 namespace SimpleFlag.PostgreSQL.Migrations;
 
-[Migration(20240502121800)]
+[Migration(20240502121801)]
 internal class AddFlagTable : Migration
 {
     public override void Up()
@@ -21,7 +21,11 @@ internal class AddFlagTable : Migration
 
     public override void Down()
     {
-        Delete.Table("sf_flags")
-            .InSchema("flag");
+        var table = Delete.Table($"{CustomMigrationMetaData.TablePrefix}_flags");
+
+        if (!string.IsNullOrEmpty(CustomMigrationMetaData.SchemaName))
+        {
+            table.InSchema(CustomMigrationMetaData.SchemaName);
+        }
     }
 }

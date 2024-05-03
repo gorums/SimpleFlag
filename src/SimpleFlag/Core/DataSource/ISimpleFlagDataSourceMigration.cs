@@ -1,5 +1,7 @@
 ﻿namespace SimpleFlag.Core.DataSource;
 public interface ISimpleFlagDataSourceMigration
 {
-    void Run(SimpleFlagDataSourceOptions simpleFlagDataSourceOptions);
+    SimpleFlagMigrationOptions SimpleFlagMigrationOptions { get; set; }
+
+    void Run();
 }

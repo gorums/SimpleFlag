@@ -12,4 +12,21 @@ public class SimpleFlagService : ISimpleFlagService
         _simpleFlagDataSource = simpleFlagDataSource;
         _simpleFlagOptions = simpleFlagOptions;
     }
+
+    public Task<bool> EvaluateAsync(string flag, CancellationToken cancellationToken = default)
+    {
+        return _simpleFlagDataSource.EvaluateAsync(flag, cancellationToken);
+    }
+
+    public async Task<(bool success, bool result)> TryEvaluateAsync(string flag, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            return (true, await EvaluateAsync(flag, cancellationToken));
+        }
+        catch (SimpleFlagDoesNotExistException)
+        {
+            return (false, false);
+        }
+    }
 }

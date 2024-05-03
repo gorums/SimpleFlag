@@ -30,11 +30,19 @@ public class SimpleFlagCustomOptionsBuilder
         }
     }
 
-    public ISimpleFlagDataSourceMigration DatabaseMigration
+    public ISimpleFlagDataSourceMigration DataSourceMigration
     {
         set
         {
-            _simpleFlagOptionsBuilder.AddDatabaseMigration(value);
+            _simpleFlagOptionsBuilder.AddDataSourceMigration(value);
+        }
+    }
+
+    public ISimpleFlagDataSourceRepository DataSourceRepository
+    {
+        set
+        {
+            _simpleFlagOptionsBuilder.AddDataSourceRepository(value);
         }
     }
 

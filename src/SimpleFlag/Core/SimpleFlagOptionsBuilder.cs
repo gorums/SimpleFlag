@@ -4,14 +4,21 @@ namespace SimpleFlag.Core;
 
 public class SimpleFlagOptionsBuilder
 {
-    private ISimpleFlagDataSourceMigration? _databaseMigration;
     private string? _connectionString;
     private string? _schemaName;
     private string? _tablePrefix;
 
-    internal void AddDatabaseMigration(ISimpleFlagDataSourceMigration databaseMigration)
+    private ISimpleFlagDataSourceMigration? _dataSourceMigration;
+    private ISimpleFlagDataSourceRepository? _dataSourceRepository;    
+
+    internal void AddDataSourceMigration(ISimpleFlagDataSourceMigration dataSourceMigration)
     {
-        _databaseMigration = databaseMigration;
+        _dataSourceMigration = dataSourceMigration;
+    }
+
+    internal void AddDataSourceRepository(ISimpleFlagDataSourceRepository dataSourceRepository)
+    {
+        _dataSourceRepository = dataSourceRepository;
     }
 
     internal void AddConnectionString(string? connectionString)
@@ -33,10 +40,11 @@ public class SimpleFlagOptionsBuilder
     {
         return new SimpleFlagDataSourceOptions
         {
-            ConnectionString = _connectionString ?? throw new ArgumentException("The connection string is required."),
             SchemaName = _schemaName,
             TablePrefix = _tablePrefix,
-            DatabaseMigration = _databaseMigration ?? throw new NotImplementedException($"{nameof(ISimpleFlagDataSourceMigration)} does not have implementation.")
+            ConnectionString = _connectionString ?? throw new ArgumentException(nameof(_connectionString)),            
+            DataSourceMigration = _dataSourceMigration ?? throw new ArgumentNullException(nameof(_dataSourceMigration)),
+            DataSourceRepository = _dataSourceRepository ?? throw new ArgumentNullException(nameof(_dataSourceRepository)),
         };
     }
 
