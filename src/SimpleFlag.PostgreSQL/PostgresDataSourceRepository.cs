@@ -1,7 +1,6 @@
 ﻿using Npgsql;
 using SimpleFlag.Core;
 using SimpleFlag.Core.DataSource;
-using SimpleFlag.PostgreSQL.Migrations;
 
 namespace SimpleFlag.PostgreSQL;
 internal class PostgresDataSourceRepository : ISimpleFlagDataSourceRepository
@@ -22,7 +21,10 @@ internal class PostgresDataSourceRepository : ISimpleFlagDataSourceRepository
         {
             await connection.OpenAsync(cancellation);
 
-            using (var command = new NpgsqlCommand($"SELECT value FROM {SimpleFlagRepositoryOptions.TablePrefix}_flags WHERE name = @flag", connection))
+            var schemaPrefix = string.IsNullOrEmpty(SimpleFlagRepositoryOptions.SchemaName) ? "" : $"{SimpleFlagRepositoryOptions.SchemaName}.";
+            var query = $"SELECT \"Value\" FROM {schemaPrefix}{SimpleFlagRepositoryOptions.TablePrefix}_flags WHERE \"Key\" = @flag";
+
+            using (var command = new NpgsqlCommand(query, connection))
             {
                 command.Parameters.AddWithValue("flag", flag);
 
@@ -35,6 +37,6 @@ internal class PostgresDataSourceRepository : ISimpleFlagDataSourceRepository
             }
         }
 
-        throw new SimpleFlagDoesNotExistException($"The flag {flag} does not exist.");
+        throw new SimpleFlagDoesNotExistException($"The flag \"{flag}\" does not exist.");
     }
 }

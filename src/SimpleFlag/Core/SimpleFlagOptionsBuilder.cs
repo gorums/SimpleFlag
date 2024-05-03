@@ -9,7 +9,7 @@ public class SimpleFlagOptionsBuilder
     private string? _tablePrefix;
 
     private ISimpleFlagDataSourceMigration? _dataSourceMigration;
-    private ISimpleFlagDataSourceRepository? _dataSourceRepository;    
+    private ISimpleFlagDataSourceRepository? _dataSourceRepository;
 
     internal void AddDataSourceMigration(ISimpleFlagDataSourceMigration dataSourceMigration)
     {
@@ -42,7 +42,7 @@ public class SimpleFlagOptionsBuilder
         {
             SchemaName = _schemaName,
             TablePrefix = _tablePrefix,
-            ConnectionString = _connectionString ?? throw new ArgumentException(nameof(_connectionString)),            
+            ConnectionString = _connectionString ?? throw new ArgumentException(nameof(_connectionString)),
             DataSourceMigration = _dataSourceMigration ?? throw new ArgumentNullException(nameof(_dataSourceMigration)),
             DataSourceRepository = _dataSourceRepository ?? throw new ArgumentNullException(nameof(_dataSourceRepository)),
         };

@@ -27,7 +27,7 @@ public class SimpleFlagDataSource : ISimpleFlagDataSource
             ConnectionString = _simpleFlagDataSourceOptions.ConnectionString,
             SchemaName = _simpleFlagDataSourceOptions.SchemaName,
             TablePrefix = _simpleFlagDataSourceOptions.TablePrefix
-        };       
+        };
     }
 
     public void RunMigration() => _dataSourceMigration.Run();
