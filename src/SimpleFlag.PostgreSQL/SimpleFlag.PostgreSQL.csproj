@@ -1,14 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <PackageId>SimpleFlag.PostgreSQL</PackageId>
+    <Description>This package managing flags using PostgreSQL database.</Description>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="FluentMigrator.Runner.Postgres" Version="5.2.0" />
-	<PackageReference Include="Npgsql" Version="8.0.2" />
+    <PackageReference Include="Npgsql" Version="8.0.2" />
   </ItemGroup>
 
   <ItemGroup>

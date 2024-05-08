@@ -14,7 +14,7 @@ internal class PostgresDataSourceMigration : ISimpleFlagDataSourceMigration
 
     public static ISimpleFlagDataSourceMigration Instance => _databaseMigration.Value;
 
-    public SimpleFlagMigrationOptions SimpleFlagMigrationOptions { get; set; }
+    public SimpleFlagMigrationOptions SimpleFlagMigrationOptions { get; set; } = new SimpleFlagMigrationOptions();
 
     public void Run()
     {

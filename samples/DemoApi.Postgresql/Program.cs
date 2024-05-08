@@ -5,7 +5,7 @@ using DemoApi.ServiceDefaults;
 using Microsoft.EntityFrameworkCore;
 using SimpleFlag;
 using SimpleFlag.PostgreSQL;
-using SimpleFlaq.AspNetCore;
+using SimpleFlag.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 

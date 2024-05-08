@@ -4,6 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+	  <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,9 +17,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\SimpleFlag.AspNetCore\SimpleFlag.AspNetCore.csproj" />
     <ProjectReference Include="..\..\src\SimpleFlag.PostgreSQL\SimpleFlag.PostgreSQL.csproj" />
     <ProjectReference Include="..\..\src\SimpleFlag\SimpleFlag.csproj" />
-    <ProjectReference Include="..\..\src\SimpleFlaq.AspNetCore\SimpleFlaq.AspNetCore.csproj" />
     <ProjectReference Include="..\DemoApi.ServiceDefaults\DemoApi.ServiceDefaults.csproj" />
   </ItemGroup>
 

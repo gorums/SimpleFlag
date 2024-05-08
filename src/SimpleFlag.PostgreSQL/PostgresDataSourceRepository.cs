@@ -30,9 +30,9 @@ internal class PostgresDataSourceRepository : ISimpleFlagDataSourceRepository
 
                 var result = await command.ExecuteScalarAsync(cancellation);
 
-                if (result != null)
+                if (result is not null)
                 {
-                    return result.ToString();
+                    return result.ToString()!;
                 }
             }
         }

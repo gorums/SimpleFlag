@@ -5,7 +5,7 @@ namespace SimpleFlag.PostgreSQL.Migrations;
 [VersionTableMetaData]
 internal class CustomVersionTableMetaData : IVersionTableMetaData
 {
-    public object ApplicationContext { get; set; }
+    public object? ApplicationContext { get; set; }
 
     public string SchemaName => CustomMigrationMetaData.SchemaName ?? string.Empty;
 

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+
+    <PropertyGroup>
+	    <TargetFramework>net8.0</TargetFramework>
+        <Version>0.0.1-preview.1</Version>
+	    <Authors>Alejandro Ferrandiz</Authors>
+        <PackageProjectUrl>https://github.com/gorums/SimpleFlag</PackageProjectUrl>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>https://github.com/gorums/SimpleFlag</RepositoryUrl>
+        <LangVersion>Latest</LangVersion>
+        <Nullable>enable</Nullable>
+	    <ImplicitUsings>true</ImplicitUsings>
+	    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    </PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="NuGet.Build.Tasks.Pack" Version="6.7.0" PrivateAssets="all" />
+	</ItemGroup>
+</Project>

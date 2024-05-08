@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 
-namespace SimpleFlaq.AspNetCore;
+namespace SimpleFlag.AspNetCore;
 
 public static class SimpleFlagAspNetCoreExtensions
 {
