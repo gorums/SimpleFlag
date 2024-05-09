@@ -123,19 +123,17 @@ app.MapSimpleFlagEndpoints();
 You can inject ***ISimpleFlagService*** interface and access different methods to evaluate a flag.
 
 ```csharp
-public class TodoService : ITodoService
+public class MyService : IMyService
 {
-    private readonly TodoDbContext _todoDbContext;
     private readonly ISimpleFlagService _simpleFlagService;
 
-    public TodoService(TodoDbContext todoDbContext, ISimpleFlagService simpleFlagService)
+    public MyService(ISimpleFlagService simpleFlagService)
     {
-        _todoDbContext = todoDbContext;
         _simpleFlagService = simpleFlagService;
     }
 
-    public async Task<bool> IsGetTodoOnAsync(CancellationToken cancellationToken = default) =>
-        await _simpleFlagService.EvaluateAsync("get-todo", cancellationToken); // Evaluate the flag "get-todo"
+    public async Task<bool> IsOpenAsync(CancellationToken cancellationToken = default) =>
+        await _simpleFlagService.EvaluateAsync("my-service", cancellationToken); // Evaluate the flag "my-service"
     ...
 
 }
