@@ -1,5 +1,6 @@
 # SimpleFlag
 
+[![.NET](https://github.com/gorums/SimpleFlag/actions/workflows/dotnet.yml/badge.svg)](https://github.com/gorums/SimpleFlag/actions/workflows/dotnet.yml)
 [![Nuget downloads](https://img.shields.io/nuget/v/SimpleFlag.svg)](https://www.nuget.org/packages/SimpleFlag/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/gorums/SimpleFlag/blob/master/LICENSE)
 
