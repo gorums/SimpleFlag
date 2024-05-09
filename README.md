@@ -85,7 +85,7 @@ builder.Services.AddSimpleFlag(options =>
 
 In this case you need to implement the interface ***IDataSourceMigration*** and ***IDataSourceRepository***
 
-## Setup AspNet Core
+## Expose endpoints on AspNet Core 
 
  Using SimpleFlag Extension package to provide endpoints for management flags [***!Working in progress***]
 
