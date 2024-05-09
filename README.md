@@ -85,7 +85,7 @@ builder.Services.AddSimpleFlag(options =>
 
 In this case you need to implement the interface ***IDataSourceMigration*** and ***IDataSourceRepository***
 
-## AspNet Core
+## Setup AspNet Core
 
  Using SimpleFlag Extension package to provide endpoints for management flags [***!Working in progress***]
 
@@ -133,7 +133,8 @@ public class MyService : IMyService
     }
 
     public async Task<bool> IsOpenAsync(CancellationToken cancellationToken = default) =>
-        await _simpleFlagService.EvaluateAsync("my-service", cancellationToken); // Evaluate the flag "my-service"
+         // Evaluate the flag "my-service"
+        await _simpleFlagService.EvaluateAsync("my-service", cancellationToken);
     ...
 
 }
