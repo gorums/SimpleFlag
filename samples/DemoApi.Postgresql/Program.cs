@@ -4,8 +4,8 @@ using DemoApi.PostgreSQL.Infrastructure.Persistence;
 using DemoApi.ServiceDefaults;
 using Microsoft.EntityFrameworkCore;
 using SimpleFlag;
-using SimpleFlag.PostgreSQL;
 using SimpleFlag.AspNetCore;
+using SimpleFlag.PostgreSQL;
 
 var builder = WebApplication.CreateBuilder(args);
 
