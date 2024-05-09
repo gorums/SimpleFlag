@@ -12,7 +12,7 @@
 Install-Package SimpleFlag
 ```
 
-## Setup
+## Usage
 
 Using Postgres
 
@@ -85,7 +85,7 @@ builder.Services.AddSimpleFlag(options =>
 
 In this case you need to implement the interface ***IDataSourceMigration*** and ***IDataSourceRepository***
 
-## Expose endpoints on AspNet Core 
+### Expose endpoints on AspNet Core 
 
  Using SimpleFlag Extension package to provide endpoints for management flags [***!Working in progress***]
 
@@ -118,7 +118,7 @@ app.MapSimpleFlagEndpoints();
 
 ```
 
-## Evaluate Flag
+### Evaluate Flag
 
 You can inject ***ISimpleFlagService*** interface and access different methods to evaluate a flag.
 
