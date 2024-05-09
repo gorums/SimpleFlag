@@ -118,6 +118,29 @@ app.MapSimpleFlagEndpoints();
 
 ```
 
+## Evaluate Flag
+
+You can inject ***ISimpleFlagService*** interface and access different methods to evaluate a flag.
+
+```csharp
+public class TodoService : ITodoService
+{
+    private readonly TodoDbContext _todoDbContext;
+    private readonly ISimpleFlagService _simpleFlagService;
+
+    public TodoService(TodoDbContext todoDbContext, ISimpleFlagService simpleFlagService)
+    {
+        _todoDbContext = todoDbContext;
+        _simpleFlagService = simpleFlagService;
+    }
+
+    public async Task<bool> IsGetTodoOnAsync(CancellationToken cancellationToken = default) =>
+        await _simpleFlagService.EvaluateAsync("get-todo", cancellationToken); // Evaluate the flag "get-todo"
+    ...
+
+}
+```
+
 ## Supported Provider
 
 - PostgreSQL (SimpleFlag.PostgreSQL)
