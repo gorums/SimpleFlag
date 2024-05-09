@@ -7,11 +7,15 @@
 
   <ItemGroup>
     <PackageReference Include="FluentMigrator.Runner.Postgres" Version="5.2.0" />
-    <PackageReference Include="Npgsql" Version="8.0.2" />
+    <PackageReference Include="Npgsql" Version="8.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\SimpleFlag\SimpleFlag.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="NuGet.Build.Tasks.Pack" Version="6.9.1" />
   </ItemGroup>
 
 </Project>
