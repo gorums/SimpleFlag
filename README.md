@@ -25,15 +25,26 @@ Install-Package SimpleFlag.PostgreSQL
 With ConnectionString and Default Options
 
 ```csharp
+var builder = WebApplication.CreateBuilder(args);
+
+...
+
 builder.Services.AddSimpleFlag(options =>
 {
     options.UsePostgreSQL(builder.Configuration.GetConnectionString("ConnectionString"));     
 });
+
+...
+
 ```
 
 With ConnectionString and Custom Options
 
 ```csharp
+var builder = WebApplication.CreateBuilder(args);
+
+...
+
 builder.Services.AddSimpleFlag(options =>
 {
     options.UsePostgreSQL(pgOptions =>
@@ -43,11 +54,18 @@ builder.Services.AddSimpleFlag(options =>
         pgOptions.ConnectionString = builder.Configuration.GetConnectionString("ConnectionString");
     });     
 });
+
+...
+
 ```
 
 Using Custom DataSource with Custom Options
 
 ```csharp
+var builder = WebApplication.CreateBuilder(args);
+
+...
+
 builder.Services.AddSimpleFlag(options =>
 {
    options.UseCustom(customOptions =>
@@ -59,11 +77,16 @@ builder.Services.AddSimpleFlag(options =>
         customOptions.DataSourceRepository = MyDataSourceRepository.Instance;
     });
 });
+
+...
+
 ```
 
 In this case you need to implement the interface ***IDataSourceMigration*** and ***IDataSourceRepository***
 
-### For AspNet Core add SimpleFlag Extension package to provide endpoints for management flags [***!Working in progress***]
+## Usage AspNet Core
+
+ Using SimpleFlag Extension package to provide endpoints for management flags [***!Working in progress***]
 
 ```
 Install-Package SimpleFlag.AspNetCore
@@ -73,6 +96,15 @@ Install-Package SimpleFlag.AspNetCore
 **Program.cs**
 
 ```csharp
+var builder = WebApplication.CreateBuilder(args);
+
+...
+
+builder.Services.AddSimpleFlag(options =>
+{
+   ...  
+});
+
 ...
 
 var app = builder.Build();
@@ -80,6 +112,7 @@ var app = builder.Build();
 ...
 
 app.MapSimpleFlagEndpoints();
+
 ...
 
 ```
