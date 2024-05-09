@@ -12,7 +12,7 @@
 Install-Package SimpleFlag
 ```
 
-## Usage
+## Setup
 
 Using Postgres
 
@@ -85,7 +85,7 @@ builder.Services.AddSimpleFlag(options =>
 
 In this case you need to implement the interface ***IDataSourceMigration*** and ***IDataSourceRepository***
 
-## Usage AspNet Core
+## AspNet Core
 
  Using SimpleFlag Extension package to provide endpoints for management flags [***!Working in progress***]
 
