@@ -1,4 +1,4 @@
-﻿namespace SimpleFlag.Core.DataSource;
+﻿namespace SimpleFlag.Core.DataSource.Internal;
 
 /// <summary>
 /// This class is the implementation of the ISimpleFlagDataSource.

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using SimpleFlag.Core;
-using SimpleFlag.Core.DataSource;
+using SimpleFlag.Core.DataSource.Internal;
 
 namespace SimpleFlag;
 
