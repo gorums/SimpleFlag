@@ -4,18 +4,27 @@ using SimpleFlag.Core.DataSource;
 using SimpleFlag.PostgreSQL.Migrations;
 
 namespace SimpleFlag.PostgreSQL;
+
+/// <summary>
+/// This class is responsible for migrating the database.
+/// </summary>
 internal class PostgresDataSourceMigration : ISimpleFlagDataSourceMigration
 {
     private static readonly Lazy<ISimpleFlagDataSourceMigration> _databaseMigration = new Lazy<ISimpleFlagDataSourceMigration>(() => new PostgresDataSourceMigration());
 
+    public SimpleFlagMigrationOptions SimpleFlagMigrationOptions { get; set; } = new SimpleFlagMigrationOptions();
+
+    /// <summary>
+    /// Private constructor to prevent instantiation.
+    /// </summary>
     private PostgresDataSourceMigration()
     {
     }
 
+    /// <inheritdoc />
     public static ISimpleFlagDataSourceMigration Instance => _databaseMigration.Value;
 
-    public SimpleFlagMigrationOptions SimpleFlagMigrationOptions { get; set; } = new SimpleFlagMigrationOptions();
-
+    /// <inheritdoc />
     public void Run()
     {
         using (var serviceProvider = CreateServices(SimpleFlagMigrationOptions))

@@ -3,12 +3,20 @@ using SimpleFlag.Core.DataSource;
 
 namespace SimpleFlag;
 
+/// <summary>
+/// This class is the implementation of the ISimpleFlagDataSource.
+/// </summary>
 public class SimpleFlagDataSource : ISimpleFlagDataSource
 {
     private SimpleFlagDataSourceOptions _simpleFlagDataSourceOptions;
     private ISimpleFlagDataSourceMigration _dataSourceMigration;
     private ISimpleFlagDataSourceRepository _dataSourceRepository;
 
+    /// <summary>
+    /// Initializes a new instance of the SimpleFlagDataSource.
+    /// </summary>
+    /// <param name="simpleFlagDataSourceOptions"></param>
+    /// <exception cref="ArgumentNullException"></exception>
     public SimpleFlagDataSource(SimpleFlagDataSourceOptions simpleFlagDataSourceOptions)
     {
         _simpleFlagDataSourceOptions = simpleFlagDataSourceOptions;
@@ -30,8 +38,10 @@ public class SimpleFlagDataSource : ISimpleFlagDataSource
         };
     }
 
+    /// <inheritdoc />
     public void RunMigration() => _dataSourceMigration.Run();
 
+    /// <inheritdoc />
     public async Task<bool> EvaluateAsync(string flag, CancellationToken cancellationToken)
     {
         var value = await _dataSourceRepository.GetFlagValueAsync(flag, cancellationToken)!;

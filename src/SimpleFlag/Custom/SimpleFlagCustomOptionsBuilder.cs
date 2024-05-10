@@ -2,9 +2,22 @@
 using SimpleFlag.Core.DataSource;
 
 namespace SimpleFlag.Custom;
+
+/// <summary>
+/// This class builds the custom options for the SimpleFlag.
+/// </summary>
 public class SimpleFlagCustomOptionsBuilder
 {
     private SimpleFlagOptionsBuilder _simpleFlagOptionsBuilder;
+
+    /// <summary>
+    /// Initializes a new instance of the SimpleFlagCustomOptionsBuilder.
+    /// </summary>
+    /// <param name="simpleFlagOptionsBuilder"><see cref="SimpleFlagOptionsBuilder"/></param>
+    public SimpleFlagCustomOptionsBuilder(SimpleFlagOptionsBuilder simpleFlagOptionsBuilder)
+    {
+        _simpleFlagOptionsBuilder = simpleFlagOptionsBuilder;
+    }
 
     public string? ConnectionString
     {
@@ -14,6 +27,9 @@ public class SimpleFlagCustomOptionsBuilder
         }
     }
 
+    /// <summary>
+    /// Sets the schema name.
+    /// </summary>
     public string? SchemaName
     {
         set
@@ -22,6 +38,9 @@ public class SimpleFlagCustomOptionsBuilder
         }
     }
 
+    /// <summary> 
+    /// Sets the table prefix.
+    /// </summary>
     public string? TablePrefix
     {
         set
@@ -30,6 +49,9 @@ public class SimpleFlagCustomOptionsBuilder
         }
     }
 
+    /// <summary>
+    /// Sets the data source migration.
+    /// </summary>
     public ISimpleFlagDataSourceMigration DataSourceMigration
     {
         set
@@ -38,16 +60,14 @@ public class SimpleFlagCustomOptionsBuilder
         }
     }
 
+    /// <summary>
+    /// Sets the data source repository.
+    /// </summary>
     public ISimpleFlagDataSourceRepository DataSourceRepository
     {
         set
         {
             _simpleFlagOptionsBuilder.AddDataSourceRepository(value);
         }
-    }
-
-    public SimpleFlagCustomOptionsBuilder(SimpleFlagOptionsBuilder simpleFlagOptionsBuilder)
-    {
-        _simpleFlagOptionsBuilder = simpleFlagOptionsBuilder;
     }
 }

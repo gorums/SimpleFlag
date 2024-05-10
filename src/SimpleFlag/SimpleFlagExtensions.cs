@@ -4,8 +4,17 @@ using SimpleFlag.Core.DataSource;
 
 namespace SimpleFlag;
 
+/// <summary>
+/// This class contains the extension methods for the IServiceCollection.
+/// </summary>
 public static class SimpleFlagExtensions
 {
+    /// <summary>
+    /// Adds the SimpleFlag service to the service collection.
+    /// </summary>
+    /// <param name="serviceCollection"><see cref="IServiceCollection"/></param>
+    /// <param name="configureOptions">The configuration options action</param>
+    /// <returns><see cref="IServiceCollection"/></returns>
     public static IServiceCollection AddSimpleFlag(this IServiceCollection serviceCollection, Action<SimpleFlagOptionsBuilder>? configureOptions = null)
     {
         // setting the options

@@ -1,4 +1,8 @@
 ﻿namespace SimpleFlag.Core.DataSource;
+
+/// <summary>
+/// This class contains the options for the SimpleFlagRepository.
+/// </summary>
 public class SimpleFlagRepositoryOptions
 {
     public string ConnectionString { get; init; } = string.Empty;

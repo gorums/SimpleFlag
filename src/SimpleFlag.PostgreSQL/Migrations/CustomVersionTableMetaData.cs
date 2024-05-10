@@ -2,6 +2,9 @@
 
 namespace SimpleFlag.PostgreSQL.Migrations;
 
+/// <summary>
+/// This class contains the custom version table meta data.
+/// </summary>
 [VersionTableMetaData]
 internal class CustomVersionTableMetaData : IVersionTableMetaData
 {
