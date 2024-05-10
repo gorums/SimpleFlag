@@ -7,45 +7,43 @@ namespace SimpleFlag.UnitTests;
 
 public class SimpleFlagServiceTests
 {
-    private readonly Mock<ISimpleFlagDataSource> _mockDataSource;
-    private readonly SimpleFlagService _simpleFlagService;
+    private readonly Mock<ISimpleFlagDataSourceRepository> _mockSimpleFlagDataSourceRepository;
+    private readonly Mock<ISimpleFlagDataSourceMigration> _mockSimpleSimpleFlagDataSourceMigration;
+    private readonly ISimpleFlagService _simpleFlagService;
 
     public SimpleFlagServiceTests()
     {
-        _mockDataSource = new Mock<ISimpleFlagDataSource>();
-        _simpleFlagService = new SimpleFlagService(_mockDataSource.Object, new SimpleFlagOptions());
+        _mockSimpleFlagDataSourceRepository = new Mock<ISimpleFlagDataSourceRepository>();
+        _mockSimpleSimpleFlagDataSourceMigration = new Mock<ISimpleFlagDataSourceMigration>();
+
+        var simpleFlagDataSource = new SimpleFlagDataSource(new SimpleFlagDataSourceOptions
+        {
+            ConnectionString = "connection-string",
+            DataSourceRepository = _mockSimpleFlagDataSourceRepository.Object,
+            DataSourceMigration = _mockSimpleSimpleFlagDataSourceMigration.Object
+        });
+
+        _simpleFlagService = new SimpleFlagService(simpleFlagDataSource, new SimpleFlagOptions());
     }
 
-    [Fact]
-    public async Task EvaluateAsync_ShouldCallDataSourceEvaluateAsync()
+    [Theory]
+    [InlineData("true", true)]
+    [InlineData("false", false)]
+    public async Task TryEvaluateAsync_WhenFlagExists_ShouldReturnSuccessAndResult(string flagResult, bool evaluation)
     {
         // Arrange
         string flag = "feature-flag";
         CancellationToken cancellationToken = default;
 
-        // Act
-        await _simpleFlagService.EvaluateAsync(flag, cancellationToken);
-
-        // Assert
-        _mockDataSource.Verify(ds => ds.EvaluateAsync(flag, cancellationToken), Times.Once);
-    }
-
-    [Fact]
-    public async Task TryEvaluateAsync_WhenFlagExists_ShouldReturnTrueAndResult()
-    {
-        // Arrange
-        string flag = "feature-flag";
-        CancellationToken cancellationToken = default;
-        bool expectedResult = true;
-
-        _mockDataSource.Setup(ds => ds.EvaluateAsync(flag, cancellationToken)).ReturnsAsync(expectedResult);
+        _mockSimpleFlagDataSourceRepository.Setup(ds => ds.GetFlagValueAsync(flag, cancellationToken)).ReturnsAsync(flagResult);
 
         // Act
         var (success, result) = await _simpleFlagService.TryEvaluateAsync(flag, cancellationToken);
 
         // Assert
+        _mockSimpleFlagDataSourceRepository.Verify(ds => ds.GetFlagValueAsync(flag, cancellationToken), Times.Once);
         success.Should().BeTrue();
-        expectedResult.Should().Be(result);
+        evaluation.Should().Be(result);
     }
 
     [Fact]
@@ -55,7 +53,7 @@ public class SimpleFlagServiceTests
         string flag = "non-existent-flag";
         CancellationToken cancellationToken = default;
 
-        _mockDataSource.Setup(ds => ds.EvaluateAsync(flag, cancellationToken)).ThrowsAsync(new SimpleFlagDoesNotExistException(""));
+        _mockSimpleFlagDataSourceRepository.Setup(ds => ds.GetFlagValueAsync(flag, cancellationToken)).ThrowsAsync(new SimpleFlagDoesNotExistException(""));
 
         // Act
         var (success, result) = await _simpleFlagService.TryEvaluateAsync(flag, cancellationToken);

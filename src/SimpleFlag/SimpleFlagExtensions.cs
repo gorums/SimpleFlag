@@ -21,7 +21,7 @@ public static class SimpleFlagExtensions
         var simpleFlagOptionsBuilder = new SimpleFlagOptionsBuilder();
         configureOptions?.Invoke(simpleFlagOptionsBuilder);
 
-        ISimpleFlagDataSource simpleFlagDataSource = new SimpleFlagDataSource(simpleFlagOptionsBuilder.BuildDataSourceOptions());
+        var simpleFlagDataSource = new SimpleFlagDataSource(simpleFlagOptionsBuilder.BuildDataSourceOptions());
 
         // adding the service
         serviceCollection.AddSingleton<ISimpleFlagService>

@@ -6,9 +6,9 @@ namespace SimpleFlag;
 /// <summary>
 /// This class is the implementation of the ISimpleFlagService.
 /// </summary>
-public class SimpleFlagService : ISimpleFlagService
+internal class SimpleFlagService : ISimpleFlagService
 {
-    private readonly ISimpleFlagDataSource _simpleFlagDataSource;
+    private readonly SimpleFlagDataSource _simpleFlagDataSource;
     private readonly SimpleFlagOptions _simpleFlagOptions;
 
     /// <summary>
@@ -16,7 +16,7 @@ public class SimpleFlagService : ISimpleFlagService
     /// </summary>
     /// <param name="simpleFlagDataSource"><see cref="ISimpleFlagDataSource"/></param>
     /// <param name="simpleFlagOptions"><see cref="SimpleFlagOptions"/></param>
-    public SimpleFlagService(ISimpleFlagDataSource simpleFlagDataSource, SimpleFlagOptions simpleFlagOptions)
+    public SimpleFlagService(SimpleFlagDataSource simpleFlagDataSource, SimpleFlagOptions simpleFlagOptions)
     {
         _simpleFlagDataSource = simpleFlagDataSource;
         _simpleFlagOptions = simpleFlagOptions;

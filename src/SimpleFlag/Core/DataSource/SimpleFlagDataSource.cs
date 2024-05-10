@@ -1,12 +1,9 @@
-﻿using SimpleFlag.Core;
-using SimpleFlag.Core.DataSource;
-
-namespace SimpleFlag;
+﻿namespace SimpleFlag.Core.DataSource;
 
 /// <summary>
 /// This class is the implementation of the ISimpleFlagDataSource.
 /// </summary>
-public class SimpleFlagDataSource : ISimpleFlagDataSource
+internal class SimpleFlagDataSource
 {
     private SimpleFlagDataSourceOptions _simpleFlagDataSourceOptions;
     private ISimpleFlagDataSourceMigration _dataSourceMigration;
@@ -17,7 +14,7 @@ public class SimpleFlagDataSource : ISimpleFlagDataSource
     /// </summary>
     /// <param name="simpleFlagDataSourceOptions"></param>
     /// <exception cref="ArgumentNullException"></exception>
-    public SimpleFlagDataSource(SimpleFlagDataSourceOptions simpleFlagDataSourceOptions)
+    internal SimpleFlagDataSource(SimpleFlagDataSourceOptions simpleFlagDataSourceOptions)
     {
         _simpleFlagDataSourceOptions = simpleFlagDataSourceOptions;
         _dataSourceMigration = _simpleFlagDataSourceOptions.DataSourceMigration ?? throw new ArgumentNullException(nameof(simpleFlagDataSourceOptions.DataSourceMigration));
@@ -39,17 +36,12 @@ public class SimpleFlagDataSource : ISimpleFlagDataSource
     }
 
     /// <inheritdoc />
-    public void RunMigration() => _dataSourceMigration.Run();
+    internal void RunMigration() => _dataSourceMigration.Run();
 
     /// <inheritdoc />
-    public async Task<bool> EvaluateAsync(string flag, CancellationToken cancellationToken)
+    internal async Task<bool> EvaluateAsync(string flag, CancellationToken cancellationToken)
     {
-        var value = await _dataSourceRepository.GetFlagValueAsync(flag, cancellationToken)!;
-
-        if (value is null)
-        {
-            throw new SimpleFlagDoesNotExistException(flag);
-        }
+        var value = await _dataSourceRepository.GetFlagValueAsync(flag, cancellationToken) ?? throw new SimpleFlagDoesNotExistException(flag);
 
         return bool.TryParse(value, out bool result) && result;
     }
