@@ -12,4 +12,38 @@ public class FeatureFlag
     public FeatureFlagVariant? DefaultOff { get; set; }
     public FeatureFlagVariant? DefaultOn { get; set; }
     public FeatureFlagDomain? Domain { get; set; }
+
+    // evaluate the feature flag
+    public FeatureFlagVariant? Evaluate<T>(T user) where T: FeatureFlagUser
+    {
+        // check if the feature flag is enabled
+        if (!Enabled)
+        {
+            return DefaultOff;
+        }       
+
+        if (Rules.Count > 0)
+        {
+            foreach (var rule in Rules)
+            {
+                if (rule.Evaluate(user) && FeatureFlagRollout.ShouldEvaluateFeature(rule.Value, Name, user.Id))
+                {
+                    return rule.Value;
+                }
+            }
+        }
+       
+        if (Variants.Count > 0)
+        {
+            foreach (var variant in Variants)
+            {
+                if (FeatureFlagRollout.ShouldEvaluateFeature(variant, Name, user.Id))
+                {
+                    return variant;
+                }
+            }
+        }
+
+        return DefaultOn ?? DefaultOff;       
+    }
 }

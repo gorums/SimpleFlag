@@ -6,9 +6,12 @@ namespace SimpleFlag.Core.Models
     {
         public string Rule { get; init; }
 
+        public FeatureFlagSegment InclSegment { get; init; }
+
+        public FeatureFlagSegment ExclSegment { get; init; }
+
         public FeatureFlagVariant Value { get; init; }
 
-        // percentage rollout values 20% easy 30% medium 50% hard
 
         public FeatureFlagRule(string rule, FeatureFlagVariant value)
         {
