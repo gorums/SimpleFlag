@@ -6,12 +6,11 @@ namespace SimpleFlag.Core.Models
     {
         public string Rule { get; init; }
 
-        public FeatureFlagSegment InclSegment { get; init; }
+        public FeatureFlagSegment? IncludeSegment { get; init; }
 
-        public FeatureFlagSegment ExclSegment { get; init; }
+        public FeatureFlagSegment? ExcludeSegment { get; init; }
 
         public FeatureFlagVariant Value { get; init; }
-
 
         public FeatureFlagRule(string rule, FeatureFlagVariant value)
         {

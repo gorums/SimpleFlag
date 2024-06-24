@@ -7,10 +7,10 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.1" />
-		<PackageReference Include="System.Linq.Dynamic.Core" Version="1.3.14" />
+		<PackageReference Include="System.Linq.Dynamic.Core" Version="1.4.1" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Update="NuGet.Build.Tasks.Pack" Version="6.9.1" />
+	  <PackageReference Update="NuGet.Build.Tasks.Pack" Version="6.10.0" />
 	</ItemGroup>
 </Project>

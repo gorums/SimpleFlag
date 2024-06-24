@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Update="NuGet.Build.Tasks.Pack" Version="6.9.1" />
+    <PackageReference Update="NuGet.Build.Tasks.Pack" Version="6.10.0" />
   </ItemGroup>
 
 </Project>

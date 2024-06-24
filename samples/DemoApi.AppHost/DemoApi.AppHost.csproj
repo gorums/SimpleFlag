@@ -11,11 +11,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Aspire.Hosting.AppHost" Version="8.0.0-preview.5.24201.12" />
+    <PackageReference Include="Aspire.Hosting.AppHost" Version="8.0.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\DemoApi.Postgresql\DemoApi.Postgresql.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="NuGet.Build.Tasks.Pack" Version="6.10.0" />
   </ItemGroup>
 
 </Project>
