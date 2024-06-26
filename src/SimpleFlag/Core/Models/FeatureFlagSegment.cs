@@ -1,11 +1,11 @@
 ﻿namespace SimpleFlag.Core.Models;
 public class FeatureFlagSegment
 {
-    public string Id { get; }
+    public Guid Id { get; }
 
     public string Name { get; }
 
-    public FeatureFlagSegment(string id, string name)
+    public FeatureFlagSegment(Guid id, string name)
     {
         Id = id;
         Name = name;

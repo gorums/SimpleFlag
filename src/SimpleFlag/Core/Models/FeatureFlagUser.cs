@@ -5,5 +5,7 @@
 /// </summary>
 public interface FeatureFlagUser
 {
-    public string Id => string.Empty;
+    Guid Id { get; }
+
+    string Name { get; }
 }

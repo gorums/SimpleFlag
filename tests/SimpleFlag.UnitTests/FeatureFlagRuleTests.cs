@@ -42,7 +42,7 @@ namespace SimpleFlag.UnitTests
 
             var featureFlagRule = new FeatureFlagRule(rule, value);
 
-            // Act
+            // Act 
             var result = featureFlagRule.Evaluate(payload);
 
             // Assert
@@ -52,7 +52,8 @@ namespace SimpleFlag.UnitTests
 
     internal class User : FeatureFlagUser
     {
-        public string Id => Guid.NewGuid().ToString();
+        Guid FeatureFlagUser.Id => Guid.NewGuid();
+
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
     }

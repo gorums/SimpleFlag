@@ -1,6 +1,8 @@
 ﻿namespace SimpleFlag.Core.Models;
 public class FeatureFlagVariant
 {
+    public Guid Id { get; set; } = Guid.NewGuid();
+
     public FeatureFlagTypes Type { get; }
 
     public string Value { get; }

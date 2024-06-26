@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using SimpleFlag.Core.DataSource;
 using SimpleFlag.PostgreSQL.Migrations;
+using SimpleFlag.PostgreSQL.Migrations.Metadata;
 
 namespace SimpleFlag.PostgreSQL;
 
@@ -56,7 +57,7 @@ internal class PostgresDataSourceMigration : ISimpleFlagDataSourceMigration
                 .WithGlobalConnectionString(simpleFlagDataSourceOptions.ConnectionString)
                 .WithVersionTable(new CustomVersionTableMetaData())
                 // Define the assembly containing the migrations
-                .ScanIn(typeof(AddFlagTable).Assembly).For.Migrations())
+                .ScanIn(typeof(AddFeatureFlagUserTable).Assembly).For.Migrations())
             // Enable logging to console in the FluentMigrator way
             .AddLogging(lb => lb.AddFluentMigratorConsole())
             // Build the service provider

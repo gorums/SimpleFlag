@@ -4,6 +4,7 @@ namespace SimpleFlag.Core.Models
 {
     public class FeatureFlagRule
     {
+        public Guid Id { get; init; } = Guid.NewGuid();
         public string Rule { get; init; }
 
         public FeatureFlagSegment? IncludeSegment { get; init; }

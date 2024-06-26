@@ -1,4 +1,4 @@
-﻿namespace SimpleFlag.PostgreSQL.Migrations;
+﻿namespace SimpleFlag.PostgreSQL.Migrations.Metadata;
 
 /// <summary>
 /// This class contains the custom migration meta data.

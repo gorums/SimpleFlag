@@ -1,6 +1,6 @@
 ﻿using FluentMigrator.Runner.VersionTableInfo;
 
-namespace SimpleFlag.PostgreSQL.Migrations;
+namespace SimpleFlag.PostgreSQL.Migrations.Metadata;
 
 /// <summary>
 /// This class contains the custom version table meta data.
