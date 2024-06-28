@@ -41,16 +41,25 @@ internal class SimpleFlagClient : ISimpleFlagClient
         throw new NotImplementedException();
     }
 
+    /// <inheritdoc />
     public Task<int?> EvaluateAsync(string flag, FeatureFlagUser? user = null, int? defaultValue = null, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
 
+    /// <inheritdoc />
     public Task<double?> EvaluateAsync(string flag, FeatureFlagUser? user = null, double? defaultValue = null, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
 
+    /// <inheritdoc />
+    public Task<float?> EvaluateAsync(string flag, FeatureFlagUser? user = null, float? defaultValue = null, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc />
     public Task<string?> EvaluateAsync(string flag, FeatureFlagUser? user = null, string? defaultValue = null, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
