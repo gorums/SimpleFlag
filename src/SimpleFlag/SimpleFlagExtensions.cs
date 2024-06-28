@@ -24,9 +24,9 @@ public static class SimpleFlagExtensions
         var simpleFlagDataSource = new SimpleFlagDataSource(simpleFlagOptionsBuilder.BuildDataSourceOptions());
 
         // adding the service
-        serviceCollection.AddSingleton<ISimpleFlagService>
+        serviceCollection.AddSingleton<ISimpleFlagClient>
         (
-            new SimpleFlagService(simpleFlagDataSource, simpleFlagOptionsBuilder.BuildServiceOptions())
+            new SimpleFlagClient(simpleFlagDataSource, simpleFlagOptionsBuilder.BuildServiceOptions())
         );
 
         // TODO: check if is necessary to run the migration here

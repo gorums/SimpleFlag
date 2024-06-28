@@ -52,4 +52,15 @@ public class PostgresSimpleFlagOptionsBuilder
             _simpleFlagOptionsBuilder.AddTablePrefix(value);
         }
     }
+
+    /// <summary>
+    /// Sets the global domain.
+    /// </summary>
+    public string? Domain
+    {
+        set
+        {
+            _simpleFlagOptionsBuilder.AddDomain(value);
+        }
+    }
 }

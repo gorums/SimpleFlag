@@ -36,6 +36,7 @@ builder.Services.AddSimpleFlag(options =>
         pgOptions.SchemaName = "flag";
         pgOptions.TablePrefix = "sf";
         pgOptions.ConnectionString = builder.Configuration.GetConnectionString("PostgresConnection");
+        pgOptions.Domain = "demo";
     });
 });
 

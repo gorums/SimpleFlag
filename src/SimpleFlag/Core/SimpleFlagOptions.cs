@@ -5,4 +5,5 @@
 /// </summary>
 public class SimpleFlagOptions
 {
+    public string Domain { get; set; } = string.Empty;
 }

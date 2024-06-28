@@ -2,7 +2,6 @@
 public enum FeatureFlagTypes
 {
     Boolean,
-    Json,
     Number,
     String
 }

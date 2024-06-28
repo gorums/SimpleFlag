@@ -1,6 +1,5 @@
 ﻿using DemoApi.Postgresql.Domain.Entities;
 using DemoApi.PostgreSQL.Infrastructure.Persistence;
-using Microsoft.EntityFrameworkCore;
 using SimpleFlag.Core;
 
 namespace DemoApi.Postgresql.Features.Services;
@@ -8,9 +7,9 @@ namespace DemoApi.Postgresql.Features.Services;
 public class TodoService : ITodoService
 {
     private readonly DemoApiDbContext _demoApiDbContext;
-    private readonly ISimpleFlagService _simpleFlagService;
+    private readonly ISimpleFlagClient _simpleFlagService;
 
-    public TodoService(DemoApiDbContext demoApiDbContext, ISimpleFlagService simpleFlagService)
+    public TodoService(DemoApiDbContext demoApiDbContext, ISimpleFlagClient simpleFlagService)
     {
         _demoApiDbContext = demoApiDbContext;
         _simpleFlagService = simpleFlagService;
@@ -19,10 +18,11 @@ public class TodoService : ITodoService
     public async Task<List<TodoDto>> GetTodoListAsync(CancellationToken cancellationToken = default)
     {
         List<Todo> todos = new List<Todo>();
-        if (await _simpleFlagService.TryEvaluateAsync("get-todo", cancellationToken) is (true, true))
+
+        /*if (await _simpleFlagService.EvaluateAsync("get-todo", cancellationToken))
         {
             todos = await _demoApiDbContext.Todos.ToListAsync(cancellationToken);
-        }
+        }*/
 
         return todos.Select(todo => new TodoDto(todo.Id, todo.Title, todo.IsCompleted, todo.CreatedAt, todo.UpdatedAt)).ToList();
     }

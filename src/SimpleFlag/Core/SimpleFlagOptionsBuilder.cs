@@ -11,6 +11,7 @@ public class SimpleFlagOptionsBuilder
     private string? _connectionString;
     private string? _schemaName;
     private string? _tablePrefix;
+    private string? _domain;
 
     private ISimpleFlagDataSourceMigration? _dataSourceMigration;
     private ISimpleFlagDataSourceRepository? _dataSourceRepository;
@@ -54,10 +55,19 @@ public class SimpleFlagOptionsBuilder
     /// <summary>
     /// Add the table prefix.
     /// </summary>
-    /// <param name="tablePrefix">the Table prefix</param>
+    /// <param name="tablePrefix">The Table prefix</param>
     internal void AddTablePrefix(string? tablePrefix)
     {
         _tablePrefix = tablePrefix;
+    }
+
+    /// <summary>
+    /// Add the global domain.
+    /// </summary>
+    /// <param name="domain">The global domain</param>
+    internal void AddDomain(string? domain)
+    {
+        _domain = domain;
     }
 
     /// <summary>
@@ -86,6 +96,7 @@ public class SimpleFlagOptionsBuilder
     {
         return new SimpleFlagOptions
         {
+            Domain = _domain ?? string.Empty
         };
     }
 }
