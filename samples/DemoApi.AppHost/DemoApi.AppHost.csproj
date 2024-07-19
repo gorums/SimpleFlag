@@ -11,7 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Aspire.Hosting.AppHost" Version="8.0.1" />
+    <PackageReference Include="Aspire.Hosting.AppHost" Version="8.0.2" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Update="NuGet.Build.Tasks.Pack" Version="6.10.0" />
+    <PackageReference Update="NuGet.Build.Tasks.Pack" Version="6.10.1" />
   </ItemGroup>
 
 </Project>
