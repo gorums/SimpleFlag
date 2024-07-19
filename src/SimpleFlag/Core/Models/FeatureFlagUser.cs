@@ -11,6 +11,8 @@ public class FeatureFlagUser
 
     public Dictionary<string, string> Attributes { get; } = new Dictionary<string, string>();
 
+    public List<FeatureFlagSegment> Segments { get; set; } = new List<FeatureFlagSegment>();
+
     public FeatureFlagUser(string name)
     {
         Id = Guid.NewGuid();

@@ -9,5 +9,7 @@ public class FeatureFlagDomain
 
     public string Name { get; set; } = string.Empty;
 
-    public List<FeatureFlagVariant> Flags { get; set; } = new List<FeatureFlagVariant>();
+    public string Description { get; set; } = string.Empty;
+
+    public List<FeatureFlag> FeatureFlags { get; set; } = new List<FeatureFlag>();
 }

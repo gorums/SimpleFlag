@@ -5,6 +5,8 @@ public class FeatureFlagSegment
 
     public string Name { get; }
 
+    public string Description { get; }
+
     public FeatureFlagSegment(Guid id, string name)
     {
         Id = id;
@@ -12,4 +14,6 @@ public class FeatureFlagSegment
     }
 
     public List<FeatureFlagUser> Users { get; set; } = new List<FeatureFlagUser>();
+
+    public List<FeatureFlag> Flags { get; set; } = new List<FeatureFlag>();
 }

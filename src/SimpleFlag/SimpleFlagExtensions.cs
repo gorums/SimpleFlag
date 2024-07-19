@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using SimpleFlag.Core;
 using SimpleFlag.Core.DataSource.Internal;
 
@@ -24,10 +25,11 @@ public static class SimpleFlagExtensions
         var simpleFlagDataSource = new SimpleFlagDataSource(simpleFlagOptionsBuilder.BuildDataSourceOptions());
 
         // adding the service
-        serviceCollection.AddSingleton<ISimpleFlagClient>
-        (
-            new SimpleFlagClient(simpleFlagDataSource, simpleFlagOptionsBuilder.BuildServiceOptions())
-        );
+        serviceCollection.AddSingleton<ISimpleFlagClient>(sp =>
+        {
+            var logger = sp.GetRequiredService<ILogger<SimpleFlagClient>>();
+            return new SimpleFlagClient(logger, simpleFlagDataSource, simpleFlagOptionsBuilder.BuildServiceOptions());
+        });
 
         // TODO: check if is necessary to run the migration here
         simpleFlagDataSource.RunMigration();

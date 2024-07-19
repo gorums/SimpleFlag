@@ -17,6 +17,12 @@ builder.Services.AddDbContext<DemoApiDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("PostgresConnection"));
 });
 
+//add logger 
+builder.Services.AddLogging(config =>
+{
+    config.AddConsole();
+});
+
 builder.Services.AddSimpleFlag(options =>
 {
     //options.UsePostgreSQL(builder.Configuration.GetConnectionString("PostgresConnection")); // this is the same as the next line
@@ -30,7 +36,6 @@ builder.Services.AddSimpleFlag(options =>
         customOptions.DataSourceMigration = MyDataSourceDatabaseMigration.Instance;
         customOptions.DataSourceRepository = MyDataSourceRepository.Instance;
     });*/
-
     options.UsePostgreSQL(pgOptions =>
     {
         pgOptions.SchemaName = "flag";

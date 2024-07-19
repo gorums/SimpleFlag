@@ -7,44 +7,19 @@ public class FeatureFlag
     public string Key { get; set; } = string.Empty;
     public bool Enabled { get; set; } = false;
     public bool Archived { get; set; } = false;
-    public FeatureFlagTypes Type { get; set; }
-    public List<FeatureFlagVariant> Variants { get; set; } = new List<FeatureFlagVariant>();
-    public List<FeatureFlagRule> Rules { get; set; } = new List<FeatureFlagRule>();
-    public FeatureFlagVariant? DefaultOff { get; set; }
-    public FeatureFlagVariant? DefaultOn { get; set; }
     public FeatureFlagDomain? Domain { get; set; }
+    public List<FeatureFlagSegment> Segments { get; set; } = new List<FeatureFlagSegment>();
 
-    // evaluate the feature flag
-    public FeatureFlagVariant? Evaluate<T>(T user) where T : FeatureFlagUser
+    public bool EvaluateUser<T>(T user) where T : FeatureFlagUser
     {
-        // check if the feature flag is enabled
-        if (!Enabled)
+        foreach (var segment in Segments)
         {
-            return DefaultOff;
-        }
-
-        if (Rules.Count > 0)
-        {
-            foreach (var rule in Rules)
+            if (segment.Users.Any(u => u.Name.Equals(user.Name)))
             {
-                if (rule.Evaluate(user) && FeatureFlagRollout.ShouldEvaluateFeature(rule.Value, Name, user.Id.ToString()))
-                {
-                    return rule.Value;
-                }
+                return true;
             }
         }
 
-        if (Variants.Count > 0)
-        {
-            foreach (var variant in Variants)
-            {
-                if (FeatureFlagRollout.ShouldEvaluateFeature(variant, Name, user.Id.ToString()))
-                {
-                    return variant;
-                }
-            }
-        }
-
-        return DefaultOn ?? DefaultOff;
+        return false;
     }
 }

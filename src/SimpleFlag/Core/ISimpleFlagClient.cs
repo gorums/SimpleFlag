@@ -15,53 +15,22 @@ public interface ISimpleFlagClient
     ISimpleFlagClient Domain(string domain);
 
     /// <summary>
-    /// Evaluates the feature flag for boolean.
+    /// Evaluates the feature flag.
     /// </summary>
-    /// <param name="flag"></param>
-    /// <param name="user"></param>
-    /// <param name="defaultValue"></param>
+    /// <param name="flag">The flag</param>
+    /// <param name="defaultValue"> the default value</param>
+    /// <param name="user">The user</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<bool?> EvaluateAsync(string flag, FeatureFlagUser? user = null, bool? defaultValue = null, CancellationToken cancellationToken = default);
+    Task<bool> GetValueAsync(string flag, bool defaultValue, FeatureFlagUser? user = null, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Evaluates the feature flag for integer.
+    /// Evaluates the feature flag.
     /// </summary>
-    /// <param name="flag"></param>
-    /// <param name="user"></param>
-    /// <param name="defaultValue"></param>
+    /// <param name="flag">The flag</param>
+    /// <param name="defaultValue"> the default value</param>
+    /// <param name="user">The user</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<int?> EvaluateAsync(string flag, FeatureFlagUser? user = null, int? defaultValue = null, CancellationToken cancellationToken = default);
-
-    /// <summary>
-    /// Evaluates the feature flag for double.
-    /// </summary>
-    /// <param name="flag"></param>
-    /// <param name="user"></param>
-    /// <param name="defaultValue"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    Task<double?> EvaluateAsync(string flag, FeatureFlagUser? user = null, double? defaultValue = null, CancellationToken cancellationToken = default);
-
-    /// <summary>
-    /// Evaluates the feature flag for float.
-    /// </summary>
-    /// <param name="flag"></param>
-    /// <param name="user"></param>
-    /// <param name="defaultValue"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    Task<float?> EvaluateAsync(string flag, FeatureFlagUser? user = null, float? defaultValue = null, CancellationToken cancellationToken = default);
-
-    /// <summary>
-    /// Evaluates the feature flag for string.
-    /// </summary>
-    /// <param name="flag"></param>
-    /// <param name="user"></param>
-    /// <param name="defaultValue"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    Task<string?> EvaluateAsync(string flag, FeatureFlagUser? user = null, string? defaultValue = null, CancellationToken cancellationToken = default);
-
+    Task<bool?> GetValueAsync(string flag, FeatureFlagUser? user = null, CancellationToken cancellationToken = default);
 }

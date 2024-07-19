@@ -1,4 +1,5 @@
-﻿using SimpleFlag.Core;
+﻿using Microsoft.Extensions.Logging;
+using SimpleFlag.Core;
 using SimpleFlag.Core.DataSource.Internal;
 using SimpleFlag.Core.Models;
 
@@ -9,6 +10,8 @@ namespace SimpleFlag;
 /// </summary>
 internal class SimpleFlagClient : ISimpleFlagClient
 {
+    private readonly ILogger<SimpleFlagClient>? _logger;
+
     private readonly SimpleFlagDataSource _simpleFlagDataSource;
     private readonly SimpleFlagOptions _simpleFlagOptions;
 
@@ -17,10 +20,11 @@ internal class SimpleFlagClient : ISimpleFlagClient
     /// <summary>
     /// Initializes a new instance of the SimpleFlagService.
     /// </summary>
-    /// <param name="simpleFlagDataSource"><see cref="ISimpleFlagDataSource"/></param>
+    /// <param name="simpleFlagDataSource"><see cref="SimpleFlagDataSource"/></param>
     /// <param name="simpleFlagOptions"><see cref="SimpleFlagOptions"/></param>
-    public SimpleFlagClient(SimpleFlagDataSource simpleFlagDataSource, SimpleFlagOptions simpleFlagOptions)
+    public SimpleFlagClient(ILogger<SimpleFlagClient>? logger, SimpleFlagDataSource simpleFlagDataSource, SimpleFlagOptions simpleFlagOptions)
     {
+        _logger = logger;
         _simpleFlagDataSource = simpleFlagDataSource;
         _simpleFlagOptions = simpleFlagOptions;
 
@@ -35,33 +39,48 @@ internal class SimpleFlagClient : ISimpleFlagClient
     }
 
     /// <inheritdoc />
-    public Task<bool?> EvaluateAsync(string flag, FeatureFlagUser? user = null, bool? defaultValue = null, CancellationToken cancellationToken = default)
+    public async Task<bool> GetValueAsync(string flag, bool defaultValue, FeatureFlagUser? user = null, CancellationToken cancellationToken = default)
     {
-        //return _simpleFlagDataSource.EvaluateAsync(flag, cancellationToken);
-        throw new NotImplementedException();
+        return await EvaluateFeatureFlagAsync(flag, user, cancellationToken) ?? defaultValue;
     }
 
     /// <inheritdoc />
-    public Task<int?> EvaluateAsync(string flag, FeatureFlagUser? user = null, int? defaultValue = null, CancellationToken cancellationToken = default)
+    public async Task<bool?> GetValueAsync(string flag, FeatureFlagUser? user = null, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return await EvaluateFeatureFlagAsync(flag, user, cancellationToken);
     }
 
-    /// <inheritdoc />
-    public Task<double?> EvaluateAsync(string flag, FeatureFlagUser? user = null, double? defaultValue = null, CancellationToken cancellationToken = default)
+    /// <summary>
+    /// Evaluates the feature flag.
+    /// </summary>
+    /// <param name="flag">The flag</param>
+    /// <param name="user">The user</param>
+    /// <param name="cancellationToken">The cancellation token</param>
+    /// <returns>If the flag is enabled</returns>
+    /// <exception cref="SimpleFlagDoesNotExistException">Thrown when the flag does not exist</exception></exception>
+    private async Task<bool?> EvaluateFeatureFlagAsync(string flag, FeatureFlagUser? user, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
-    }
+        try
+        {
+            var featureFlag = await _simpleFlagDataSource.GetFeatureFlagAsync(_domain, flag, user, cancellationToken);
 
-    /// <inheritdoc />
-    public Task<float?> EvaluateAsync(string flag, FeatureFlagUser? user = null, float? defaultValue = null, CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
-    }
+            return featureFlag.Enabled;
+        }
+        catch (SimpleFlagDoesNotExistException ex)
+        {
+            if (_logger is not null)
+            {
+                _logger.LogError(ex, "The flag {Flag} does not exist", flag);
+            }
+        }
+        catch (SimpleFlagUserDoesNotExistInSegmentException ex)
+        {
+            if (_logger is not null)
+            {
+                _logger.LogError(ex, "The user does not exist in the feature flag segments");
+            }
+        }
 
-    /// <inheritdoc />
-    public Task<string?> EvaluateAsync(string flag, FeatureFlagUser? user = null, string? defaultValue = null, CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
+        return null;
     }
 }

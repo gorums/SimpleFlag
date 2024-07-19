@@ -1,4 +1,6 @@
-﻿namespace SimpleFlag.Core.DataSource.Internal;
+﻿using SimpleFlag.Core.Models;
+
+namespace SimpleFlag.Core.DataSource.Internal;
 
 /// <summary>
 /// This class is the implementation of the ISimpleFlagDataSource.
@@ -35,14 +37,22 @@ internal class SimpleFlagDataSource
         };
     }
 
-    /// <inheritdoc />
+    /// <summary>
+    /// Run the migration.
+    /// </summary>
     internal void RunMigration() => _dataSourceMigration.Run();
 
-    /// <inheritdoc />
-    internal async Task<bool> EvaluateAsync(string flag, CancellationToken cancellationToken)
+    /// <summary>
+    /// Obtain the feature flag if exist.
+    /// </summary>
+    /// <param name="domain">The domain</param>
+    /// <param name="flag">The flag</param>
+    /// <param name="user">The user</param>
+    /// <param name="cancellationToken">The cancellation token</param>
+    /// <returns>If the flag is enabled</returns>
+    /// <exception cref="SimpleFlagDoesNotExistException">Thrown when the flag does not exist</exception></exception>
+    internal async Task<FeatureFlag> GetFeatureFlagAsync(string domain, string flag, FeatureFlagUser? user, CancellationToken cancellationToken)
     {
-        var value = await _dataSourceRepository.GetFlagValueAsync(flag, cancellationToken) ?? throw new SimpleFlagDoesNotExistException(flag);
-
-        return bool.TryParse(value, out bool result) && result;
+        return await _dataSourceRepository.GetFeatureFlagAsync(domain, flag, user, cancellationToken) ?? throw new SimpleFlagDoesNotExistException(flag);
     }
 }

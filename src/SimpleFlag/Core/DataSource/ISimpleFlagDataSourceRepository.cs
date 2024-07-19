@@ -1,4 +1,6 @@
-﻿namespace SimpleFlag.Core.DataSource;
+﻿using SimpleFlag.Core.Models;
+
+namespace SimpleFlag.Core.DataSource;
 
 /// <summary>
 /// This interface defines the contract for the SimpleFlagDataSourceRepository.
@@ -11,11 +13,12 @@ public interface ISimpleFlagDataSourceRepository
     SimpleFlagRepositoryOptions SimpleFlagRepositoryOptions { get; set; }
 
     /// <summary>
-    /// Obtains the value of the flag.
+    /// Obtains the feature flag.
     /// </summary>
+    /// <param name="domain">The domain</param>
     /// <param name="flag">The flag</param>
+    /// <param name="user">The user</param>
     /// <param name="cancellation">The cancellation token</param>
     /// <returns>The value of the flag</returns>
-    /// <exception cref="SimpleFlagDoesNotExistException">Thrown when the flag does not exist</exception>
-    Task<string> GetFlagValueAsync(string flag, CancellationToken cancellation = default);
+    Task<FeatureFlag> GetFeatureFlagAsync(string domain, string flag, FeatureFlagUser? user, CancellationToken cancellation = default);
 }

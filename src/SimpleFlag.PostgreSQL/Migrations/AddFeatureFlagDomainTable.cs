@@ -15,8 +15,9 @@ public class AddFeatureFlagDomainTable : Migration
             table.InSchema(CustomMigrationMetaData.SchemaName);
         }
 
-        table.WithColumn("Id").AsGuid().PrimaryKey().Identity() // Assuming an identity column for simplicity
-           .WithColumn("Name").AsString();
+        table.WithColumn("Id").AsGuid().PrimaryKey()// Assuming an identity column for simplicity
+           .WithColumn("Name").AsString()
+           .WithColumn("Description").AsString().Nullable();
     }
 
     public override void Down()

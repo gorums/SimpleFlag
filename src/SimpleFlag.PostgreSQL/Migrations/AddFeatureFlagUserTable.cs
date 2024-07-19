@@ -15,8 +15,9 @@ public class AddFeatureFlagUserTable : Migration
             table.InSchema(CustomMigrationMetaData.SchemaName);
         }
 
-        table.WithColumn("Id").AsGuid().PrimaryKey().Identity()
-            .WithColumn("Name").AsString();
+        table.WithColumn("Id").AsGuid().PrimaryKey()
+            .WithColumn("Name").AsString()
+            .WithColumn("Attributes").AsCustom("JSON"); // Add this line for the JSON column;
     }
 
     public override void Down()

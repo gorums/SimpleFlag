@@ -1,4 +1,5 @@
 ﻿using SimpleFlag.Core.DataSource;
+using SimpleFlag.Core.Models;
 
 namespace DemoApi.Postgresql;
 
@@ -14,7 +15,7 @@ public class MyDataSourceRepository : ISimpleFlagDataSourceRepository
 
     public static ISimpleFlagDataSourceRepository Instance => _dataSourceRepository.Value;
 
-    public Task<string> GetFlagValueAsync(string flag, CancellationToken cancellation = default)
+    public Task<FeatureFlag> GetFeatureFlagAsync(string domain, string flag, FeatureFlagUser? user, CancellationToken cancellation = default)
     {
         throw new NotImplementedException();
     }
