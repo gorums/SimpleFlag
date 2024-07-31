@@ -124,6 +124,10 @@ app.MapSimpleFlagEndpoints();
 You can inject ***ISimpleFlagService*** interface and access different methods to evaluate a flag.
 
 ```csharp
+
+using SimpleFlag.Core;
+using SimpleFlag.Core.Models;
+
 public class MyService : IMyService
 {
     private readonly ISimpleFlagClient _simpleFlagClient;
@@ -137,6 +141,9 @@ public class MyService : IMyService
     public async Task<bool> IsOpenAsync(CancellationToken cancellationToken = default) =>         
         await _simpleFlagClient.GetValueAsync("my-service", false, cancellationToken: cancellationToken);
 
+    /// Evaluate the flag "my-service" for that user, if the flag does not exist or the user is not part of the segment of that flag return false as default value
+    public async Task<bool> IsOpenByUserAsync(FeatureFlagUser user, CancellationToken cancellationToken = default) =>         
+        await _simpleFlagClient.GetValueAsync("my-service", false, user, cancellationToken: cancellationToken);
     ...
 
 }
