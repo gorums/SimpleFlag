@@ -3,12 +3,17 @@
   <PropertyGroup>
     <PackageId>SimpleFlag.AspNetCore</PackageId>
     <Description>This package add extension for AspNetCore</Description>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
 	<FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
+	<ItemGroup>
+		<None Include="README.md" Pack="true" PackagePath="\"/>
+	</ItemGroup>
+	
   <ItemGroup>
     <PackageReference Update="NuGet.Build.Tasks.Pack" Version="6.10.1" />
   </ItemGroup>

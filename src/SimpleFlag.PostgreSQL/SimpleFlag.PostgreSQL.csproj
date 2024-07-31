@@ -3,6 +3,7 @@
   <PropertyGroup>
     <PackageId>SimpleFlag.PostgreSQL</PackageId>
     <Description>This package managing flags using PostgreSQL database.</Description>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,6 +14,10 @@
   <ItemGroup>
     <ProjectReference Include="..\SimpleFlag\SimpleFlag.csproj" />
   </ItemGroup>
+	
+	<ItemGroup>
+		<None Include="README.md" Pack="true" PackagePath="\"/>
+	</ItemGroup>
 
   <ItemGroup>
     <PackageReference Update="NuGet.Build.Tasks.Pack" Version="6.10.1" />
