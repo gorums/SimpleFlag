@@ -121,7 +121,7 @@ app.MapSimpleFlagEndpoints();
 
 ### Evaluate Flag
 
-You can inject ***ISimpleFlagService*** interface and access different methods to evaluate a flag.
+You can inject ***ISimpleFlagClient*** interface and access different methods to evaluate a flag.
 
 ```csharp
 
