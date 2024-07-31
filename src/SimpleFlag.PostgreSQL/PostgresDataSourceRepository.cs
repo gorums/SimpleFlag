@@ -73,42 +73,47 @@ internal class PostgresDataSourceRepository : ISimpleFlagDataSourceRepository
             }
         }
 
-        // If a user is provided, check if the user is part of any segment of the flag
-        if (featureFlag is not null && user is not null)
-        {
-            var segmentCheckQuery = @$"
-            SELECT EXISTS (
-                SELECT 1
-                FROM {CustomMigrationMetaData.TablePrefix}_feature_flag_segments s
-                JOIN {CustomMigrationMetaData.TablePrefix}_feature_flag_segment_flags sf ON s.Id = sf.SegmentId 
-                JOIN {CustomMigrationMetaData.TablePrefix}_feature_flag_segment_users su ON s.Id = sf.SegmentId 
-                JOIN {CustomMigrationMetaData.TablePrefix}_feature_flag_users u ON su.UserId = u.Id
-                WHERE sf.FeatureFlagId = @FeatureFlagId AND u.Name = @UserName
-            )";
-
-            using (var command = new NpgsqlCommand(segmentCheckQuery, connection))
-            {
-                command.Parameters.AddWithValue("@FeatureFlagId", featureFlag.Id);
-                command.Parameters.AddWithValue("@UserName", user.Name);
-
-                // Execute the query to check for segment membership by user name
-                var userIsInSegment = (bool)await command.ExecuteScalarAsync(cancellation);
-
-                // If the user is part of a segment, you might want to update the FeatureFlag object accordingly
-                // For example, you could fetch and add the relevant segments to the FeatureFlag.Segments list
-                // This step depends on how you want to use the information about segment membership
-                if (!userIsInSegment)
-                {
-                    throw new SimpleFlagUserDoesNotExistInSegmentException($"The flag \"{flagKey}\" does not exist.");
-                }
-            }
-        }
-
         if (featureFlag is null)
         {
             throw new SimpleFlagDoesNotExistException($"The flag \"{flagKey}\" does not exist.");
         }
 
+        // If a user is provided, check if the user is part of any segment of the flag
+        if (user is not null)
+        {
+            await CheckUserSegmentMembershipAsync(flagKey, user, featureFlag, connection, cancellation);
+        }
+
         return featureFlag;
+    }
+
+    private static async Task CheckUserSegmentMembershipAsync(string flagKey, FeatureFlagUser? user, FeatureFlag featureFlag, NpgsqlConnection connection, CancellationToken cancellation)
+    {
+        var segmentCheckQuery = @$"
+            SELECT EXISTS (
+                SELECT 1
+                FROM {CustomMigrationMetaData.SchemaName}.{CustomMigrationMetaData.TablePrefix}_feature_flag_segments s
+                JOIN {CustomMigrationMetaData.SchemaName}.{CustomMigrationMetaData.TablePrefix}_feature_flag_segment_flags sf ON s.""Id"" = sf.""SegmentId""
+                JOIN {CustomMigrationMetaData.SchemaName}.{CustomMigrationMetaData.TablePrefix}_feature_flag_segment_users su ON s.""Id"" = sf.""SegmentId"" 
+                JOIN {CustomMigrationMetaData.SchemaName}.{CustomMigrationMetaData.TablePrefix}_feature_flag_users u ON su.""UserId"" = u.""Id""
+                WHERE sf.""FlagId"" = @FeatureFlagId AND u.""Name"" = @UserName
+            )";
+
+        using (var command = new NpgsqlCommand(segmentCheckQuery, connection))
+        {
+            command.Parameters.AddWithValue("@FeatureFlagId", featureFlag.Id);
+            command.Parameters.AddWithValue("@UserName", user.Name);
+
+            // Execute the query to check for segment membership by user name
+            bool userIsInSegment = (bool)await command.ExecuteScalarAsync(cancellation);
+
+            // If the user is part of a segment, you might want to update the FeatureFlag object accordingly
+            // For example, you could fetch and add the relevant segments to the FeatureFlag.Segments list
+            // This step depends on how you want to use the information about segment membership
+            if (!userIsInSegment)
+            {
+                throw new SimpleFlagUserDoesNotExistInSegmentException($"The flag \"{flagKey}\" does not exist.");
+            }
+        }
     }
 }

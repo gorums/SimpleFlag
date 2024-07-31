@@ -28,9 +28,10 @@ public interface ISimpleFlagClient
     /// Evaluates the feature flag.
     /// </summary>
     /// <param name="flag">The flag</param>
-    /// <param name="defaultValue"> the default value</param>
     /// <param name="user">The user</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<bool?> GetValueAsync(string flag, FeatureFlagUser? user = null, CancellationToken cancellationToken = default);
+    /// <exception cref="SimpleFlagDoesNotExistException">Thrown when the flag does not exist</exception>
+    /// <exception cref="SimpleFlagUserDoesNotExistInSegmentException">Thrown when the user does not exist in the segment</exception>
+    Task<bool> GetValueAsync(string flag, FeatureFlagUser? user = null, CancellationToken cancellationToken = default);
 }

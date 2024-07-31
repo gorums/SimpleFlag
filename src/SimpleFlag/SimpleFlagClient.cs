@@ -41,11 +41,18 @@ internal class SimpleFlagClient : ISimpleFlagClient
     /// <inheritdoc />
     public async Task<bool> GetValueAsync(string flag, bool defaultValue, FeatureFlagUser? user = null, CancellationToken cancellationToken = default)
     {
-        return await EvaluateFeatureFlagAsync(flag, user, cancellationToken) ?? defaultValue;
+        try
+        {
+            return await EvaluateFeatureFlagAsync(flag, user, cancellationToken);
+        }
+        catch
+        {
+            return defaultValue;
+        }
     }
 
     /// <inheritdoc />
-    public async Task<bool?> GetValueAsync(string flag, FeatureFlagUser? user = null, CancellationToken cancellationToken = default)
+    public async Task<bool> GetValueAsync(string flag, FeatureFlagUser? user = null, CancellationToken cancellationToken = default)
     {
         return await EvaluateFeatureFlagAsync(flag, user, cancellationToken);
     }
@@ -57,8 +64,9 @@ internal class SimpleFlagClient : ISimpleFlagClient
     /// <param name="user">The user</param>
     /// <param name="cancellationToken">The cancellation token</param>
     /// <returns>If the flag is enabled</returns>
-    /// <exception cref="SimpleFlagDoesNotExistException">Thrown when the flag does not exist</exception></exception>
-    private async Task<bool?> EvaluateFeatureFlagAsync(string flag, FeatureFlagUser? user, CancellationToken cancellationToken)
+    /// <exception cref="SimpleFlagDoesNotExistException">Thrown when the flag does not exist</exception>
+    /// <exception cref="SimpleFlagUserDoesNotExistInSegmentException">Thrown when the user does not exist in the segment</exception>
+    private async Task<bool> EvaluateFeatureFlagAsync(string flag, FeatureFlagUser? user, CancellationToken cancellationToken)
     {
         try
         {
@@ -72,6 +80,8 @@ internal class SimpleFlagClient : ISimpleFlagClient
             {
                 _logger.LogError(ex, "The flag {Flag} does not exist", flag);
             }
+
+            throw;
         }
         catch (SimpleFlagUserDoesNotExistInSegmentException ex)
         {
@@ -79,8 +89,8 @@ internal class SimpleFlagClient : ISimpleFlagClient
             {
                 _logger.LogError(ex, "The user does not exist in the feature flag segments");
             }
-        }
 
-        return null;
+            throw;
+        }
     }
 }

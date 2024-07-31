@@ -2,6 +2,7 @@
 using DemoApi.PostgreSQL.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using SimpleFlag.Core;
+using SimpleFlag.Core.Models;
 
 namespace DemoApi.Postgresql.Features.Services;
 
@@ -20,7 +21,8 @@ public class TodoService : ITodoService
     {
         var todos = new List<Todo>();
 
-        if (await _simpleFlagClient.GetValueAsync("get-todo", false, cancellationToken: cancellationToken))
+        var user = new FeatureFlagUser("todo-user");
+        if (await _simpleFlagClient.GetValueAsync("get-todo", false, user, cancellationToken))
         {
             todos = await _demoApiDbContext.Todos.ToListAsync(cancellationToken);
         }
