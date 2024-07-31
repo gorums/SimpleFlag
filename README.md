@@ -52,6 +52,7 @@ builder.Services.AddSimpleFlag(options =>
     {
         pgOptions.SchemaName = "flag";
         pgOptions.TablePrefix = "sf";
+        pgOptions.Domain = "demo"; // this is not required, this is only to group feature flag on domains if this project is going to have a static domain
         pgOptions.ConnectionString = builder.Configuration.GetConnectionString("ConnectionString");
     });     
 });
@@ -125,16 +126,17 @@ You can inject ***ISimpleFlagService*** interface and access different methods t
 ```csharp
 public class MyService : IMyService
 {
-    private readonly ISimpleFlagService _simpleFlagService;
+    private readonly ISimpleFlagClient _simpleFlagClient;
 
-    public MyService(ISimpleFlagService simpleFlagService)
+    public MyService(ISimpleFlagClient simpleFlagClient)
     {
-        _simpleFlagService = simpleFlagService;
+        _simpleFlagClient = simpleFlagClient;
     }
 
-    public async Task<bool> IsOpenAsync(CancellationToken cancellationToken = default) =>
-         // Evaluate the flag "my-service"
-        await _simpleFlagService.EvaluateAsync("my-service", cancellationToken);
+    /// Evaluate the flag "my-service", if the flag does not exist return false as default value
+    public async Task<bool> IsOpenAsync(CancellationToken cancellationToken = default) =>         
+        await _simpleFlagClient.GetValueAsync("my-service", false, cancellationToken: cancellationToken);
+
     ...
 
 }
@@ -143,6 +145,11 @@ public class MyService : IMyService
 ## Supported Provider
 
 - PostgreSQL (SimpleFlag.PostgreSQL)
+
+## Example 
+
+[TODO](https://github.com/gorums/SimpleFlag/tree/master/samples/DemoApi.AppHost)
+
 
 ## Copyright
 
