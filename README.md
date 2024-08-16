@@ -4,7 +4,7 @@
 [![Nuget downloads](https://img.shields.io/nuget/v/SimpleFlag.svg)](https://www.nuget.org/packages/SimpleFlag/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/gorums/SimpleFlag/blob/master/LICENSE)
 
-**SimpleFlag is a simple feature flag package for .Net 8 that can be embedded in your application and provide an easy way to create/edit/delete and evaluate Flags.**
+**SimpleFlag is a simple feature flag package for .Net 8 that can be embedded in your application and provide an easy way to manage and evaluate Flags.**
 
 ## Installation
 
@@ -121,7 +121,7 @@ app.MapSimpleFlagEndpoints();
 
 ### Evaluate Flag
 
-You can inject ***ISimpleFlagService*** interface and access different methods to evaluate a flag.
+You can inject ***ISimpleFlagClient*** interface and access different methods to evaluate a flag.
 
 ```csharp
 
