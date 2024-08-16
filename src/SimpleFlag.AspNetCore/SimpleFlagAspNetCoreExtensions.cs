@@ -1,19 +1,30 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace SimpleFlag.AspNetCore;
 
-/// <summary>
-/// This class contains the extension methods for the IApplicationBuilder.
-/// </summary>
 public static class SimpleFlagAspNetCoreExtensions
 {
-    /// <summary>
-    /// Maps the SimpleFlag endpoints.
-    /// </summary>
-    /// <param name="app"><see cref="IApplicationBuilder"/></param>
-    /// <returns><see cref="IApplicationBuilder"/></returns>
-    public static IApplicationBuilder MapSimpleFlagEndpoints(this IApplicationBuilder app)
+    public static IServiceCollection AddEndpointsSimpleFlag(this IServiceCollection services, Action<SimpleFlagEndpointOptions>? setupAction = null)
     {
-        return app;
+        services.AddSingleton<SimpleFlagDataSource>();
+        if (setupAction is not null)
+        {
+            services.Configure(setupAction);
+        }
+
+        return services;
+    }
+
+    public static void MapSimpleFlagEndpoints(this IEndpointRouteBuilder endpoints)
+    {
+        var dataSource = endpoints.ServiceProvider.GetService<SimpleFlagDataSource>();
+
+        if (dataSource is null)
+        {
+            throw new Exception("Did you forget to call Services.AddMyEndpoints()?");
+        }
+
+        endpoints.DataSources.Add(dataSource);
     }
 }

@@ -18,10 +18,7 @@ builder.Services.AddDbContext<DemoApiDbContext>(options =>
 });
 
 //add logger 
-builder.Services.AddLogging(config =>
-{
-    config.AddConsole();
-});
+//builder.Logging.AddConsole();
 
 builder.Services.AddSimpleFlag(options =>
 {
@@ -48,6 +45,11 @@ builder.Services.AddSimpleFlag(options =>
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddEndpointsSimpleFlag(options =>
+{
+    options.ShowInOpenAPI = true;
+});
+
 
 // Add services to the container.
 builder.Services.AddScoped<ITodoService, TodoService>();
@@ -65,8 +67,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapSimpleFlagEndpoints();
-
 TodoFeature.MapEndpoints(app);
+app.MapSimpleFlagEndpoints();
 
 app.Run();

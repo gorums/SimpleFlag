@@ -28,7 +28,7 @@ internal class PostgresDataSourceRepository : ISimpleFlagDataSourceRepository
     /// <inheritdoc />
     public async Task<FeatureFlag> GetFeatureFlagAsync(string domain, string flagKey, FeatureFlagUser? user, CancellationToken cancellation = default)
     {
-        FeatureFlag featureFlag = null;
+        FeatureFlag? featureFlag = null;
 
         using var connection = new NpgsqlConnection(SimpleFlagRepositoryOptions.ConnectionString);
 

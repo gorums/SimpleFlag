@@ -11,11 +11,15 @@
   </ItemGroup>
 
 	<ItemGroup>
-		<None Include="README.md" Pack="true" PackagePath="\"/>
+		<None Include="README.md" Pack="true" PackagePath="\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="Microsoft.OpenApi" Version="1.6.17" />
 	</ItemGroup>
 	
   <ItemGroup>
-    <PackageReference Update="NuGet.Build.Tasks.Pack" Version="6.10.1" />
+    <PackageReference Update="NuGet.Build.Tasks.Pack" Version="6.11.0" />
   </ItemGroup>
 
 </Project>
