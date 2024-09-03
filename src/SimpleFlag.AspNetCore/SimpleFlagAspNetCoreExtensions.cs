@@ -7,7 +7,7 @@ public static class SimpleFlagAspNetCoreExtensions
 {
     public static IServiceCollection AddEndpointsSimpleFlag(this IServiceCollection services, Action<SimpleFlagEndpointOptions>? setupAction = null)
     {
-        services.AddSingleton<SimpleFlagDataSource>();
+        services.AddSingleton<SimpleFlagEndpointDataSource>();
         if (setupAction is not null)
         {
             services.Configure(setupAction);
@@ -18,7 +18,7 @@ public static class SimpleFlagAspNetCoreExtensions
 
     public static void MapSimpleFlagEndpoints(this IEndpointRouteBuilder endpoints)
     {
-        var dataSource = endpoints.ServiceProvider.GetService<SimpleFlagDataSource>();
+        var dataSource = endpoints.ServiceProvider.GetService<SimpleFlagEndpointDataSource>();
 
         if (dataSource is null)
         {

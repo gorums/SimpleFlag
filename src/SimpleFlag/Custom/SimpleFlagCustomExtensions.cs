@@ -8,7 +8,7 @@ namespace SimpleFlag.Custom;
 public static class SimpleFlagCustomExtensions
 {
     /// <summary>
-    /// Use the custom options.
+    /// Use the custom options data source.
     /// </summary>
     /// <param name="simpleFlagOptionsBuilder"><see cref="SimpleFlagOptionsBuilder"/></param>
     /// <param name="simpleFlagOptionsCustomDataSourceBuilder">The custom options</param>

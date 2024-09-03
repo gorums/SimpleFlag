@@ -21,4 +21,12 @@ public interface ISimpleFlagDataSourceRepository
     /// <param name="cancellation">The cancellation token</param>
     /// <returns>The value of the flag</returns>
     Task<FeatureFlag> GetFeatureFlagAsync(string domain, string flag, FeatureFlagUser? user, CancellationToken cancellation = default);
+
+    /// <summary>
+    /// Add a feature flag.
+    /// </summary>
+    /// <param name="featureFlag"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    Task<FeatureFlag> AddFeatureFlagAsync(FeatureFlag featureFlag, CancellationToken cancellationToken = default);
 }

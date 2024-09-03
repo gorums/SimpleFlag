@@ -34,4 +34,12 @@ public interface ISimpleFlagClient
     /// <exception cref="SimpleFlagDoesNotExistException">Thrown when the flag does not exist</exception>
     /// <exception cref="SimpleFlagUserDoesNotExistInSegmentException">Thrown when the user does not exist in the segment</exception>
     Task<bool> GetValueAsync(string flag, FeatureFlagUser? user = null, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Add a feature flag.
+    /// </summary>
+    /// <param name="featureFlag">The feature flag to add</param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    Task<FeatureFlag> AddFeatureFlagAsync(FeatureFlag featureFlag, CancellationToken cancellationToken = default);
 }

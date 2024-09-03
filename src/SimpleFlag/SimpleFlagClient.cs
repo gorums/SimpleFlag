@@ -93,4 +93,9 @@ internal class SimpleFlagClient : ISimpleFlagClient
             throw;
         }
     }
+
+    public async Task<FeatureFlag> AddFeatureFlagAsync(FeatureFlag featureFlag, CancellationToken cancellationToken = default)
+    {
+        return await _simpleFlagDataSource.AddFeatureFlagAsync(featureFlag, cancellationToken);
+    }
 }

@@ -87,6 +87,43 @@ internal class PostgresDataSourceRepository : ISimpleFlagDataSourceRepository
         return featureFlag;
     }
 
+    /// <inheritdoc />
+    public async Task<FeatureFlag> AddFeatureFlagAsync(FeatureFlag featureFlag, CancellationToken cancellationToken = default)
+    {
+        using var connection = new NpgsqlConnection(SimpleFlagRepositoryOptions.ConnectionString);
+        await connection.OpenAsync(cancellationToken);
+
+        string query = @$"
+            INSERT INTO {CustomMigrationMetaData.SchemaName}.{CustomMigrationMetaData.TablePrefix}_feature_flags 
+            (""Id"", ""Name"", ""Description"", ""Key"", ""Enabled"", ""Archived"", ""DomainId"") 
+            VALUES (@Id, @Name, @Description, @Key, @Enabled, @Archived, @DomainId)";
+
+        using (var command = new NpgsqlCommand(query, connection))
+        {
+            command.Parameters.AddWithValue("@Id", featureFlag.Id);
+            command.Parameters.AddWithValue("@Name", featureFlag.Name);
+            command.Parameters.AddWithValue("@Description", featureFlag.Description);
+            command.Parameters.AddWithValue("@Key", featureFlag.Key);
+            command.Parameters.AddWithValue("@Enabled", featureFlag.Enabled);
+            command.Parameters.AddWithValue("@Archived", featureFlag.Archived);
+            command.Parameters.AddWithValue("@DomainId", featureFlag.Domain?.Id ?? (object)DBNull.Value);
+
+            await command.ExecuteNonQueryAsync(cancellationToken);
+        }
+
+        return featureFlag;
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="flagKey"></param>
+    /// <param name="user"></param>
+    /// <param name="featureFlag"></param>
+    /// <param name="connection"></param>
+    /// <param name="cancellation"></param>
+    /// <returns></returns>
+    /// <exception cref="SimpleFlagUserDoesNotExistInSegmentException"></exception>
     private static async Task CheckUserSegmentMembershipAsync(string flagKey, FeatureFlagUser? user, FeatureFlag featureFlag, NpgsqlConnection connection, CancellationToken cancellation)
     {
         var segmentCheckQuery = @$"

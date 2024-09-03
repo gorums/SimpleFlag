@@ -63,7 +63,7 @@ public class SimpleFlagCustomOptionsBuilder
     /// <summary>
     /// Sets the data source migration.
     /// </summary>
-    public ISimpleFlagDataSourceMigration DataSourceMigration
+    public ISimpleFlagDataSourceMigration Migrator
     {
         set
         {
@@ -74,7 +74,7 @@ public class SimpleFlagCustomOptionsBuilder
     /// <summary>
     /// Sets the data source repository.
     /// </summary>
-    public ISimpleFlagDataSourceRepository DataSourceRepository
+    public ISimpleFlagDataSourceRepository Repository
     {
         set
         {

@@ -1,7 +1,6 @@
 using DemoApi.Postgresql.Features.Services;
 using DemoApi.PostgreSQL.Features;
 using DemoApi.PostgreSQL.Infrastructure.Persistence;
-using DemoApi.ServiceDefaults;
 using Microsoft.EntityFrameworkCore;
 using SimpleFlag;
 using SimpleFlag.AspNetCore;
@@ -30,8 +29,8 @@ builder.Services.AddSimpleFlag(options =>
         customOptions.SchemaName = "flag";
         customOptions.TablePrefix = "sf";
         customOptions.ConnectionString = builder.Configuration.GetConnectionString("PostgresConnection");
-        customOptions.DataSourceMigration = MyDataSourceDatabaseMigration.Instance;
-        customOptions.DataSourceRepository = MyDataSourceRepository.Instance;
+        customOptions.Migrator = MyDataSourceDatabaseMigration.Instance;
+        customOptions.Repository = MyDataSourceRepository.Instance;
     });*/
     options.UsePostgreSQL(pgOptions =>
     {

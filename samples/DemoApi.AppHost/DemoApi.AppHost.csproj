@@ -6,12 +6,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsAspireHost>true</IsAspireHost>
-    <UserSecretsId>c296abdf-a67e-4f0b-92f8-4ca15e06db6e</UserSecretsId>
-	  <IsPackable>false</IsPackable>
+    <UserSecretsId>75f64f57-6719-4e6e-8c44-de0ba8dbc825</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Aspire.Hosting.AppHost" Version="8.1.0" />
+    <PackageReference Include="Aspire.Hosting.AppHost" Version="8.2.0" />
   </ItemGroup>
 
   <ItemGroup>
