@@ -16,9 +16,6 @@ builder.Services.AddDbContext<DemoApiDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("PostgresConnection"));
 });
 
-//add logger 
-//builder.Logging.AddConsole();
-
 builder.Services.AddSimpleFlag(options =>
 {
     //options.UsePostgreSQL(builder.Configuration.GetConnectionString("PostgresConnection")); // this is the same as the next line
@@ -44,6 +41,8 @@ builder.Services.AddSimpleFlag(options =>
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Add simple flag endpoints options
 builder.Services.AddEndpointsSimpleFlag(options =>
 {
     options.ShowInOpenAPI = true;
@@ -67,6 +66,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 TodoFeature.MapEndpoints(app);
+
+// Add simple flag endpoints
 app.MapSimpleFlagEndpoints();
 
 app.Run();

@@ -13,6 +13,9 @@ internal class PostgresDataSourceMigration : ISimpleFlagDataSourceMigration
 {
     private static readonly Lazy<ISimpleFlagDataSourceMigration> _databaseMigration = new Lazy<ISimpleFlagDataSourceMigration>(() => new PostgresDataSourceMigration());
 
+    /// <summary>
+    /// The options for the migration.
+    /// </summary>
     public SimpleFlagMigrationOptions SimpleFlagMigrationOptions { get; set; } = new SimpleFlagMigrationOptions();
 
     /// <summary>

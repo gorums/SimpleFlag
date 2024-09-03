@@ -13,6 +13,9 @@ internal class PostgresDataSourceRepository : ISimpleFlagDataSourceRepository
 {
     private static readonly Lazy<ISimpleFlagDataSourceRepository> _dataSourceRepository = new Lazy<ISimpleFlagDataSourceRepository>(() => new PostgresDataSourceRepository());
 
+    /// <summary>
+    /// The options for the repository.
+    /// </summary>
     public SimpleFlagRepositoryOptions SimpleFlagRepositoryOptions { get; set; } = new SimpleFlagRepositoryOptions();
 
     /// <summary>
@@ -115,17 +118,18 @@ internal class PostgresDataSourceRepository : ISimpleFlagDataSourceRepository
     }
 
     /// <summary>
-    /// 
+    /// Checks if the user is part of any segment of the feature flag.
     /// </summary>
-    /// <param name="flagKey"></param>
-    /// <param name="user"></param>
-    /// <param name="featureFlag"></param>
-    /// <param name="connection"></param>
-    /// <param name="cancellation"></param>
-    /// <returns></returns>
-    /// <exception cref="SimpleFlagUserDoesNotExistInSegmentException"></exception>
+    /// <param name="flagKey">The key of the feature flag.</param>
+    /// <param name="user">The user to check for segment membership.</param>
+    /// <param name="featureFlag">The feature flag object.</param>
+    /// <param name="connection">The PostgreSQL connection.</param>
+    /// <param name="cancellation">The cancellation token.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
+    /// <exception cref="SimpleFlagUserDoesNotExistInSegmentException">Thrown if the user does not exist in any segment of the feature flag.</exception>
     private static async Task CheckUserSegmentMembershipAsync(string flagKey, FeatureFlagUser? user, FeatureFlag featureFlag, NpgsqlConnection connection, CancellationToken cancellation)
     {
+        // Query to check if the user is part of any segment of the feature flag
         var segmentCheckQuery = @$"
             SELECT EXISTS (
                 SELECT 1

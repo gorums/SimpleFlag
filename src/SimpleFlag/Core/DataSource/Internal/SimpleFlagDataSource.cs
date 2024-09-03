@@ -56,7 +56,12 @@ internal class SimpleFlagDataSource
         return await _dataSourceRepository.GetFeatureFlagAsync(domain, flag, user, cancellationToken) ?? throw new SimpleFlagDoesNotExistException(flag);
     }
 
-
+    /// <summary>
+    /// Add a feature flag.
+    /// </summary>
+    /// <param name="featureFlag">The feature flag to add</param>
+    /// <param name="cancellationToken">The cancellation token</param>
+    /// <returns>The feature flag added</returns>
     internal async Task<FeatureFlag> AddFeatureFlagAsync(FeatureFlag featureFlag, CancellationToken cancellationToken)
     {
         return await _dataSourceRepository.AddFeatureFlagAsync(featureFlag, cancellationToken);

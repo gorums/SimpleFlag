@@ -57,6 +57,12 @@ internal class SimpleFlagClient : ISimpleFlagClient
         return await EvaluateFeatureFlagAsync(flag, user, cancellationToken);
     }
 
+    /// <inheritdoc />
+    public async Task<FeatureFlag> AddFeatureFlagAsync(FeatureFlag featureFlag, CancellationToken cancellationToken = default)
+    {
+        return await _simpleFlagDataSource.AddFeatureFlagAsync(featureFlag, cancellationToken);
+    }
+
     /// <summary>
     /// Evaluates the feature flag.
     /// </summary>
@@ -92,10 +98,5 @@ internal class SimpleFlagClient : ISimpleFlagClient
 
             throw;
         }
-    }
-
-    public async Task<FeatureFlag> AddFeatureFlagAsync(FeatureFlag featureFlag, CancellationToken cancellationToken = default)
-    {
-        return await _simpleFlagDataSource.AddFeatureFlagAsync(featureFlag, cancellationToken);
     }
 }
