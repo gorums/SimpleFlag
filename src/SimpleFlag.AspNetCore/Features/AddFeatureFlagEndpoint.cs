@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using SimpleFlag.Core;
 using SimpleFlag.Core.Models;
 
@@ -26,11 +27,27 @@ internal class AddFeatureFlagEndpoint
         // Get the cancellation token from the context
         var cancellationToken = context.RequestAborted;
 
-        // Add the feature flag using the SimpleFlagClient
-        var result = await simpleFlagClient.AddFeatureFlagAsync(featureFlag, cancellationToken);
+        try
+        {
+            // Add the feature flag using the SimpleFlagClient
+            var result = await simpleFlagClient.AddFeatureFlagAsync(featureFlag, cancellationToken);
 
-        // Return the result
-        context.Response.StatusCode = StatusCodes.Status200OK;
-        await context.Response.WriteAsJsonAsync(result);
+            // Return the result
+            context.Response.StatusCode = StatusCodes.Status200OK;
+            await context.Response.WriteAsJsonAsync(result);
+        }
+        catch (Exception ex)
+        {
+            // Return ProblemDetails with the exception details
+            var problemDetails = new ProblemDetails
+            {
+                Title = "An error occurred while adding the feature flag.",
+                Detail = ex.Message,
+                Status = ex is SimpleFlagExistException ? StatusCodes.Status409Conflict : StatusCodes.Status500InternalServerError
+            };
+
+            context.Response.StatusCode = problemDetails.Status.Value;
+            await context.Response.WriteAsJsonAsync(problemDetails);
+        }
     }
 }

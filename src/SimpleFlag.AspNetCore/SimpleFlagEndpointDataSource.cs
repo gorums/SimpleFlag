@@ -51,14 +51,12 @@ public class SimpleFlagEndpointDataSource : EndpointDataSource
     /// <returns></returns>
     private List<Endpoint> BuildEndpoints()
     {
-        var endpointPrefix = _simpleFlagEndpointOptions.EndpointPrefix ?? "simple-flag/";
-        if (!endpointPrefix.EndsWith("/"))
-        {
-            endpointPrefix += "/";
-        }
+        var endpointPrefix = _simpleFlagEndpointOptions.EndpointPrefix ?? "simpleflag";
+        endpointPrefix = endpointPrefix.TrimStart('/').TrimEnd('/');
 
         var featureFlagEndpoint = new SimpleFlagEndpoints(_simpleFlagClient);
-        var addFeatureFlagEndpoint = CreateEndpoint(HttpMethods.Post, $"{endpointPrefix}add-flag", featureFlagEndpoint.AddFeatureFlagDelegateAsync);
+
+        var addFeatureFlagEndpoint = CreateEndpoint(HttpMethods.Post, $"{endpointPrefix}/add-flag", featureFlagEndpoint.AddFeatureFlagDelegateAsync);
 
         return new List<Endpoint> { addFeatureFlagEndpoint };
     }

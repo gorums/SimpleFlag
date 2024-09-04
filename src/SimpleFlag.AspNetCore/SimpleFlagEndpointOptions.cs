@@ -7,5 +7,5 @@ public record SimpleFlagEndpointOptions
 {
     public bool ShowInOpenAPI { get; set; } = true;
 
-    public string EndpointPrefix { get; set; } = "/simpleflag";
+    public string EndpointPrefix { get; set; } = "simpleflag";
 }

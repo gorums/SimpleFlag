@@ -96,6 +96,26 @@ internal class PostgresDataSourceRepository : ISimpleFlagDataSourceRepository
         using var connection = new NpgsqlConnection(SimpleFlagRepositoryOptions.ConnectionString);
         await connection.OpenAsync(cancellationToken);
 
+        // Check if the name and the domain exist in the database
+        string checkQuery = @$"
+            SELECT COUNT(*)
+            FROM {CustomMigrationMetaData.SchemaName}.{CustomMigrationMetaData.TablePrefix}_feature_flags ff
+            LEFT JOIN {CustomMigrationMetaData.SchemaName}.{CustomMigrationMetaData.TablePrefix}_feature_flag_domains ffd ON ff.""DomainId"" = ffd.""Id""
+            WHERE ff.""Name"" = @Name AND (ffd.""Name"" = @Domain OR @Domain IS NULL)";
+
+        using (var checkCommand = new NpgsqlCommand(checkQuery, connection))
+        {
+            checkCommand.Parameters.AddWithValue("@Name", featureFlag.Name);
+            checkCommand.Parameters.AddWithValue("@Domain", (object?)featureFlag.Domain?.Name ?? DBNull.Value);
+
+            var exists = (long)await checkCommand.ExecuteScalarAsync(cancellationToken) > 0;
+
+            if (exists)
+            {
+                throw new SimpleFlagExistException("A feature flag with the same name and domain already exists.");
+            }
+        }
+
         string query = @$"
             INSERT INTO {CustomMigrationMetaData.SchemaName}.{CustomMigrationMetaData.TablePrefix}_feature_flags 
             (""Id"", ""Name"", ""Description"", ""Key"", ""Enabled"", ""Archived"", ""DomainId"") 
