@@ -23,6 +23,6 @@ public class SimpleFlagClientTests
             DataSourceMigration = _mockSimpleSimpleFlagDataSourceMigration.Object
         });
 
-        _simpleFlagService = new SimpleFlagClient(null, simpleFlagDataSource, new SimpleFlagOptions());
+        _simpleFlagService = new SimpleFlagClient(null, simpleFlagDataSource);
     }
 }

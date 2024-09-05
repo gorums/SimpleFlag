@@ -4,6 +4,9 @@ using SimpleFlag.Core;
 using SimpleFlag.Core.Models;
 
 namespace SimpleFlag.AspNetCore.Features;
+
+internal record FeatureFlagDto(string Name, string Description, string Key, bool Enabled, string Domain);
+
 internal class AddFeatureFlagEndpoint
 {
     /// <summary>
@@ -15,9 +18,9 @@ internal class AddFeatureFlagEndpoint
     public static async Task HandleAddFeatureFlagAsync(HttpContext context, ISimpleFlagClient simpleFlagClient)
     {
         // Deserialize the FeatureFlag from the request body
-        var featureFlag = await context.Request.ReadFromJsonAsync<FeatureFlag>();
+        var featureFlagDto = await context.Request.ReadFromJsonAsync<FeatureFlagDto>();
 
-        if (featureFlag == null)
+        if (featureFlagDto == null)
         {
             context.Response.StatusCode = StatusCodes.Status400BadRequest;
             await context.Response.WriteAsync("Invalid feature flag data.");
@@ -30,7 +33,15 @@ internal class AddFeatureFlagEndpoint
         try
         {
             // Add the feature flag using the SimpleFlagClient
-            var result = await simpleFlagClient.AddFeatureFlagAsync(featureFlag, cancellationToken);
+            var featureFlag = new FeatureFlag
+            {
+                Name = featureFlagDto.Name,
+                Description = featureFlagDto.Description,
+                Key = featureFlagDto.Key,
+                Enabled = featureFlagDto.Enabled
+            };
+
+            var result = await simpleFlagClient.AddFeatureFlagAsync(featureFlagDto.Domain, featureFlag, cancellationToken);
 
             // Return the result
             context.Response.StatusCode = StatusCodes.Status200OK;

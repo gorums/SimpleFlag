@@ -91,22 +91,22 @@ internal class PostgresDataSourceRepository : ISimpleFlagDataSourceRepository
     }
 
     /// <inheritdoc />
-    public async Task<FeatureFlag> AddFeatureFlagAsync(FeatureFlag featureFlag, CancellationToken cancellationToken = default)
+    public async Task<FeatureFlag> AddFeatureFlagAsync(string domain, FeatureFlag featureFlag, CancellationToken cancellationToken = default)
     {
         using var connection = new NpgsqlConnection(SimpleFlagRepositoryOptions.ConnectionString);
         await connection.OpenAsync(cancellationToken);
 
         // Check if the name and the domain exist in the database
         string checkQuery = @$"
-            SELECT COUNT(*)
-            FROM {CustomMigrationMetaData.SchemaName}.{CustomMigrationMetaData.TablePrefix}_feature_flags ff
-            LEFT JOIN {CustomMigrationMetaData.SchemaName}.{CustomMigrationMetaData.TablePrefix}_feature_flag_domains ffd ON ff.""DomainId"" = ffd.""Id""
-            WHERE ff.""Name"" = @Name AND (ffd.""Name"" = @Domain OR @Domain IS NULL)";
+        SELECT COUNT(*)
+        FROM {CustomMigrationMetaData.SchemaName}.{CustomMigrationMetaData.TablePrefix}_feature_flags ff
+        LEFT JOIN {CustomMigrationMetaData.SchemaName}.{CustomMigrationMetaData.TablePrefix}_feature_flag_domains ffd ON ff.""DomainId"" = ffd.""Id""
+        WHERE ff.""Name"" = @Name AND (ffd.""Name"" = @Domain OR @Domain IS NULL)";
 
         using (var checkCommand = new NpgsqlCommand(checkQuery, connection))
         {
             checkCommand.Parameters.AddWithValue("@Name", featureFlag.Name);
-            checkCommand.Parameters.AddWithValue("@Domain", (object?)featureFlag.Domain?.Name ?? DBNull.Value);
+            checkCommand.Parameters.AddWithValue("@Domain", (object?)domain ?? DBNull.Value);
 
             var exists = (long)await checkCommand.ExecuteScalarAsync(cancellationToken) > 0;
 
@@ -116,22 +116,61 @@ internal class PostgresDataSourceRepository : ISimpleFlagDataSourceRepository
             }
         }
 
-        string query = @$"
-            INSERT INTO {CustomMigrationMetaData.SchemaName}.{CustomMigrationMetaData.TablePrefix}_feature_flags 
-            (""Id"", ""Name"", ""Description"", ""Key"", ""Enabled"", ""Archived"", ""DomainId"") 
-            VALUES (@Id, @Name, @Description, @Key, @Enabled, @Archived, @DomainId)";
-
-        using (var command = new NpgsqlCommand(query, connection))
+        // Check if the domain exists, if not create it
+        Guid? domainId = null;
+        if (!string.IsNullOrEmpty(domain))
         {
-            command.Parameters.AddWithValue("@Id", featureFlag.Id);
-            command.Parameters.AddWithValue("@Name", featureFlag.Name);
-            command.Parameters.AddWithValue("@Description", featureFlag.Description);
-            command.Parameters.AddWithValue("@Key", featureFlag.Key);
-            command.Parameters.AddWithValue("@Enabled", featureFlag.Enabled);
-            command.Parameters.AddWithValue("@Archived", featureFlag.Archived);
-            command.Parameters.AddWithValue("@DomainId", featureFlag.Domain?.Id ?? (object)DBNull.Value);
+            string domainQuery = @$"
+            SELECT ""Id""
+            FROM {CustomMigrationMetaData.SchemaName}.{CustomMigrationMetaData.TablePrefix}_feature_flag_domains
+            WHERE ""Name"" = @Domain";
 
-            await command.ExecuteNonQueryAsync(cancellationToken);
+            using (var domainCommand = new NpgsqlCommand(domainQuery, connection))
+            {
+                domainCommand.Parameters.AddWithValue("@Domain", domain);
+
+                var result = await domainCommand.ExecuteScalarAsync(cancellationToken);
+                if (result != null)
+                {
+                    domainId = (Guid)result;
+                }
+                else
+                {
+                    // Domain does not exist, create it
+                    domainId = Guid.NewGuid();
+                    string insertDomainQuery = @$"
+                    INSERT INTO {CustomMigrationMetaData.SchemaName}.{CustomMigrationMetaData.TablePrefix}_feature_flag_domains
+                    (""Id"", ""Name"")
+                    VALUES (@Id, @Name)";
+
+                    using (var insertDomainCommand = new NpgsqlCommand(insertDomainQuery, connection))
+                    {
+                        insertDomainCommand.Parameters.AddWithValue("@Id", domainId);
+                        insertDomainCommand.Parameters.AddWithValue("@Name", domain);
+
+                        await insertDomainCommand.ExecuteNonQueryAsync(cancellationToken);
+                    }
+                }
+            }
+        }
+
+        // Insert the new feature flag
+        string insertQuery = @$"
+        INSERT INTO {CustomMigrationMetaData.SchemaName}.{CustomMigrationMetaData.TablePrefix}_feature_flags 
+        (""Id"", ""Name"", ""Description"", ""Key"", ""Enabled"", ""Archived"", ""DomainId"") 
+        VALUES (@Id, @Name, @Description, @Key, @Enabled, @Archived, @DomainId)";
+
+        using (var insertCommand = new NpgsqlCommand(insertQuery, connection))
+        {
+            insertCommand.Parameters.AddWithValue("@Id", featureFlag.Id);
+            insertCommand.Parameters.AddWithValue("@Name", featureFlag.Name);
+            insertCommand.Parameters.AddWithValue("@Description", featureFlag.Description);
+            insertCommand.Parameters.AddWithValue("@Key", featureFlag.Key);
+            insertCommand.Parameters.AddWithValue("@Enabled", featureFlag.Enabled);
+            insertCommand.Parameters.AddWithValue("@Archived", featureFlag.Archived);
+            insertCommand.Parameters.AddWithValue("@DomainId", (object?)domainId ?? DBNull.Value);
+
+            await insertCommand.ExecuteNonQueryAsync(cancellationToken);
         }
 
         return featureFlag;

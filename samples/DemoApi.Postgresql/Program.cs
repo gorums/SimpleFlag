@@ -34,7 +34,6 @@ builder.Services.AddSimpleFlag(options =>
         pgOptions.SchemaName = "flag";
         pgOptions.TablePrefix = "sf";
         pgOptions.ConnectionString = builder.Configuration.GetConnectionString("PostgresConnection");
-        pgOptions.Domain = "demo";
     });
 });
 
@@ -45,7 +44,7 @@ builder.Services.AddSwaggerGen();
 // Add simple flag endpoints options
 builder.Services.AddEndpointsSimpleFlag(options =>
 {
-    options.ShowInOpenAPI = true;
+    options.EndpointPrefix = "simpleflag";
 });
 
 

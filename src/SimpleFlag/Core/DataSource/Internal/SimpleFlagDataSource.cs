@@ -59,11 +59,12 @@ internal class SimpleFlagDataSource
     /// <summary>
     /// Add a feature flag.
     /// </summary>
+    /// <param name="domain">The domain</param>
     /// <param name="featureFlag">The feature flag to add</param>
     /// <param name="cancellationToken">The cancellation token</param>
     /// <returns>The feature flag added</returns>
-    internal async Task<FeatureFlag> AddFeatureFlagAsync(FeatureFlag featureFlag, CancellationToken cancellationToken)
+    internal async Task<FeatureFlag> AddFeatureFlagAsync(string domain, FeatureFlag featureFlag, CancellationToken cancellationToken)
     {
-        return await _dataSourceRepository.AddFeatureFlagAsync(featureFlag, cancellationToken);
+        return await _dataSourceRepository.AddFeatureFlagAsync(domain, featureFlag, cancellationToken);
     }
 }

@@ -20,7 +20,7 @@ public class MyDataSourceRepository : ISimpleFlagDataSourceRepository
         throw new NotImplementedException();
     }
 
-    public Task<FeatureFlag> AddFeatureFlagAsync(FeatureFlag featureFlag, CancellationToken cancellationToken = default)
+    public Task<FeatureFlag> AddFeatureFlagAsync(string domain, FeatureFlag featureFlag, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }

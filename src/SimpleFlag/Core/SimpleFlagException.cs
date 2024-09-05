@@ -49,7 +49,7 @@ internal class SimpleFlagUserDoesNotExistInSegmentException : Exception
 /// <summary>
 /// This exception is thrown when a flag does not exist.
 /// </summary>
-public class SimpleFlagExistException : Exception
+internal class SimpleFlagExistException : Exception
 {
     /// <summary>
     /// Initializes a new instance of the SimpleFlagDoesNotExistException.

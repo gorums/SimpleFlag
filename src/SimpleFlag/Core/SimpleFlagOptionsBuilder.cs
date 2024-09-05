@@ -11,7 +11,6 @@ public class SimpleFlagOptionsBuilder
     private string? _connectionString;
     private string? _schemaName;
     private string? _tablePrefix;
-    private string? _domain;
 
     private ISimpleFlagDataSourceMigration? _dataSourceMigration;
     private ISimpleFlagDataSourceRepository? _dataSourceRepository;
@@ -62,15 +61,6 @@ public class SimpleFlagOptionsBuilder
     }
 
     /// <summary>
-    /// Add the global domain.
-    /// </summary>
-    /// <param name="domain">The global domain</param>
-    internal void AddDomain(string? domain)
-    {
-        _domain = domain;
-    }
-
-    /// <summary>
     /// Build the data source options.
     /// </summary>
     /// <returns></returns>
@@ -85,18 +75,6 @@ public class SimpleFlagOptionsBuilder
             ConnectionString = _connectionString ?? throw new ArgumentException(nameof(_connectionString)),
             DataSourceMigration = _dataSourceMigration ?? throw new ArgumentNullException(nameof(_dataSourceMigration)),
             DataSourceRepository = _dataSourceRepository ?? throw new ArgumentNullException(nameof(_dataSourceRepository)),
-        };
-    }
-
-    /// <summary>
-    /// Build the service options.
-    /// </summary>
-    /// <returns></returns>
-    internal SimpleFlagOptions BuildServiceOptions()
-    {
-        return new SimpleFlagOptions
-        {
-            Domain = _domain ?? string.Empty
         };
     }
 }

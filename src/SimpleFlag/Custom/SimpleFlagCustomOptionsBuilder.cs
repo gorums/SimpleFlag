@@ -50,17 +50,6 @@ public class SimpleFlagCustomOptionsBuilder
     }
 
     /// <summary>
-    /// Sets the global domain.
-    /// </summary>
-    public string? Domain
-    {
-        set
-        {
-            _simpleFlagOptionsBuilder.AddDomain(value);
-        }
-    }
-
-    /// <summary>
     /// Sets the data source migration.
     /// </summary>
     public ISimpleFlagDataSourceMigration Migrator

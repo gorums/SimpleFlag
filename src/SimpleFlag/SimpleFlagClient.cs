@@ -13,37 +13,24 @@ internal class SimpleFlagClient : ISimpleFlagClient
     private readonly ILogger<SimpleFlagClient>? _logger;
 
     private readonly SimpleFlagDataSource _simpleFlagDataSource;
-    private readonly SimpleFlagOptions _simpleFlagOptions;
-
-    private string _domain;
 
     /// <summary>
     /// Initializes a new instance of the SimpleFlagService.
     /// </summary>
     /// <param name="simpleFlagDataSource"><see cref="SimpleFlagDataSource"/></param>
     /// <param name="simpleFlagOptions"><see cref="SimpleFlagOptions"/></param>
-    public SimpleFlagClient(ILogger<SimpleFlagClient>? logger, SimpleFlagDataSource simpleFlagDataSource, SimpleFlagOptions simpleFlagOptions)
+    public SimpleFlagClient(ILogger<SimpleFlagClient>? logger, SimpleFlagDataSource simpleFlagDataSource)
     {
         _logger = logger;
         _simpleFlagDataSource = simpleFlagDataSource;
-        _simpleFlagOptions = simpleFlagOptions;
-
-        _domain = _simpleFlagOptions.Domain;
     }
 
     /// <inheritdoc />
-    public ISimpleFlagClient Domain(string domain)
-    {
-        _domain = domain;
-        return this;
-    }
-
-    /// <inheritdoc />
-    public async Task<bool> GetValueAsync(string flag, bool defaultValue, FeatureFlagUser? user = null, CancellationToken cancellationToken = default)
+    public async Task<bool> GetValueAsync(string domain, string flag, bool defaultValue, FeatureFlagUser? user = null, CancellationToken cancellationToken = default)
     {
         try
         {
-            return await EvaluateFeatureFlagAsync(flag, user, cancellationToken);
+            return await EvaluateFeatureFlagAsync(domain, flag, user, cancellationToken);
         }
         catch
         {
@@ -52,15 +39,33 @@ internal class SimpleFlagClient : ISimpleFlagClient
     }
 
     /// <inheritdoc />
+    public async Task<bool> GetValueAsync(string flag, bool defaultValue, FeatureFlagUser? user = null, CancellationToken cancellationToken = default)
+    {
+        return await GetValueAsync(string.Empty, flag, defaultValue, user, cancellationToken);
+    }
+
+    /// <inheritdoc />
+    public async Task<bool> GetValueAsync(string domain, string flag, FeatureFlagUser? user = null, CancellationToken cancellationToken = default)
+    {
+        return await EvaluateFeatureFlagAsync(domain, flag, user, cancellationToken);
+    }
+
+    /// <inheritdoc />
     public async Task<bool> GetValueAsync(string flag, FeatureFlagUser? user = null, CancellationToken cancellationToken = default)
     {
-        return await EvaluateFeatureFlagAsync(flag, user, cancellationToken);
+        return await GetValueAsync(string.Empty, flag, user, cancellationToken);
+    }
+
+    /// <inheritdoc />
+    public async Task<FeatureFlag> AddFeatureFlagAsync(string domain, FeatureFlag featureFlag, CancellationToken cancellationToken = default)
+    {
+        return await _simpleFlagDataSource.AddFeatureFlagAsync(domain, featureFlag, cancellationToken);
     }
 
     /// <inheritdoc />
     public async Task<FeatureFlag> AddFeatureFlagAsync(FeatureFlag featureFlag, CancellationToken cancellationToken = default)
     {
-        return await _simpleFlagDataSource.AddFeatureFlagAsync(featureFlag, cancellationToken);
+        return await AddFeatureFlagAsync(string.Empty, featureFlag, cancellationToken);
     }
 
     /// <summary>
@@ -72,11 +77,11 @@ internal class SimpleFlagClient : ISimpleFlagClient
     /// <returns>If the flag is enabled</returns>
     /// <exception cref="SimpleFlagDoesNotExistException">Thrown when the flag does not exist</exception>
     /// <exception cref="SimpleFlagUserDoesNotExistInSegmentException">Thrown when the user does not exist in the segment</exception>
-    private async Task<bool> EvaluateFeatureFlagAsync(string flag, FeatureFlagUser? user, CancellationToken cancellationToken)
+    private async Task<bool> EvaluateFeatureFlagAsync(string domain, string flag, FeatureFlagUser? user, CancellationToken cancellationToken)
     {
         try
         {
-            var featureFlag = await _simpleFlagDataSource.GetFeatureFlagAsync(_domain, flag, user, cancellationToken);
+            var featureFlag = await _simpleFlagDataSource.GetFeatureFlagAsync(domain, flag, user, cancellationToken);
 
             return featureFlag.Enabled;
         }

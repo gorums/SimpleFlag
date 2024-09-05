@@ -28,7 +28,7 @@ public static class SimpleFlagExtensions
         serviceCollection.AddSingleton<ISimpleFlagClient>(sp =>
         {
             var logger = sp.GetRequiredService<ILogger<SimpleFlagClient>>();
-            return new SimpleFlagClient(logger, simpleFlagDataSource, simpleFlagOptionsBuilder.BuildServiceOptions());
+            return new SimpleFlagClient(logger, simpleFlagDataSource);
         });
 
         // TODO: check if is necessary to run the migration here
