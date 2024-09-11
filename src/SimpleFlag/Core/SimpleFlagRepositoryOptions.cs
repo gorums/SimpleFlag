@@ -1,9 +1,9 @@
-﻿namespace SimpleFlag.Core.DataSource;
+﻿namespace SimpleFlag.Core;
 
 /// <summary>
 /// This class contains the options for the SimpleFlagMigration.
 /// </summary>
-public class SimpleFlagMigrationOptions
+public class SimpleFlagRepositoryOptions
 {
     public string ConnectionString { get; init; } = string.Empty;
 

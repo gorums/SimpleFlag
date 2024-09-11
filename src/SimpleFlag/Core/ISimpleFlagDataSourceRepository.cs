@@ -1,6 +1,6 @@
-﻿using SimpleFlag.Core.Models;
+﻿using SimpleFlag.Core.Entities;
 
-namespace SimpleFlag.Core.DataSource;
+namespace SimpleFlag.Core;
 
 /// <summary>
 /// This interface defines the contract for the SimpleFlagDataSourceRepository.

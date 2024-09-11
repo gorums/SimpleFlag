@@ -1,9 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
-using SimpleFlag.Core;
-using SimpleFlag.Core.DataSource.Internal;
-using SimpleFlag.Core.Models;
+using SimpleFlag.Core.Entities;
 
-namespace SimpleFlag;
+namespace SimpleFlag.Core.Internal;
 
 /// <summary>
 /// This class is the implementation of the ISimpleFlagService.
@@ -26,7 +24,7 @@ internal class SimpleFlagClient : ISimpleFlagClient
     }
 
     /// <inheritdoc />
-    public async Task<bool> GetValueAsync(string domain, string flag, bool defaultValue, FeatureFlagUser? user = null, CancellationToken cancellationToken = default)
+    public async Task<bool> GetValueAsync(string domain, string flag, bool defaultValue, SimpleFlagUser? user = null, CancellationToken cancellationToken = default)
     {
         try
         {
@@ -39,19 +37,19 @@ internal class SimpleFlagClient : ISimpleFlagClient
     }
 
     /// <inheritdoc />
-    public async Task<bool> GetValueAsync(string flag, bool defaultValue, FeatureFlagUser? user = null, CancellationToken cancellationToken = default)
+    public async Task<bool> GetValueAsync(string flag, bool defaultValue, SimpleFlagUser? user = null, CancellationToken cancellationToken = default)
     {
         return await GetValueAsync(string.Empty, flag, defaultValue, user, cancellationToken);
     }
 
     /// <inheritdoc />
-    public async Task<bool> GetValueAsync(string domain, string flag, FeatureFlagUser? user = null, CancellationToken cancellationToken = default)
+    public async Task<bool> GetValueAsync(string domain, string flag, SimpleFlagUser? user = null, CancellationToken cancellationToken = default)
     {
         return await EvaluateFeatureFlagAsync(domain, flag, user, cancellationToken);
     }
 
     /// <inheritdoc />
-    public async Task<bool> GetValueAsync(string flag, FeatureFlagUser? user = null, CancellationToken cancellationToken = default)
+    public async Task<bool> GetValueAsync(string flag, SimpleFlagUser? user = null, CancellationToken cancellationToken = default)
     {
         return await GetValueAsync(string.Empty, flag, user, cancellationToken);
     }
@@ -77,7 +75,7 @@ internal class SimpleFlagClient : ISimpleFlagClient
     /// <returns>If the flag is enabled</returns>
     /// <exception cref="SimpleFlagDoesNotExistException">Thrown when the flag does not exist</exception>
     /// <exception cref="SimpleFlagUserDoesNotExistInSegmentException">Thrown when the user does not exist in the segment</exception>
-    private async Task<bool> EvaluateFeatureFlagAsync(string domain, string flag, FeatureFlagUser? user, CancellationToken cancellationToken)
+    private async Task<bool> EvaluateFeatureFlagAsync(string domain, string flag, SimpleFlagUser? user, CancellationToken cancellationToken)
     {
         try
         {

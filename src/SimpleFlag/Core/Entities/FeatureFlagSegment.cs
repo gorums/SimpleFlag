@@ -1,4 +1,4 @@
-﻿namespace SimpleFlag.Core.Models;
+﻿namespace SimpleFlag.Core.Entities;
 public class FeatureFlagSegment
 {
     public Guid Id { get; }

@@ -1,4 +1,4 @@
-﻿namespace SimpleFlag.Core.DataSource;
+﻿namespace SimpleFlag.Core;
 
 /// <summary>
 /// This interface defines the contract for the SimpleFlagDataSourceMigration.

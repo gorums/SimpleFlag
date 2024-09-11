@@ -1,13 +1,12 @@
-﻿using SimpleFlag.Core.Models;
+﻿using SimpleFlag.Core.Entities;
 
-namespace SimpleFlag.Core.DataSource.Internal;
+namespace SimpleFlag.Core.Internal;
 
 /// <summary>
 /// This class is the implementation of the ISimpleFlagDataSource.
 /// </summary>
 internal class SimpleFlagDataSource
 {
-    private SimpleFlagDataSourceOptions _simpleFlagDataSourceOptions;
     private ISimpleFlagDataSourceMigration _dataSourceMigration;
     private ISimpleFlagDataSourceRepository _dataSourceRepository;
 
@@ -18,22 +17,21 @@ internal class SimpleFlagDataSource
     /// <exception cref="ArgumentNullException"></exception>
     internal SimpleFlagDataSource(SimpleFlagDataSourceOptions simpleFlagDataSourceOptions)
     {
-        _simpleFlagDataSourceOptions = simpleFlagDataSourceOptions;
-        _dataSourceMigration = _simpleFlagDataSourceOptions.DataSourceMigration ?? throw new ArgumentNullException(nameof(simpleFlagDataSourceOptions.DataSourceMigration));
-        _dataSourceRepository = _simpleFlagDataSourceOptions.DataSourceRepository ?? throw new ArgumentNullException(nameof(simpleFlagDataSourceOptions.DataSourceRepository));
+        _dataSourceMigration = simpleFlagDataSourceOptions.DataSourceMigration ?? throw new ArgumentNullException(nameof(simpleFlagDataSourceOptions.DataSourceMigration));
+        _dataSourceRepository = simpleFlagDataSourceOptions.DataSourceRepository ?? throw new ArgumentNullException(nameof(simpleFlagDataSourceOptions.DataSourceRepository));
 
         _dataSourceMigration.SimpleFlagMigrationOptions = new SimpleFlagMigrationOptions
         {
-            ConnectionString = _simpleFlagDataSourceOptions.ConnectionString,
-            SchemaName = _simpleFlagDataSourceOptions.SchemaName,
-            TablePrefix = _simpleFlagDataSourceOptions.TablePrefix
+            ConnectionString = simpleFlagDataSourceOptions.ConnectionString,
+            SchemaName = simpleFlagDataSourceOptions.SchemaName,
+            TablePrefix = simpleFlagDataSourceOptions.TablePrefix
         };
 
         _dataSourceRepository.SimpleFlagRepositoryOptions = new SimpleFlagRepositoryOptions
         {
-            ConnectionString = _simpleFlagDataSourceOptions.ConnectionString,
-            SchemaName = _simpleFlagDataSourceOptions.SchemaName,
-            TablePrefix = _simpleFlagDataSourceOptions.TablePrefix
+            ConnectionString = simpleFlagDataSourceOptions.ConnectionString,
+            SchemaName = simpleFlagDataSourceOptions.SchemaName,
+            TablePrefix = simpleFlagDataSourceOptions.TablePrefix
         };
     }
 
@@ -51,9 +49,14 @@ internal class SimpleFlagDataSource
     /// <param name="cancellationToken">The cancellation token</param>
     /// <returns>If the flag is enabled</returns>
     /// <exception cref="SimpleFlagDoesNotExistException">Thrown when the flag does not exist</exception></exception>
-    internal async Task<FeatureFlag> GetFeatureFlagAsync(string domain, string flag, FeatureFlagUser? user, CancellationToken cancellationToken)
+    internal async Task<FeatureFlag> GetFeatureFlagAsync(string domain, string flag, SimpleFlagUser? user, CancellationToken cancellationToken)
     {
-        return await _dataSourceRepository.GetFeatureFlagAsync(domain, flag, user, cancellationToken) ?? throw new SimpleFlagDoesNotExistException(flag);
+        FeatureFlagUser? featureFlagUser = user is not null ? new FeatureFlagUser(user.Name)
+        {
+            Attributes = new Dictionary<string, string>(user.Attributes)
+        } : default;
+
+        return await _dataSourceRepository.GetFeatureFlagAsync(domain, flag, featureFlagUser, cancellationToken) ?? throw new SimpleFlagDoesNotExistException(flag);
     }
 
     /// <summary>

@@ -1,5 +1,5 @@
-﻿using SimpleFlag.Core.DataSource;
-using SimpleFlag.Core.Models;
+﻿using SimpleFlag.Core;
+using SimpleFlag.Core.Entities;
 
 namespace DemoApi.Postgresql;
 

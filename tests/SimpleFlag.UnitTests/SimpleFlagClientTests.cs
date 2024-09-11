@@ -1,7 +1,6 @@
 using Moq;
 using SimpleFlag.Core;
-using SimpleFlag.Core.DataSource;
-using SimpleFlag.Core.DataSource.Internal;
+using SimpleFlag.Core.Internal;
 
 namespace SimpleFlag.UnitTests;
 

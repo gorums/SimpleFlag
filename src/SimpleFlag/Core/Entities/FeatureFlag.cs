@@ -1,4 +1,4 @@
-﻿namespace SimpleFlag.Core.Models;
+﻿namespace SimpleFlag.Core.Entities;
 public class FeatureFlag
 {
     public Guid Id { get; set; } = Guid.NewGuid();

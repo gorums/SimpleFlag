@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 using SimpleFlag.AspNetCore.Features;
-using SimpleFlag.Core;
 
 namespace SimpleFlag.AspNetCore;
 

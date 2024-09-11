@@ -1,4 +1,4 @@
-﻿using SimpleFlag.Core.DataSource;
+﻿using SimpleFlag.Core;
 
 namespace DemoApi.Postgresql;
 

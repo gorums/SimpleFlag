@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using SimpleFlag.Core;
-using SimpleFlag.Core.DataSource.Internal;
+using SimpleFlag.Core.Internal;
 
 namespace SimpleFlag;
 

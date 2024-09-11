@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SimpleFlag.Core;
-using SimpleFlag.Core.Models;
+using SimpleFlag.Core.Entities;
 
 namespace SimpleFlag.AspNetCore.Features;
 

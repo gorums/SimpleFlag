@@ -1,6 +1,6 @@
 ﻿using FluentMigrator.Runner;
 using Microsoft.Extensions.DependencyInjection;
-using SimpleFlag.Core.DataSource;
+using SimpleFlag.Core;
 using SimpleFlag.PostgreSQL.Migrations;
 using SimpleFlag.PostgreSQL.Migrations.Metadata;
 

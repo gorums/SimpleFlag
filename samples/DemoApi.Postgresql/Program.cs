@@ -1,6 +1,7 @@
 using DemoApi.Postgresql.Features.Services;
 using DemoApi.PostgreSQL.Features;
 using DemoApi.PostgreSQL.Infrastructure.Persistence;
+using DemoApi.ServiceDefaults;
 using Microsoft.EntityFrameworkCore;
 using SimpleFlag;
 using SimpleFlag.AspNetCore;

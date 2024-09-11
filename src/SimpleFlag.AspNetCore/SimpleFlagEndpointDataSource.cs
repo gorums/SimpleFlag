@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Routing.Patterns;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
-using SimpleFlag.Core;
 
 namespace SimpleFlag.AspNetCore;
 

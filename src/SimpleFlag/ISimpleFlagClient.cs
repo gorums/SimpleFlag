@@ -1,6 +1,6 @@
-﻿using SimpleFlag.Core.Models;
+﻿using SimpleFlag.Core.Entities;
 
-namespace SimpleFlag.Core;
+namespace SimpleFlag;
 
 /// <summary>
 /// This interface defines the contract for the SimpleFlagService.
@@ -16,7 +16,7 @@ public interface ISimpleFlagClient
     /// <param name="user">The user</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<bool> GetValueAsync(string domain, string flag, bool defaultValue, FeatureFlagUser? user = null, CancellationToken cancellationToken = default);
+    Task<bool> GetValueAsync(string domain, string flag, bool defaultValue, SimpleFlagUser? user = null, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Evaluates the feature flag.
@@ -26,7 +26,7 @@ public interface ISimpleFlagClient
     /// <param name="user">The user</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<bool> GetValueAsync(string flag, bool defaultValue, FeatureFlagUser? user = null, CancellationToken cancellationToken = default);
+    Task<bool> GetValueAsync(string flag, bool defaultValue, SimpleFlagUser? user = null, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Evaluates the feature flag.
@@ -38,7 +38,7 @@ public interface ISimpleFlagClient
     /// <returns></returns>
     /// <exception cref="SimpleFlagDoesNotExistException">Thrown when the flag does not exist</exception>
     /// <exception cref="SimpleFlagUserDoesNotExistInSegmentException">Thrown when the user does not exist in the segment</exception>
-    Task<bool> GetValueAsync(string domain, string flag, FeatureFlagUser? user = null, CancellationToken cancellationToken = default);
+    Task<bool> GetValueAsync(string domain, string flag, SimpleFlagUser? user = null, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Evaluates the feature flag.
@@ -49,7 +49,7 @@ public interface ISimpleFlagClient
     /// <returns></returns>
     /// <exception cref="SimpleFlagDoesNotExistException">Thrown when the flag does not exist</exception>
     /// <exception cref="SimpleFlagUserDoesNotExistInSegmentException">Thrown when the user does not exist in the segment</exception>
-    Task<bool> GetValueAsync(string flag, FeatureFlagUser? user = null, CancellationToken cancellationToken = default);
+    Task<bool> GetValueAsync(string flag, SimpleFlagUser? user = null, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Add a feature flag with a domain, create the domain if it does not exist.

@@ -1,9 +1,9 @@
-﻿namespace SimpleFlag.Core;
+﻿namespace SimpleFlag;
 
 /// <summary>
 /// This exception is thrown when a flag does not exist.
 /// </summary>
-internal class SimpleFlagDoesNotExistException : Exception
+public class SimpleFlagDoesNotExistException : Exception
 {
     /// <summary>
     /// Initializes a new instance of the SimpleFlagDoesNotExistException.
@@ -26,7 +26,7 @@ internal class SimpleFlagDoesNotExistException : Exception
 /// <summary>
 /// This exception is thrown when a user does not exist in the feature flag segments.
 /// </summary>
-internal class SimpleFlagUserDoesNotExistInSegmentException : Exception
+public class SimpleFlagUserDoesNotExistInSegmentException : Exception
 {
     /// <summary>
     /// Initializes a new instance of the SimpleFlagUserDoesNotExistInSegmentException.
@@ -47,12 +47,12 @@ internal class SimpleFlagUserDoesNotExistInSegmentException : Exception
 }
 
 /// <summary>
-/// This exception is thrown when a flag does not exist.
+/// This exception is thrown when a flag does exist.
 /// </summary>
-internal class SimpleFlagExistException : Exception
+public class SimpleFlagExistException : Exception
 {
     /// <summary>
-    /// Initializes a new instance of the SimpleFlagDoesNotExistException.
+    /// Initializes a new instance of the SimpleFlagExistException.
     /// </summary>
     /// <param name="message">The error message</param>
     public SimpleFlagExistException(string message) : base(message)
@@ -60,7 +60,7 @@ internal class SimpleFlagExistException : Exception
     }
 
     /// <summary>
-    /// Initializes a new instance of the SimpleFlagDoesNotExistException.
+    /// Initializes a new instance of the SimpleFlagExistException.
     /// </summary>
     /// <param name="message">The error message</param>
     /// <param name="innerException">The inner exception</param>

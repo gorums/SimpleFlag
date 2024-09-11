@@ -1,5 +1,4 @@
-﻿using SimpleFlag.Core.DataSource;
-using SimpleFlag.Core.DataSource.Internal;
+﻿using SimpleFlag.Core.Internal;
 
 namespace SimpleFlag.Core;
 

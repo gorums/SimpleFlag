@@ -1,4 +1,4 @@
-﻿namespace SimpleFlag.Core.Models;
+﻿namespace SimpleFlag.Core.Entities;
 
 /// <summary>
 /// To organize the feature flag per domain.

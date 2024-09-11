@@ -1,7 +1,6 @@
 ﻿using Npgsql;
 using SimpleFlag.Core;
-using SimpleFlag.Core.DataSource;
-using SimpleFlag.Core.Models;
+using SimpleFlag.Core.Entities;
 using SimpleFlag.PostgreSQL.Migrations.Metadata;
 
 namespace SimpleFlag.PostgreSQL;
