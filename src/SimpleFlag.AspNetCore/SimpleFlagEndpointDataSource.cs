@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Routing.Patterns;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
+using SimpleFlag.AspNetCore.Endpoints;
+using SimpleFlag.AspNetCore.Endpoints.Dtos;
 using System.Reflection;
 
 namespace SimpleFlag.AspNetCore;
@@ -46,28 +48,14 @@ public class SimpleFlagEndpointDataSource : EndpointDataSource
         var endpointPrefix = _simpleFlagEndpointOptions.EndpointPrefix ?? "simpleflag";
         endpointPrefix = endpointPrefix.TrimStart('/').TrimEnd('/');
 
-        var featureFlagEndpoint = new SimpleFlagEndpoints(_simpleFlagClient);
+        var simpleFlagEndpointsHandle = new SimpleFlagEndpointsHandler(_simpleFlagClient);
 
-        var addFeatureFlagEndpoint = CreateEndpoint
-        (
-            HttpMethods.Post,
-            $"{endpointPrefix}/flag",
-            featureFlagEndpoint.AddFeatureFlagDelegateAsync,
-            typeof(SimpleFlagEndpoints).GetMethod(nameof(SimpleFlagEndpoints.AddFeatureFlagAsync)),
-            new AcceptsMetadata(["application/json"], typeof(CreateFeatureFlagRequest), false)
-        );
-
-        var editFeatureFlagEndpoint = CreateEndpoint
-        (
-            HttpMethods.Put,
-            $"{endpointPrefix}/flag",
-            featureFlagEndpoint.EditFeatureFlagDelegateAsync,
-            typeof(SimpleFlagEndpoints).GetMethod(nameof(SimpleFlagEndpoints.EditFeatureFlagAsync)),
-            new AcceptsMetadata(["application/json"], typeof(CreateFeatureFlagRequest), false)
-        );
-
-        return new List<Endpoint> { addFeatureFlagEndpoint, editFeatureFlagEndpoint };
-    }
+        return new List<Endpoint>
+        {
+            CreateAddFeatureFlagEndpoint(endpointPrefix, simpleFlagEndpointsHandle),
+            CreateEditFeatureFlagEndpoint(endpointPrefix, simpleFlagEndpointsHandle)
+        };
+    }        
 
     /// <summary>
     /// 
@@ -95,18 +83,43 @@ public class SimpleFlagEndpointDataSource : EndpointDataSource
             endpointBuilder.Metadata.Add(methodInfo);
         }
 
-        // Optionally, add RouteNameMetadata
-        //endpointBuilder.Metadata.Add(new RouteNameMetadata(operationId));
-
-        // Add EndpointGroupNameMetadata
-        //endpointBuilder.Metadata.Add(new SimpleFlagGroupName());
-
         if (simpleFlagAcceptsMetadata is not null)
         {
             endpointBuilder.Metadata.Add(simpleFlagAcceptsMetadata);
         }
 
-
         return endpointBuilder.Build();
     }
+
+    /// <summary>
+    /// Creates the endpoint for adding a feature flag.
+    /// </summary>
+    /// <param name="endpointPrefix"></param>
+    /// <param name="simpleFlagEndpointsHandle"></param>
+    /// <returns></returns>
+    private Endpoint CreateAddFeatureFlagEndpoint(string endpointPrefix, SimpleFlagEndpointsHandler simpleFlagEndpointsHandle) =>
+        CreateEndpoint
+        (
+            HttpMethods.Post,
+            $"{endpointPrefix}/flag",
+            simpleFlagEndpointsHandle.AddFeatureFlagDelegateAsync,
+            typeof(SimpleFlagEndpoints).GetMethod(nameof(SimpleFlagEndpoints.AddFeatureFlagAsync)),
+            new AcceptsMetadata(["application/json"], typeof(CreateFeatureFlagRequest), false)
+        );
+
+    /// <summary>
+    /// Creates the endpoint for editing a feature flag.
+    /// </summary>
+    /// <param name="endpointPrefix"></param>
+    /// <param name="simpleFlagEndpointsHandle"></param>
+    /// <returns></returns>
+    private Endpoint CreateEditFeatureFlagEndpoint(string endpointPrefix, SimpleFlagEndpointsHandler simpleFlagEndpointsHandle) =>
+        CreateEndpoint
+        (
+            HttpMethods.Put,
+            $"{endpointPrefix}/flag",
+            simpleFlagEndpointsHandle.EditFeatureFlagDelegateAsync,
+            typeof(SimpleFlagEndpoints).GetMethod(nameof(SimpleFlagEndpoints.EditFeatureFlagAsync)),
+            new AcceptsMetadata(["application/json"], typeof(CreateFeatureFlagRequest), false)
+        );   
 }

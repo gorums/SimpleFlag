@@ -1,27 +1,22 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SimpleFlag.Core.Entities;
+using SimpleFlag.AspNetCore.Endpoints.Dtos;
 
-namespace SimpleFlag.AspNetCore;
-
-internal record CreateFeatureFlagRequest(string Name, string Description, string Key, bool Enabled, string Domain);
-
-internal record CreateFeatureFlagResponse(string Name, string Description, string Key, bool Enabled, string Domain);
+namespace SimpleFlag.AspNetCore.Endpoints;
 
 /// <summary>
 /// Represents the endpoints for handling feature flags in the SimpleFlag.AspNetCore namespace.
 /// </summary>
-internal class SimpleFlagEndpoints
+internal class SimpleFlagEndpointsHandler
 {
-    private readonly ISimpleFlagClient _simpleFlagClient;
-
+    private readonly SimpleFlagEndpoints _simpleFlagEndpoints;
     /// <summary>
     /// Initializes a new instance of the SimpleFlagEndpoints class.
     /// </summary>
     /// <param name="simpleFlagClient">The SimpleFlag client used for handling feature flags.</param>
-    public SimpleFlagEndpoints(ISimpleFlagClient simpleFlagClient)
+    public SimpleFlagEndpointsHandler(ISimpleFlagClient simpleFlagClient)
     {
-        _simpleFlagClient = simpleFlagClient;
+        _simpleFlagEndpoints = new SimpleFlagEndpoints(simpleFlagClient);
     }
 
     /// <summary>
@@ -46,7 +41,7 @@ internal class SimpleFlagEndpoints
             // Get the cancellation token from the context
             var cancellationToken = context.RequestAborted;
 
-            var result = await AddFeatureFlagAsync(featureFlagDto, cancellationToken);
+            var result = await _simpleFlagEndpoints.AddFeatureFlagAsync(featureFlagDto, cancellationToken);
 
             context.Response.StatusCode = StatusCodes.Status200OK;
             await context.Response.WriteAsJsonAsync(result);
@@ -65,28 +60,6 @@ internal class SimpleFlagEndpoints
             await context.Response.WriteAsJsonAsync(problemDetails);
         }
     }
-
-    /// <summary>
-    /// Handles the logic for adding a feature flag.
-    /// </summary>
-    /// <param name="context">The HTTP context</param>
-    /// <param name="simpleFlagClient">The SimpleFlag client</param>
-    /// <returns>A task representing the asynchronous operation</returns>
-    public async Task<CreateFeatureFlagResponse?> AddFeatureFlagAsync([FromBody] CreateFeatureFlagRequest featureFlagDto, CancellationToken cancellationToken)
-    {
-        // Add the feature flag using the SimpleFlagClient
-        var featureFlag = new FeatureFlag
-        {
-            Name = featureFlagDto.Name,
-            Description = featureFlagDto.Description,
-            Key = featureFlagDto.Key,
-            Enabled = featureFlagDto.Enabled
-        };
-
-        var result = await _simpleFlagClient.AddFeatureFlagAsync(featureFlagDto.Domain, featureFlag, cancellationToken);
-        return new CreateFeatureFlagResponse(result.Name, result.Description, result.Key, result.Enabled, featureFlagDto.Domain);
-    }
-
 
     /// <summary>
     /// Handles the AddFeatureFlagDelegate endpoint by calling the corresponding method in the AddFeatureFlagEndpoint class.
@@ -110,7 +83,7 @@ internal class SimpleFlagEndpoints
             // Get the cancellation token from the context
             var cancellationToken = context.RequestAborted;
 
-            var result = await EditFeatureFlagAsync(featureFlagDto, cancellationToken);
+            var result = await _simpleFlagEndpoints.EditFeatureFlagAsync(featureFlagDto, cancellationToken);
 
             context.Response.StatusCode = StatusCodes.Status200OK;
             await context.Response.WriteAsJsonAsync(result);
@@ -128,26 +101,5 @@ internal class SimpleFlagEndpoints
             context.Response.StatusCode = problemDetails.Status.Value;
             await context.Response.WriteAsJsonAsync(problemDetails);
         }
-    }
-
-    /// <summary>
-    /// Handles the logic for adding a feature flag.
-    /// </summary>
-    /// <param name="context">The HTTP context</param>
-    /// <param name="simpleFlagClient">The SimpleFlag client</param>
-    /// <returns>A task representing the asynchronous operation</returns>
-    public async Task<CreateFeatureFlagResponse?> EditFeatureFlagAsync([FromBody] CreateFeatureFlagRequest featureFlagDto, CancellationToken cancellationToken)
-    {
-        // Add the feature flag using the SimpleFlagClient
-        var featureFlag = new FeatureFlag
-        {
-            Name = featureFlagDto.Name,
-            Description = featureFlagDto.Description,
-            Key = featureFlagDto.Key,
-            Enabled = featureFlagDto.Enabled
-        };
-
-        var result = await _simpleFlagClient.AddFeatureFlagAsync(featureFlagDto.Domain, featureFlag, cancellationToken);
-        return new CreateFeatureFlagResponse(result.Name, result.Description, result.Key, result.Enabled, featureFlagDto.Domain);
     }
 }
