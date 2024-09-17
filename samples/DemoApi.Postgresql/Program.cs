@@ -48,7 +48,6 @@ builder.Services.AddEndpointsSimpleFlag(options =>
     options.EndpointPrefix = "simpleflag";
 });
 
-
 // Add services to the container.
 builder.Services.AddScoped<ITodoService, TodoService>();
 
