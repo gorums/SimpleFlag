@@ -38,6 +38,12 @@ public class SimpleFlagEndpointDataSource : EndpointDataSource
     /// 
     /// </summary>
     public override IReadOnlyList<Endpoint> Endpoints => _endpoints;
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    public override IChangeToken GetChangeToken() => NullChangeToken.Singleton;
 
     /// <summary>
     /// 
@@ -53,15 +59,10 @@ public class SimpleFlagEndpointDataSource : EndpointDataSource
         return new List<Endpoint>
         {
             CreateAddFeatureFlagEndpoint(endpointPrefix, simpleFlagEndpointsHandle),
-            CreateEditFeatureFlagEndpoint(endpointPrefix, simpleFlagEndpointsHandle)
+            CreateUpdateFeatureFlagEndpoint(endpointPrefix, simpleFlagEndpointsHandle),
+            CreateDeleteFeatureFlagEndpoint(endpointPrefix, simpleFlagEndpointsHandle)
         };
-    }        
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <returns></returns>
-    public override IChangeToken GetChangeToken() => NullChangeToken.Singleton;
+    }
 
     /// <summary>
     /// 
@@ -70,7 +71,7 @@ public class SimpleFlagEndpointDataSource : EndpointDataSource
     /// <param name="pattern"></param>
     /// <param name="requestDelegate"></param>
     /// <returns></returns>
-    private Endpoint CreateEndpoint(string methods, string pattern, RequestDelegate requestDelegate, MethodInfo? methodInfo, IAcceptsMetadata? simpleFlagAcceptsMetadata)
+    private Endpoint CreateEndpoint(string methods, string pattern, RequestDelegate requestDelegate, MethodInfo? methodInfo, IAcceptsMetadata? simpleFlagAcceptsMetadata = null)
     {
         var endpointBuilder = new RouteEndpointBuilder(
             requestDelegate: requestDelegate,
@@ -108,18 +109,33 @@ public class SimpleFlagEndpointDataSource : EndpointDataSource
         );
 
     /// <summary>
-    /// Creates the endpoint for editing a feature flag.
+    /// Creates the endpoint for update a feature flag.
     /// </summary>
     /// <param name="endpointPrefix"></param>
     /// <param name="simpleFlagEndpointsHandle"></param>
     /// <returns></returns>
-    private Endpoint CreateEditFeatureFlagEndpoint(string endpointPrefix, SimpleFlagEndpointsHandler simpleFlagEndpointsHandle) =>
+    private Endpoint CreateUpdateFeatureFlagEndpoint(string endpointPrefix, SimpleFlagEndpointsHandler simpleFlagEndpointsHandle) =>
         CreateEndpoint
         (
             HttpMethods.Put,
-            $"{endpointPrefix}/flag",
-            simpleFlagEndpointsHandle.EditFeatureFlagDelegateAsync,
-            typeof(SimpleFlagEndpoints).GetMethod(nameof(SimpleFlagEndpoints.EditFeatureFlagAsync)),
-            new AcceptsMetadata(["application/json"], typeof(CreateFeatureFlagRequest), false)
+            $"{endpointPrefix}/flag/" + "{id:guid}",
+            simpleFlagEndpointsHandle.AddFeatureFlagDelegateAsync,
+            typeof(SimpleFlagEndpoints).GetMethod(nameof(SimpleFlagEndpoints.UpdateFeatureFlagAsync)),
+            new AcceptsMetadata(["application/json"], typeof(UpdateFeatureFlagRequest), false)
+        );
+
+    /// <summary>
+    /// Creates the endpoint for delete a feature flag.
+    /// </summary>
+    /// <param name="endpointPrefix"></param>
+    /// <param name="simpleFlagEndpointsHandle"></param>
+    /// <returns></returns>
+    private Endpoint CreateDeleteFeatureFlagEndpoint(string endpointPrefix, SimpleFlagEndpointsHandler simpleFlagEndpointsHandle) =>
+        CreateEndpoint
+        (
+            HttpMethods.Delete,
+            $"{endpointPrefix}/flag/" + "{id:guid}",
+            simpleFlagEndpointsHandle.DeleteFeatureFlagDelegateAsync,
+            typeof(SimpleFlagEndpoints).GetMethod(nameof(SimpleFlagEndpoints.DeleteFeatureFlagAsync))
         );   
 }

@@ -41,24 +41,15 @@ internal class SimpleFlagEndpoints
         return new CreateFeatureFlagResponse(result.Name, result.Description, result.Key, result.Enabled, featureFlagDto.Domain);
     }
 
-    /// <summary>
-    /// Handles the logic for adding a feature flag.
-    /// </summary>
-    /// <param name="context">The HTTP context</param>
-    /// <param name="simpleFlagClient">The SimpleFlag client</param>
-    /// <returns>A task representing the asynchronous operation</returns>
-    public async Task<CreateFeatureFlagResponse?> EditFeatureFlagAsync([FromBody] CreateFeatureFlagRequest featureFlagDto, CancellationToken cancellationToken)
+    public Task<UpdateFeatureFlagResponse> UpdateFeatureFlagAsync(Guid flagId, [FromBody] UpdateFeatureFlagRequest featureFlagDto, CancellationToken cancellationToken)
     {
-        // Add the feature flag using the SimpleFlagClient
-        var featureFlag = new FeatureFlag
-        {
-            Name = featureFlagDto.Name,
-            Description = featureFlagDto.Description,
-            Key = featureFlagDto.Key,
-            Enabled = featureFlagDto.Enabled
-        };
-
-        var result = await _simpleFlagClient.AddFeatureFlagAsync(featureFlagDto.Domain, featureFlag, cancellationToken);
-        return new CreateFeatureFlagResponse(result.Name, result.Description, result.Key, result.Enabled, featureFlagDto.Domain);
+        return Task.FromResult(new UpdateFeatureFlagResponse(featureFlagDto.Name, featureFlagDto.Description, flagId.ToString(), featureFlagDto.Enabled, featureFlagDto.Archive, featureFlagDto.Domain));
     }
+
+    public Task DeleteFeatureFlagAsync(Guid flagId, CancellationToken cancellationToken)
+    {
+        return Task.CompletedTask;
+    }
+
+    
 }
