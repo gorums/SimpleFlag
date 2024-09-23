@@ -7,10 +7,16 @@ public class FeatureFlagSegment
 
     public string Description { get; }
 
-    public FeatureFlagSegment(Guid id, string name)
+    public FeatureFlagSegment(string name, string description) : this(Guid.NewGuid(), name, description)
+    {
+
+    }
+
+    public FeatureFlagSegment(Guid id, string name, string description)
     {
         Id = id;
         Name = name;
+        Description = description;
     }
 
     public List<FeatureFlagUser> Users { get; set; } = new List<FeatureFlagUser>();

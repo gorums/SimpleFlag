@@ -34,7 +34,7 @@ internal class SimpleFlagEndpointsHandler
 
             var cancellationToken = context.RequestAborted;
 
-            var result = await _simpleFlagEndpoints.GetFeatureFlagsAsync(domain, cancellationToken);
+            var result = await _simpleFlagEndpoints.GetFeatureFlagsAsync(domain ?? string.Empty, cancellationToken);
 
             context.Response.StatusCode = StatusCodes.Status200OK;
             await context.Response.WriteAsJsonAsync(result);
@@ -516,14 +516,6 @@ internal class SimpleFlagEndpointsHandler
     {
         try
         {
-            var flagId = context.Request.RouteValues["flagId"] as string;
-            if (!Guid.TryParse(flagId, out var parsedFlagId))
-            {
-                context.Response.StatusCode = StatusCodes.Status400BadRequest;
-                await context.Response.WriteAsync("Invalid flag id.");
-                return;
-            }
-
             var segment = context.Request.RouteValues["segment"] as string;
             if (!Guid.TryParse(segment, out var parsedSegmentId))
             {
@@ -532,10 +524,18 @@ internal class SimpleFlagEndpointsHandler
                 return;
             }
 
+            var flagId = context.Request.RouteValues["flagId"] as string;
+            if (!Guid.TryParse(flagId, out var parsedFlagId))
+            {
+                context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                await context.Response.WriteAsync("Invalid flag id.");
+                return;
+            }
+
             // Get the cancellation token from the context
             var cancellationToken = context.RequestAborted;
 
-            await _simpleFlagEndpoints.AddSegmentToFeatureFlagAsync(parsedFlagId, segment, cancellationToken);
+            await _simpleFlagEndpoints.AddSegmentToFeatureFlagAsync(segment, parsedFlagId, cancellationToken);
 
             context.Response.StatusCode = StatusCodes.Status204NoContent;
         }
@@ -587,10 +587,9 @@ internal class SimpleFlagEndpointsHandler
             // Get the cancellation token from the context
             var cancellationToken = context.RequestAborted;
 
-            var result = await _simpleFlagEndpoints.AddUsersToSegmentAsync(segment, usersDto, cancellationToken);
+            await _simpleFlagEndpoints.AddUsersToSegmentAsync(usersDto, segment, cancellationToken);
 
-            context.Response.StatusCode = StatusCodes.Status200OK;
-            await context.Response.WriteAsJsonAsync(result);
+            context.Response.StatusCode = StatusCodes.Status204NoContent;
         }
         catch (Exception ex)
         {

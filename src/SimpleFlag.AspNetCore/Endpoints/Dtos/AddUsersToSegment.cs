@@ -1,9 +1,3 @@
 ﻿namespace SimpleFlag.AspNetCore.Endpoints.Dtos;
 
-internal record AddUsersToSegmentRequest
-{
-}
-
-internal record AddUsersToSegmentResponse
-{
-}
+public record AddUsersToSegmentRequest(IList<AddUserDto> Users);

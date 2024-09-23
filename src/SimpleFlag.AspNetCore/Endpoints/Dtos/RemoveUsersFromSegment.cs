@@ -1,5 +1,3 @@
 ﻿namespace SimpleFlag.AspNetCore.Endpoints.Dtos;
 
-internal class RemoveUsersFromSegmentRequest
-{
-}
+public record RemoveUsersFromSegmentRequest(IList<RemoveUserDto> Users);

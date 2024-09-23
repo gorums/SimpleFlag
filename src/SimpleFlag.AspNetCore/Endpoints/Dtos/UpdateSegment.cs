@@ -1,5 +1,5 @@
 ﻿namespace SimpleFlag.AspNetCore.Endpoints.Dtos;
 
-internal class UpdateSegmentRequest
-{
-}
+public record UpdateSegmentRequest(string Name, string Description);
+
+public record UpdateSegmentResponse(Guid id, string Name, string Description);

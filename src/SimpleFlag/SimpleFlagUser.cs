@@ -1,6 +1,8 @@
 ﻿namespace SimpleFlag;
 public class SimpleFlagUser
 {
+    public Guid Id { get; internal set; }
+
     public string Name { get; }
 
     public Dictionary<string, string> Attributes { get; } = new Dictionary<string, string>();

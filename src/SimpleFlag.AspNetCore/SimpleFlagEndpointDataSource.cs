@@ -1,13 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Metadata;
 using Microsoft.AspNetCore.Routing;
-using Microsoft.AspNetCore.Routing.Patterns;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 using SimpleFlag.AspNetCore.Endpoints;
 using SimpleFlag.AspNetCore.Endpoints.Dtos;
-using System.Reflection;
 
 namespace SimpleFlag.AspNetCore;
 
@@ -38,7 +36,7 @@ public class SimpleFlagEndpointDataSource : EndpointDataSource
     /// 
     /// </summary>
     public override IReadOnlyList<Endpoint> Endpoints => _endpoints;
-    
+
     /// <summary>
     /// 
     /// </summary>
@@ -61,13 +59,13 @@ public class SimpleFlagEndpointDataSource : EndpointDataSource
             // Feature Flag Endpoints
             CreateGetFeatureFlagsEndpoint(endpointPrefix, simpleFlagEndpointsHandle),
             CreateAddFeatureFlagEndpoint(endpointPrefix, simpleFlagEndpointsHandle),
-            CreateUpdateFeatureFlagEndpoint(endpointPrefix, simpleFlagEndpointsHandle),            
+            CreateUpdateFeatureFlagEndpoint(endpointPrefix, simpleFlagEndpointsHandle),
             CreateDeleteFeatureFlagEndpoint(endpointPrefix, simpleFlagEndpointsHandle),
 
             // Segment Endpoints
             CreateGetSegmentsEndpoint(endpointPrefix, simpleFlagEndpointsHandle),
             CreateAddSegmentEndpoint(endpointPrefix, simpleFlagEndpointsHandle),
-            CreateUpdateSegmentEndpoint(endpointPrefix, simpleFlagEndpointsHandle),            
+            CreateUpdateSegmentEndpoint(endpointPrefix, simpleFlagEndpointsHandle),
             CreateDeleteSegmentEndpoint(endpointPrefix, simpleFlagEndpointsHandle),            
             
             // User Endpoints
@@ -80,14 +78,14 @@ public class SimpleFlagEndpointDataSource : EndpointDataSource
             CreateAddSegmentToFeatureFlagEndpoint(endpointPrefix, simpleFlagEndpointsHandle),
 
             // User Segment Endpoints            
-            CreateAddUsersToSegmentEndpoint(endpointPrefix, simpleFlagEndpointsHandle),            
+            CreateAddUsersToSegmentEndpoint(endpointPrefix, simpleFlagEndpointsHandle),
             CreateDeleteUsersFromSegmentEndpoint(endpointPrefix, simpleFlagEndpointsHandle),
             CreateCleanUsersOnSegmentEndpoint(endpointPrefix, simpleFlagEndpointsHandle),
 
             // Domain Endpoints
             CreateGetDomainsEndpoint(endpointPrefix, simpleFlagEndpointsHandle),
         };
-    }    
+    }
 
     #region Feature Flag Endpoints
 

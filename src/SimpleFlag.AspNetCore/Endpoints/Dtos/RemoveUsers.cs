@@ -1,5 +1,4 @@
 ﻿namespace SimpleFlag.AspNetCore.Endpoints.Dtos;
 
-internal class RemoveUsersRequest
-{
-}
+public record RemoveUserDto(Guid Id);
+public record RemoveUsersRequest(IList<RemoveUserDto> Users);

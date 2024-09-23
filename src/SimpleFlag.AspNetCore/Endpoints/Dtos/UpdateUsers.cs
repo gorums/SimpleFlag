@@ -1,5 +1,4 @@
 ﻿namespace SimpleFlag.AspNetCore.Endpoints.Dtos;
 
-internal class UpdateUsersRequest
-{
-}
+public record UpdateUserDto(Guid Id, string Name);
+public record UpdateUsersRequest(IList<UpdateUserDto> Users);
