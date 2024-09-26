@@ -1,0 +1,6 @@
+﻿namespace SimpleFlag
+{
+    class a
+    {
+    }
+}

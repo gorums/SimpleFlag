@@ -9,15 +9,15 @@ namespace SimpleFlag.AspNetCore.Endpoints;
 /// </summary>
 internal class SimpleFlagEndpoints
 {
-    private readonly ISimpleFlagClient _simpleFlagClient;
+    private readonly ISimpleFlagService _simpleFlagService;
 
     /// <summary>
     /// Initializes a new instance of the SimpleFlagEndpoints class.
     /// </summary>
-    /// <param name="simpleFlagClient">The SimpleFlag client used for handling feature flags.</param>
-    public SimpleFlagEndpoints(ISimpleFlagClient simpleFlagClient)
+    /// <param name="ISimpleFlagService">The SimpleFlag Service used for handling feature flags.</param>
+    public SimpleFlagEndpoints(ISimpleFlagService simpleFlagService)
     {
-        _simpleFlagClient = simpleFlagClient;
+        _simpleFlagService = simpleFlagService;
     }
 
     #region Feature Flags
@@ -29,7 +29,7 @@ internal class SimpleFlagEndpoints
     /// <returns></returns>
     public async Task<IEnumerable<FeatureFlagDto>> GetFeatureFlagsAsync(string domain, CancellationToken cancellationToken)
     {
-        var featureFlags = await _simpleFlagClient.GetFeatureFlagsAsync(domain, cancellationToken);
+        var featureFlags = await _simpleFlagService.GetFeatureFlagsAsync(domain, cancellationToken);
         return featureFlags.Select(ff => new FeatureFlagDto(ff.Name, ff.Description, ff.Key, ff.Enabled, ff.Archived, domain));
     }
 
@@ -50,7 +50,7 @@ internal class SimpleFlagEndpoints
             Enabled = featureFlagDto.Enabled
         };
 
-        var result = await _simpleFlagClient.AddFeatureFlagAsync(featureFlagDto.Domain, featureFlag, cancellationToken);
+        var result = await _simpleFlagService.AddFeatureFlagAsync(featureFlagDto.Domain, featureFlag, cancellationToken);
         return new CreateFeatureFlagResponse(result.Name, result.Description, result.Key, result.Enabled, featureFlagDto.Domain);
     }
 
@@ -72,7 +72,7 @@ internal class SimpleFlagEndpoints
             Archived = featureFlagDto.Archive
         };
 
-        var result = await _simpleFlagClient.UpdateFeatureFlagAsync(featureFlagDto.Domain, featureFlag, cancellationToken);
+        var result = await _simpleFlagService.UpdateFeatureFlagAsync(featureFlagDto.Domain, featureFlag, cancellationToken);
         return new UpdateFeatureFlagResponse(result.Id, result.Name, result.Description, result.Key, result.Enabled, result.Archived, featureFlagDto.Domain);
     }
 
@@ -84,7 +84,7 @@ internal class SimpleFlagEndpoints
     /// <returns></returns>
     public async Task DeleteFeatureFlagAsync(Guid flagId, CancellationToken cancellationToken)
     {
-        await _simpleFlagClient.DeleteFeatureFlagAsync(flagId, cancellationToken);
+        await _simpleFlagService.DeleteFeatureFlagAsync(flagId, cancellationToken);
     }
 
     #endregion Feature Flags
@@ -98,7 +98,7 @@ internal class SimpleFlagEndpoints
     /// <returns></returns>
     public async Task<IEnumerable<SegmentDto>> GetSegmentsAsync(CancellationToken cancellationToken)
     {
-        var segments = await _simpleFlagClient.GetSegmentsAsync(cancellationToken);
+        var segments = await _simpleFlagService.GetSegmentsAsync(cancellationToken);
         return segments.Select(s => new SegmentDto(s.Name, s.Description));
     }
 
@@ -112,7 +112,7 @@ internal class SimpleFlagEndpoints
     {
         var segment = new FeatureFlagSegment(createSegmentRequest.Name, createSegmentRequest.Description);
 
-        var result = await _simpleFlagClient.AddSegmentAsync(segment, cancellationToken);
+        var result = await _simpleFlagService.AddSegmentAsync(segment, cancellationToken);
 
         return new CreateSegmentResponse(result.Id, result.Name, result.Description);
     }
@@ -128,7 +128,7 @@ internal class SimpleFlagEndpoints
     {
         var segment = new FeatureFlagSegment(segmentId, segmentDto.Name, segmentDto.Description);
 
-        var result = await _simpleFlagClient.UpdateSegmentAsync(segment, cancellationToken);
+        var result = await _simpleFlagService.UpdateSegmentAsync(segment, cancellationToken);
         return new UpdateSegmentResponse(result.Id, result.Name, result.Description);
     }
 
@@ -140,7 +140,7 @@ internal class SimpleFlagEndpoints
     /// <returns></returns>
     public async Task DeleteSegmentAsync(Guid segmentId, CancellationToken cancellationToken)
     {
-        await _simpleFlagClient.DeleteSegmentAsync(segmentId, cancellationToken);
+        await _simpleFlagService.DeleteSegmentAsync(segmentId, cancellationToken);
     }
 
     #endregion Segments
@@ -155,7 +155,7 @@ internal class SimpleFlagEndpoints
     /// <returns></returns>
     public async Task<IEnumerable<UserDto>> GetUsersAsync(string? segment, CancellationToken cancellationToken)
     {
-        var users = await _simpleFlagClient.GetUsersAsync(segment, cancellationToken);
+        var users = await _simpleFlagService.GetUsersAsync(segment, cancellationToken);
         return users.Select(u => new UserDto(u.Name, u.Attributes));
     }
 
@@ -168,7 +168,7 @@ internal class SimpleFlagEndpoints
     public async Task<IEnumerable<AddUserDto>> AddUsersAsync(AddUsersRequest addUsersRequest, CancellationToken cancellationToken)
     {
         var users = addUsersRequest.Users.Select(u => new SimpleFlagUser(u.Name)).ToList();
-        var result = await _simpleFlagClient.AddUsersAsync(users, cancellationToken);
+        var result = await _simpleFlagService.AddUsersAsync(users, cancellationToken);
 
         return result.Select(u => new AddUserDto(u.Id, u.Name));
     }
@@ -182,7 +182,7 @@ internal class SimpleFlagEndpoints
     public async Task<IEnumerable<UpdateUserDto>> UpdateUsersAsync(UpdateUsersRequest usersDto, CancellationToken cancellationToken)
     {
         var users = usersDto.Users.Select(u => new SimpleFlagUser(u.Name)).ToList();
-        var result = await _simpleFlagClient.UpdateUsersAsync(users, cancellationToken);
+        var result = await _simpleFlagService.UpdateUsersAsync(users, cancellationToken);
 
         return result.Select(u => new UpdateUserDto(u.Id, u.Name));
     }
@@ -196,7 +196,7 @@ internal class SimpleFlagEndpoints
     public async Task DeleteUsersAsync(RemoveUsersRequest removeUsersRequest, CancellationToken cancellationToken)
     {
         var userIds = removeUsersRequest.Users.Select(u => u.Id).ToList();
-        await _simpleFlagClient.DeleteUsersAsync(userIds, cancellationToken);
+        await _simpleFlagService.DeleteUsersAsync(userIds, cancellationToken);
     }
 
     #endregion Users
@@ -212,7 +212,7 @@ internal class SimpleFlagEndpoints
     /// <returns></returns>
     public async Task AddSegmentToFeatureFlagAsync(string segment, Guid flagId, CancellationToken cancellationToken)
     {
-        await _simpleFlagClient.AddSegmentToFeatureFlagAsync(segment, flagId, cancellationToken);
+        await _simpleFlagService.AddSegmentToFeatureFlagAsync(segment, flagId, cancellationToken);
     }
 
     #endregion Feature Flag Segments
@@ -230,7 +230,7 @@ internal class SimpleFlagEndpoints
     {
         var users = addUsersToSegmentRequest.Users.Select(u => new SimpleFlagUser(u.Name)).ToList();
 
-        await _simpleFlagClient.AddUsersToSegmentAsync(users, segment, cancellationToken);
+        await _simpleFlagService.AddUsersToSegmentAsync(users, segment, cancellationToken);
     }
 
     /// <summary>
@@ -244,7 +244,7 @@ internal class SimpleFlagEndpoints
     {
         var userIds = removeUsersFromSegmentRequest.Users.Select(u => u.Id).ToList();
 
-        await _simpleFlagClient.DeleteUsersFromSegmentAsync(segment, userIds, cancellationToken);
+        await _simpleFlagService.DeleteUsersFromSegmentAsync(segment, userIds, cancellationToken);
     }
 
     /// <summary>
@@ -255,7 +255,7 @@ internal class SimpleFlagEndpoints
     /// <returns></returns>
     public async Task CleanUsersOnSegmentAsync(string segment, CancellationToken cancellationToken)
     {
-        await _simpleFlagClient.CleanUsersOnSegmentAsync(segment, cancellationToken);
+        await _simpleFlagService.CleanUsersOnSegmentAsync(segment, cancellationToken);
     }
 
     #endregion User Segments
@@ -269,7 +269,7 @@ internal class SimpleFlagEndpoints
     /// <returns></returns>
     public async Task<IEnumerable<DomainDto>> GetDomainsAsync(CancellationToken cancellationToken)
     {
-        var domains = await _simpleFlagClient.GetDomainsAsync(cancellationToken);
+        var domains = await _simpleFlagService.GetDomainsAsync(cancellationToken);
 
         return domains.Select(d => new DomainDto(d.Id, d.Name, d.Description));
     }

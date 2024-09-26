@@ -17,17 +17,17 @@ public class SimpleFlagEndpointDataSource : EndpointDataSource
     private List<Endpoint>? _endpoints;
 
     private readonly SimpleFlagEndpointOptions _simpleFlagEndpointOptions;
-    private readonly ISimpleFlagClient _simpleFlagClient;
+    private readonly ISimpleFlagService _simpleFlagService;
 
     /// <summary>
     /// 
     /// </summary>
     /// <param name="options"></param>
     /// <param name="simpleFlagClient"></param>
-    public SimpleFlagEndpointDataSource(IOptions<SimpleFlagEndpointOptions> options, ISimpleFlagClient simpleFlagClient)
+    public SimpleFlagEndpointDataSource(IOptions<SimpleFlagEndpointOptions> options, ISimpleFlagService simpleFlagService)
     {
         _simpleFlagEndpointOptions = options.Value;
-        _simpleFlagClient = simpleFlagClient;
+        _simpleFlagService = simpleFlagService;
 
         _endpoints = BuildEndpoints();
     }
@@ -52,7 +52,7 @@ public class SimpleFlagEndpointDataSource : EndpointDataSource
         var endpointPrefix = _simpleFlagEndpointOptions.EndpointPrefix ?? "simpleflag";
         endpointPrefix = endpointPrefix.TrimStart('/').TrimEnd('/');
 
-        var simpleFlagEndpointsHandle = new SimpleFlagEndpointsHandler(_simpleFlagClient);
+        var simpleFlagEndpointsHandle = new SimpleFlagEndpointsHandler(_simpleFlagService);
 
         return new List<Endpoint>
         {

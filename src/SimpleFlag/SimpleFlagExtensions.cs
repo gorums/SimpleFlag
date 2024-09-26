@@ -25,10 +25,20 @@ public static class SimpleFlagExtensions
         var simpleFlagDataSource = new SimpleFlagDataSource(simpleFlagOptionsBuilder.BuildDataSourceOptions());
 
         // adding the service
+        serviceCollection.AddSingleton<ISimpleFlagService>(sp =>
+        {
+            var logger = sp.GetRequiredService<ILogger<SimpleFlagService>>();
+
+            return new SimpleFlagService(logger, simpleFlagDataSource);
+        });
+
+        // adding the client
         serviceCollection.AddSingleton<ISimpleFlagClient>(sp =>
         {
-            var logger = sp.GetRequiredService<ILogger<SimpleFlagClient>>();
-            return new SimpleFlagClient(logger, simpleFlagDataSource);
+            var loggerClient = sp.GetRequiredService<ILogger<SimpleFlagClient>>();
+            var simpleFlagService = sp.GetRequiredService<ISimpleFlagService>();
+
+            return new SimpleFlagClient(loggerClient, simpleFlagService, simpleFlagDataSource);
         });
 
         // TODO: check if is necessary to run the migration here

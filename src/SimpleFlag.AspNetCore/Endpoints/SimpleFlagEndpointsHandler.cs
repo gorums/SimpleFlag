@@ -10,13 +10,14 @@ namespace SimpleFlag.AspNetCore.Endpoints;
 internal class SimpleFlagEndpointsHandler
 {
     private readonly SimpleFlagEndpoints _simpleFlagEndpoints;
+
     /// <summary>
     /// Initializes a new instance of the SimpleFlagEndpoints class.
     /// </summary>
-    /// <param name="simpleFlagClient">The SimpleFlag client used for handling feature flags.</param>
-    public SimpleFlagEndpointsHandler(ISimpleFlagClient simpleFlagClient)
+    /// <param name="simpleFlagService">The SimpleFlag service used for handling feature flags.</param>
+    public SimpleFlagEndpointsHandler(ISimpleFlagService simpleFlagService)
     {
-        _simpleFlagEndpoints = new SimpleFlagEndpoints(simpleFlagClient);
+        _simpleFlagEndpoints = new SimpleFlagEndpoints(simpleFlagService);
     }
 
     #region FeatureFlag
