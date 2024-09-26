@@ -23,4 +23,6 @@ internal class CustomVersionTableMetaData : IVersionTableMetaData
     public string DescriptionColumnName => "Description";
 
     public bool OwnsSchema => true;
+
+    public bool CreateWithPrimaryKey => false;
 }
