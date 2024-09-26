@@ -46,6 +46,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddEndpointsSimpleFlag(options =>
 {
     options.EndpointPrefix = "simpleflag";
+    //options.showApiExplorer = false;
 });
 
 // Add services to the container.

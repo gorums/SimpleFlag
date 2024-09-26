@@ -14,22 +14,25 @@ internal static class SimpleFlagEndpointsHelper
     /// <param name="pattern"></param>
     /// <param name="requestDelegate"></param>
     /// <returns></returns>
-    internal static Endpoint CreateEndpoint(string methods, string pattern, RequestDelegate requestDelegate, MethodInfo? methodInfo, IAcceptsMetadata? simpleFlagAcceptsMetadata = null)
+    internal static Endpoint CreateEndpoint(string methods, string pattern, RequestDelegate requestDelegate, bool showApiExplorer, MethodInfo? methodInfo, IAcceptsMetadata? simpleFlagAcceptsMetadata = null)
     {
         var endpointBuilder = new RouteEndpointBuilder(
             requestDelegate: requestDelegate,
             routePattern: RoutePatternFactory.Parse(pattern),
             order: 0);
 
-        endpointBuilder.Metadata.Add(new HttpMethodMetadata(new[] { methods }));
-        if (methodInfo != null)
+        if (showApiExplorer) // or add IExcludeFromDescriptionMetadata to the metadata
         {
-            endpointBuilder.Metadata.Add(methodInfo);
-        }
+            endpointBuilder.Metadata.Add(new HttpMethodMetadata(new[] { methods }));
+            if (methodInfo != null)
+            {
+                endpointBuilder.Metadata.Add(methodInfo);
+            }
 
-        if (simpleFlagAcceptsMetadata is not null)
-        {
-            endpointBuilder.Metadata.Add(simpleFlagAcceptsMetadata);
+            if (simpleFlagAcceptsMetadata is not null)
+            {
+                endpointBuilder.Metadata.Add(simpleFlagAcceptsMetadata);
+            }
         }
 
         return endpointBuilder.Build();

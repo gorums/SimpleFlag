@@ -6,4 +6,6 @@
 public record SimpleFlagEndpointOptions
 {
     public string EndpointPrefix { get; set; } = "simpleflag";
+
+    public bool showApiExplorer { get; set; } = true;
 }

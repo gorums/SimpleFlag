@@ -101,6 +101,7 @@ public class SimpleFlagEndpointDataSource : EndpointDataSource
             HttpMethods.Get,
             $"{endpointPrefix}/flags/" + "{domain}",
             simpleFlagEndpointsHandle.GetFeatureFlagsDelegateAsync,
+            _simpleFlagEndpointOptions.showApiExplorer,
             typeof(SimpleFlagEndpoints).GetMethod(nameof(SimpleFlagEndpoints.GetFeatureFlagsAsync))
         );
 
@@ -116,6 +117,7 @@ public class SimpleFlagEndpointDataSource : EndpointDataSource
             HttpMethods.Post,
             $"{endpointPrefix}/flags",
             simpleFlagEndpointsHandle.AddFeatureFlagDelegateAsync,
+            _simpleFlagEndpointOptions.showApiExplorer,
             typeof(SimpleFlagEndpoints).GetMethod(nameof(SimpleFlagEndpoints.AddFeatureFlagAsync)),
             new AcceptsMetadata(["application/json"], typeof(CreateFeatureFlagRequest), false)
         );
@@ -132,6 +134,7 @@ public class SimpleFlagEndpointDataSource : EndpointDataSource
             HttpMethods.Put,
             $"{endpointPrefix}/flags/" + "{id:guid}",
             simpleFlagEndpointsHandle.AddFeatureFlagDelegateAsync,
+            _simpleFlagEndpointOptions.showApiExplorer,
             typeof(SimpleFlagEndpoints).GetMethod(nameof(SimpleFlagEndpoints.UpdateFeatureFlagAsync)),
             new AcceptsMetadata(["application/json"], typeof(UpdateFeatureFlagRequest), false)
         );
@@ -148,6 +151,7 @@ public class SimpleFlagEndpointDataSource : EndpointDataSource
             HttpMethods.Delete,
             $"{endpointPrefix}/flags/" + "{id:guid}",
             simpleFlagEndpointsHandle.DeleteFeatureFlagDelegateAsync,
+            _simpleFlagEndpointOptions.showApiExplorer,
             typeof(SimpleFlagEndpoints).GetMethod(nameof(SimpleFlagEndpoints.DeleteFeatureFlagAsync))
         );
 
@@ -166,6 +170,7 @@ public class SimpleFlagEndpointDataSource : EndpointDataSource
             HttpMethods.Get,
             $"{endpointPrefix}/segments",
             simpleFlagEndpointsHandle.GetSegmentsDelegateAsync,
+            _simpleFlagEndpointOptions.showApiExplorer,
             typeof(SimpleFlagEndpoints).GetMethod(nameof(SimpleFlagEndpoints.GetSegmentsAsync))
         );
 
@@ -182,6 +187,7 @@ public class SimpleFlagEndpointDataSource : EndpointDataSource
             HttpMethods.Post,
             $"{endpointPrefix}/segments",
             simpleFlagEndpointsHandle.AddSegmentDelegateAsync,
+            _simpleFlagEndpointOptions.showApiExplorer,
             typeof(SimpleFlagEndpoints).GetMethod(nameof(SimpleFlagEndpoints.AddSegmentAsync)),
             new AcceptsMetadata(new[] { "application/json" }, typeof(CreateSegmentRequest), false)
         );
@@ -198,6 +204,7 @@ public class SimpleFlagEndpointDataSource : EndpointDataSource
             HttpMethods.Put,
             $"{endpointPrefix}/segments/" + "{id:guid}",
             simpleFlagEndpointsHandle.UpdateSegmentDelegateAsync,
+            _simpleFlagEndpointOptions.showApiExplorer,
             typeof(SimpleFlagEndpoints).GetMethod(nameof(SimpleFlagEndpoints.UpdateSegmentAsync)),
             new AcceptsMetadata(new[] { "application/json" }, typeof(UpdateSegmentRequest), false)
         );
@@ -214,6 +221,7 @@ public class SimpleFlagEndpointDataSource : EndpointDataSource
             HttpMethods.Delete,
             $"{endpointPrefix}/segments/" + "{id:guid}",
             simpleFlagEndpointsHandle.DeleteSegmentDelegateAsync,
+            _simpleFlagEndpointOptions.showApiExplorer,
             typeof(SimpleFlagEndpoints).GetMethod(nameof(SimpleFlagEndpoints.DeleteSegmentAsync))
         );
 
@@ -233,6 +241,7 @@ public class SimpleFlagEndpointDataSource : EndpointDataSource
             HttpMethods.Get,
             $"{endpointPrefix}/users/" + "{segment}",
             simpleFlagEndpointsHandle.GetUsersDelegateAsync,
+            _simpleFlagEndpointOptions.showApiExplorer,
             typeof(SimpleFlagEndpoints).GetMethod(nameof(SimpleFlagEndpoints.GetUsersAsync))
         );
 
@@ -248,6 +257,7 @@ public class SimpleFlagEndpointDataSource : EndpointDataSource
             HttpMethods.Post,
             $"{endpointPrefix}/users",
             simpleFlagEndpointsHandle.AddUsersDelegateAsync,
+            _simpleFlagEndpointOptions.showApiExplorer,
             typeof(SimpleFlagEndpoints).GetMethod(nameof(SimpleFlagEndpoints.AddUsersAsync)),
             new AcceptsMetadata(new[] { "application/json" }, typeof(AddUsersRequest), false)
         );
@@ -264,6 +274,7 @@ public class SimpleFlagEndpointDataSource : EndpointDataSource
             HttpMethods.Put,
             $"{endpointPrefix}/users",
             simpleFlagEndpointsHandle.UpdateUsersDelegateAsync,
+            _simpleFlagEndpointOptions.showApiExplorer,
             typeof(SimpleFlagEndpoints).GetMethod(nameof(SimpleFlagEndpoints.UpdateUsersAsync)),
             new AcceptsMetadata(new[] { "application/json" }, typeof(UpdateUsersRequest), false)
         );
@@ -281,6 +292,7 @@ public class SimpleFlagEndpointDataSource : EndpointDataSource
             HttpMethods.Delete,
             $"{endpointPrefix}/users",
             simpleFlagEndpointsHandle.RemoveUsersDelegateAsync,
+            _simpleFlagEndpointOptions.showApiExplorer,
             typeof(SimpleFlagEndpoints).GetMethod(nameof(SimpleFlagEndpoints.DeleteUsersAsync)),
             new AcceptsMetadata(new[] { "application/json" }, typeof(RemoveUsersRequest), false)
         );
@@ -300,6 +312,7 @@ public class SimpleFlagEndpointDataSource : EndpointDataSource
             HttpMethods.Post,
             $"{endpointPrefix}/flag/" + "{id:guid}/segment/{segment}",
             simpleFlagEndpointsHandle.AddSegmentToFeatureFlagDelegateAsync,
+            _simpleFlagEndpointOptions.showApiExplorer,
             typeof(SimpleFlagEndpoints).GetMethod(nameof(SimpleFlagEndpoints.AddSegmentToFeatureFlagAsync))
         );
 
@@ -318,6 +331,7 @@ public class SimpleFlagEndpointDataSource : EndpointDataSource
             HttpMethods.Post,
             $"{endpointPrefix}/segment/" + "{segment}/users",
             simpleFlagEndpointsHandle.AddUsersToSegmentDelegateAsync,
+            _simpleFlagEndpointOptions.showApiExplorer,
             typeof(SimpleFlagEndpoints).GetMethod(nameof(SimpleFlagEndpoints.AddUsersToSegmentAsync)),
             new AcceptsMetadata(new[] { "application/json" }, typeof(AddUsersToSegmentRequest), false)
         );
@@ -334,6 +348,7 @@ public class SimpleFlagEndpointDataSource : EndpointDataSource
             HttpMethods.Delete,
             $"{endpointPrefix}/segment/" + "{segment}/users",
             simpleFlagEndpointsHandle.RemoveUsersFromSegmentDelegateAsync,
+            _simpleFlagEndpointOptions.showApiExplorer,
             typeof(SimpleFlagEndpoints).GetMethod(nameof(SimpleFlagEndpoints.DeleteUsersFromSegmentAsync)),
             new AcceptsMetadata(new[] { "application/json" }, typeof(RemoveUsersFromSegmentRequest), false)
         );
@@ -350,6 +365,7 @@ public class SimpleFlagEndpointDataSource : EndpointDataSource
             HttpMethods.Delete,
             $"{endpointPrefix}/segment/" + "{segment}/users/clean",
             simpleFlagEndpointsHandle.CleanUsersOnSegmentDelegateAsync,
+            _simpleFlagEndpointOptions.showApiExplorer,
             typeof(SimpleFlagEndpoints).GetMethod(nameof(SimpleFlagEndpoints.CleanUsersOnSegmentAsync))
         );
 
@@ -368,6 +384,7 @@ public class SimpleFlagEndpointDataSource : EndpointDataSource
             HttpMethods.Get,
             $"{endpointPrefix}/domains",
             simpleFlagEndpointsHandle.GetDomainsDelegateAsync,
+            _simpleFlagEndpointOptions.showApiExplorer,
             typeof(SimpleFlagEndpoints).GetMethod(nameof(SimpleFlagEndpoints.GetDomainsAsync))
         );
 
