@@ -8,4 +8,6 @@ public record SimpleFlagEndpointOptions
     public string EndpointPrefix { get; set; } = "simpleflag";
 
     public bool ShowApiExplorer { get; set; } = true;
+
+    public string? PolicyName { get; set; }
 }

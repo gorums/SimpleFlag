@@ -1,11 +1,14 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Metadata;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Routing.Patterns;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 using SimpleFlag.AspNetCore.Endpoints;
 using SimpleFlag.AspNetCore.Endpoints.Dtos;
+using System.Reflection;
 
 namespace SimpleFlag.AspNetCore;
 
@@ -96,12 +99,11 @@ public class SimpleFlagEndpointDataSource : EndpointDataSource
     /// <param name="simpleFlagEndpointsHandle">The <see cref="SimpleFlagEndpointsHandler"/></param>
     /// <returns>An <see cref="Endpoint"/></returns>
     private Endpoint CreateGetFeatureFlagsEndpoint(string endpointPrefix, SimpleFlagEndpointsHandler simpleFlagEndpointsHandle) =>
-        SimpleFlagEndpointsHelper.CreateEndpoint
+        CreateEndpoint
         (
             HttpMethods.Get,
             $"{endpointPrefix}/flags/" + "{domain}",
             simpleFlagEndpointsHandle.GetFeatureFlagsDelegateAsync,
-            _simpleFlagEndpointOptions.ShowApiExplorer,
             typeof(SimpleFlagEndpoints).GetMethod(nameof(SimpleFlagEndpoints.GetFeatureFlagsAsync))
         );
 
@@ -112,12 +114,11 @@ public class SimpleFlagEndpointDataSource : EndpointDataSource
     /// <param name="simpleFlagEndpointsHandle">The <see cref="SimpleFlagEndpointsHandler"/></param>
     /// <returns>An <see cref="Endpoint"/></returns>
     private Endpoint CreateAddFeatureFlagEndpoint(string endpointPrefix, SimpleFlagEndpointsHandler simpleFlagEndpointsHandle) =>
-        SimpleFlagEndpointsHelper.CreateEndpoint
+        CreateEndpoint
         (
             HttpMethods.Post,
             $"{endpointPrefix}/flags",
             simpleFlagEndpointsHandle.AddFeatureFlagDelegateAsync,
-            _simpleFlagEndpointOptions.ShowApiExplorer,
             typeof(SimpleFlagEndpoints).GetMethod(nameof(SimpleFlagEndpoints.AddFeatureFlagAsync)),
             new AcceptsMetadata(["application/json"], typeof(CreateFeatureFlagRequest), false)
         );
@@ -129,12 +130,11 @@ public class SimpleFlagEndpointDataSource : EndpointDataSource
     /// <param name="simpleFlagEndpointsHandle">The <see cref="SimpleFlagEndpointsHandler"/></param>
     /// <returns>An <see cref="Endpoint"/></returns>
     private Endpoint CreateUpdateFeatureFlagEndpoint(string endpointPrefix, SimpleFlagEndpointsHandler simpleFlagEndpointsHandle) =>
-        SimpleFlagEndpointsHelper.CreateEndpoint
+        CreateEndpoint
         (
             HttpMethods.Put,
             $"{endpointPrefix}/flags/" + "{id:guid}",
             simpleFlagEndpointsHandle.AddFeatureFlagDelegateAsync,
-            _simpleFlagEndpointOptions.ShowApiExplorer,
             typeof(SimpleFlagEndpoints).GetMethod(nameof(SimpleFlagEndpoints.UpdateFeatureFlagAsync)),
             new AcceptsMetadata(["application/json"], typeof(UpdateFeatureFlagRequest), false)
         );
@@ -146,12 +146,11 @@ public class SimpleFlagEndpointDataSource : EndpointDataSource
     /// <param name="simpleFlagEndpointsHandle">The <see cref="SimpleFlagEndpointsHandler"/></param>
     /// <returns>An <see cref="Endpoint"/></returns>
     private Endpoint CreateDeleteFeatureFlagEndpoint(string endpointPrefix, SimpleFlagEndpointsHandler simpleFlagEndpointsHandle) =>
-        SimpleFlagEndpointsHelper.CreateEndpoint
+        CreateEndpoint
         (
             HttpMethods.Delete,
             $"{endpointPrefix}/flags/" + "{id:guid}",
             simpleFlagEndpointsHandle.DeleteFeatureFlagDelegateAsync,
-            _simpleFlagEndpointOptions.ShowApiExplorer,
             typeof(SimpleFlagEndpoints).GetMethod(nameof(SimpleFlagEndpoints.DeleteFeatureFlagAsync))
         );
 
@@ -165,12 +164,11 @@ public class SimpleFlagEndpointDataSource : EndpointDataSource
     /// <param name="simpleFlagEndpointsHandle">The <see cref="SimpleFlagEndpointsHandler"/></param>
     /// <returns>An <see cref="Endpoint"/></returns>
     private Endpoint CreateGetSegmentsEndpoint(string endpointPrefix, SimpleFlagEndpointsHandler simpleFlagEndpointsHandle) =>
-        SimpleFlagEndpointsHelper.CreateEndpoint
+        CreateEndpoint
         (
             HttpMethods.Get,
             $"{endpointPrefix}/segments",
             simpleFlagEndpointsHandle.GetSegmentsDelegateAsync,
-            _simpleFlagEndpointOptions.ShowApiExplorer,
             typeof(SimpleFlagEndpoints).GetMethod(nameof(SimpleFlagEndpoints.GetSegmentsAsync))
         );
 
@@ -182,12 +180,11 @@ public class SimpleFlagEndpointDataSource : EndpointDataSource
     /// <param name="simpleFlagEndpointsHandle">The <see cref="SimpleFlagEndpointsHandler"/></param>
     /// <returns>An <see cref="Endpoint"/></returns>
     private Endpoint CreateAddSegmentEndpoint(string endpointPrefix, SimpleFlagEndpointsHandler simpleFlagEndpointsHandle) =>
-        SimpleFlagEndpointsHelper.CreateEndpoint
+        CreateEndpoint
         (
             HttpMethods.Post,
             $"{endpointPrefix}/segments",
             simpleFlagEndpointsHandle.AddSegmentDelegateAsync,
-            _simpleFlagEndpointOptions.ShowApiExplorer,
             typeof(SimpleFlagEndpoints).GetMethod(nameof(SimpleFlagEndpoints.AddSegmentAsync)),
             new AcceptsMetadata(new[] { "application/json" }, typeof(CreateSegmentRequest), false)
         );
@@ -199,12 +196,11 @@ public class SimpleFlagEndpointDataSource : EndpointDataSource
     /// <param name="simpleFlagEndpointsHandle">The <see cref="SimpleFlagEndpointsHandler"/></param>
     /// <returns>An <see cref="Endpoint"/></returns>
     private Endpoint CreateUpdateSegmentEndpoint(string endpointPrefix, SimpleFlagEndpointsHandler simpleFlagEndpointsHandle) =>
-        SimpleFlagEndpointsHelper.CreateEndpoint
+        CreateEndpoint
         (
             HttpMethods.Put,
             $"{endpointPrefix}/segments/" + "{id:guid}",
             simpleFlagEndpointsHandle.UpdateSegmentDelegateAsync,
-            _simpleFlagEndpointOptions.ShowApiExplorer,
             typeof(SimpleFlagEndpoints).GetMethod(nameof(SimpleFlagEndpoints.UpdateSegmentAsync)),
             new AcceptsMetadata(new[] { "application/json" }, typeof(UpdateSegmentRequest), false)
         );
@@ -216,12 +212,11 @@ public class SimpleFlagEndpointDataSource : EndpointDataSource
     /// <param name="simpleFlagEndpointsHandle">The <see cref="SimpleFlagEndpointsHandler"/></param>
     /// <returns>An <see cref="Endpoint"/></returns>
     private Endpoint CreateDeleteSegmentEndpoint(string endpointPrefix, SimpleFlagEndpointsHandler simpleFlagEndpointsHandle) =>
-        SimpleFlagEndpointsHelper.CreateEndpoint
+        CreateEndpoint
         (
             HttpMethods.Delete,
             $"{endpointPrefix}/segments/" + "{id:guid}",
             simpleFlagEndpointsHandle.DeleteSegmentDelegateAsync,
-            _simpleFlagEndpointOptions.ShowApiExplorer,
             typeof(SimpleFlagEndpoints).GetMethod(nameof(SimpleFlagEndpoints.DeleteSegmentAsync))
         );
 
@@ -236,12 +231,11 @@ public class SimpleFlagEndpointDataSource : EndpointDataSource
     /// <param name="simpleFlagEndpointsHandle">The <see cref="SimpleFlagEndpointsHandler"/></param>
     /// <returns>An <see cref="Endpoint"/></returns>
     private Endpoint CreateGetUsersEndpoint(string endpointPrefix, SimpleFlagEndpointsHandler simpleFlagEndpointsHandle) =>
-        SimpleFlagEndpointsHelper.CreateEndpoint
+        CreateEndpoint
         (
             HttpMethods.Get,
             $"{endpointPrefix}/users/" + "{segment}",
             simpleFlagEndpointsHandle.GetUsersDelegateAsync,
-            _simpleFlagEndpointOptions.ShowApiExplorer,
             typeof(SimpleFlagEndpoints).GetMethod(nameof(SimpleFlagEndpoints.GetUsersAsync))
         );
 
@@ -252,12 +246,11 @@ public class SimpleFlagEndpointDataSource : EndpointDataSource
     /// <param name="simpleFlagEndpointsHandle">The <see cref="SimpleFlagEndpointsHandler"/></param>
     /// <returns>An <see cref="Endpoint"/></returns>
     private Endpoint CreateAddUsersEndpoint(string endpointPrefix, SimpleFlagEndpointsHandler simpleFlagEndpointsHandle) =>
-        SimpleFlagEndpointsHelper.CreateEndpoint
+        CreateEndpoint
         (
             HttpMethods.Post,
             $"{endpointPrefix}/users",
             simpleFlagEndpointsHandle.AddUsersDelegateAsync,
-            _simpleFlagEndpointOptions.ShowApiExplorer,
             typeof(SimpleFlagEndpoints).GetMethod(nameof(SimpleFlagEndpoints.AddUsersAsync)),
             new AcceptsMetadata(new[] { "application/json" }, typeof(AddUsersRequest), false)
         );
@@ -269,12 +262,11 @@ public class SimpleFlagEndpointDataSource : EndpointDataSource
     /// <param name="simpleFlagEndpointsHandle">The <see cref="SimpleFlagEndpointsHandler"/></param>
     /// <returns>An <see cref="Endpoint"/></returns>
     private Endpoint CreateUpdateUsersEndpoint(string endpointPrefix, SimpleFlagEndpointsHandler simpleFlagEndpointsHandle) =>
-        SimpleFlagEndpointsHelper.CreateEndpoint
+        CreateEndpoint
         (
             HttpMethods.Put,
             $"{endpointPrefix}/users",
             simpleFlagEndpointsHandle.UpdateUsersDelegateAsync,
-            _simpleFlagEndpointOptions.ShowApiExplorer,
             typeof(SimpleFlagEndpoints).GetMethod(nameof(SimpleFlagEndpoints.UpdateUsersAsync)),
             new AcceptsMetadata(new[] { "application/json" }, typeof(UpdateUsersRequest), false)
         );
@@ -287,12 +279,11 @@ public class SimpleFlagEndpointDataSource : EndpointDataSource
     /// <param name="simpleFlagEndpointsHandle">The <see cref="SimpleFlagEndpointsHandler"/></param>
     /// <returns>An <see cref="Endpoint"/></returns>
     private Endpoint CreateDeleteUsersEndpoint(string endpointPrefix, SimpleFlagEndpointsHandler simpleFlagEndpointsHandle) =>
-        SimpleFlagEndpointsHelper.CreateEndpoint
+        CreateEndpoint
         (
             HttpMethods.Delete,
             $"{endpointPrefix}/users",
             simpleFlagEndpointsHandle.RemoveUsersDelegateAsync,
-            _simpleFlagEndpointOptions.ShowApiExplorer,
             typeof(SimpleFlagEndpoints).GetMethod(nameof(SimpleFlagEndpoints.DeleteUsersAsync)),
             new AcceptsMetadata(new[] { "application/json" }, typeof(RemoveUsersRequest), false)
         );
@@ -307,12 +298,11 @@ public class SimpleFlagEndpointDataSource : EndpointDataSource
     /// <param name="simpleFlagEndpointsHandle">The <see cref="SimpleFlagEndpointsHandler"/></param>
     /// <returns>An <see cref="Endpoint"/></returns>
     private Endpoint CreateAddSegmentToFeatureFlagEndpoint(string endpointPrefix, SimpleFlagEndpointsHandler simpleFlagEndpointsHandle) =>
-        SimpleFlagEndpointsHelper.CreateEndpoint
+        CreateEndpoint
         (
             HttpMethods.Post,
             $"{endpointPrefix}/flag/" + "{id:guid}/segment/{segment}",
             simpleFlagEndpointsHandle.AddSegmentToFeatureFlagDelegateAsync,
-            _simpleFlagEndpointOptions.ShowApiExplorer,
             typeof(SimpleFlagEndpoints).GetMethod(nameof(SimpleFlagEndpoints.AddSegmentToFeatureFlagAsync))
         );
 
@@ -326,12 +316,11 @@ public class SimpleFlagEndpointDataSource : EndpointDataSource
     /// <param name="simpleFlagEndpointsHandle">The <see cref="SimpleFlagEndpointsHandler"/></param>
     /// <returns>An <see cref="Endpoint"/></returns>
     private Endpoint CreateAddUsersToSegmentEndpoint(string endpointPrefix, SimpleFlagEndpointsHandler simpleFlagEndpointsHandle) =>
-        SimpleFlagEndpointsHelper.CreateEndpoint
+        CreateEndpoint
         (
             HttpMethods.Post,
             $"{endpointPrefix}/segment/" + "{segment}/users",
             simpleFlagEndpointsHandle.AddUsersToSegmentDelegateAsync,
-            _simpleFlagEndpointOptions.ShowApiExplorer,
             typeof(SimpleFlagEndpoints).GetMethod(nameof(SimpleFlagEndpoints.AddUsersToSegmentAsync)),
             new AcceptsMetadata(new[] { "application/json" }, typeof(AddUsersToSegmentRequest), false)
         );
@@ -343,12 +332,11 @@ public class SimpleFlagEndpointDataSource : EndpointDataSource
     /// <param name="simpleFlagEndpointsHandle">The <see cref="SimpleFlagEndpointsHandler"/></param>
     /// <returns>An <see cref="Endpoint"/></returns>
     private Endpoint CreateDeleteUsersFromSegmentEndpoint(string endpointPrefix, SimpleFlagEndpointsHandler simpleFlagEndpointsHandle) =>
-        SimpleFlagEndpointsHelper.CreateEndpoint
+        CreateEndpoint
         (
             HttpMethods.Delete,
             $"{endpointPrefix}/segment/" + "{segment}/users",
             simpleFlagEndpointsHandle.RemoveUsersFromSegmentDelegateAsync,
-            _simpleFlagEndpointOptions.ShowApiExplorer,
             typeof(SimpleFlagEndpoints).GetMethod(nameof(SimpleFlagEndpoints.DeleteUsersFromSegmentAsync)),
             new AcceptsMetadata(new[] { "application/json" }, typeof(RemoveUsersFromSegmentRequest), false)
         );
@@ -360,12 +348,11 @@ public class SimpleFlagEndpointDataSource : EndpointDataSource
     /// <param name="simpleFlagEndpointsHandle">The <see cref="SimpleFlagEndpointsHandler"/></param>
     /// <returns>An <see cref="Endpoint"/></returns>
     private Endpoint CreateCleanUsersOnSegmentEndpoint(string endpointPrefix, SimpleFlagEndpointsHandler simpleFlagEndpointsHandle) =>
-        SimpleFlagEndpointsHelper.CreateEndpoint
+        CreateEndpoint
         (
             HttpMethods.Delete,
             $"{endpointPrefix}/segment/" + "{segment}/users/clean",
             simpleFlagEndpointsHandle.CleanUsersOnSegmentDelegateAsync,
-            _simpleFlagEndpointOptions.ShowApiExplorer,
             typeof(SimpleFlagEndpoints).GetMethod(nameof(SimpleFlagEndpoints.CleanUsersOnSegmentAsync))
         );
 
@@ -379,14 +366,49 @@ public class SimpleFlagEndpointDataSource : EndpointDataSource
     /// <param name="simpleFlagEndpointsHandle">The <see cref="SimpleFlagEndpointsHandler"/></param>
     /// <returns>An <see cref="Endpoint"/></returns>
     private Endpoint CreateGetDomainsEndpoint(string endpointPrefix, SimpleFlagEndpointsHandler simpleFlagEndpointsHandle) =>
-        SimpleFlagEndpointsHelper.CreateEndpoint
+        CreateEndpoint
         (
             HttpMethods.Get,
             $"{endpointPrefix}/domains",
             simpleFlagEndpointsHandle.GetDomainsDelegateAsync,
-            _simpleFlagEndpointOptions.ShowApiExplorer,
             typeof(SimpleFlagEndpoints).GetMethod(nameof(SimpleFlagEndpoints.GetDomainsAsync))
         );
 
     #endregion Domain Endpoints
+
+    /// <summary>
+    /// Creates an endpoint.
+    /// </summary>
+    /// <param name="methods"></param>
+    /// <param name="pattern"></param>
+    /// <param name="requestDelegate"></param>
+    /// <returns></returns>
+    private Endpoint CreateEndpoint(string methods, string pattern, RequestDelegate requestDelegate, MethodInfo? methodInfo, IAcceptsMetadata? simpleFlagAcceptsMetadata = null)
+    {
+        var endpointBuilder = new RouteEndpointBuilder(
+            requestDelegate: requestDelegate,
+            routePattern: RoutePatternFactory.Parse(pattern),
+            order: 0);
+
+        if (_simpleFlagEndpointOptions.ShowApiExplorer) // or add IExcludeFromDescriptionMetadata to the metadata
+        {
+            endpointBuilder.Metadata.Add(new HttpMethodMetadata(new[] { methods }));
+            if (methodInfo != null)
+            {
+                endpointBuilder.Metadata.Add(methodInfo);
+            }
+
+            if (simpleFlagAcceptsMetadata is not null)
+            {
+                endpointBuilder.Metadata.Add(simpleFlagAcceptsMetadata);
+            }
+        }
+
+        if (!string.IsNullOrEmpty(_simpleFlagEndpointOptions.PolicyName))
+        {
+            endpointBuilder.Metadata.Add(new AuthorizeAttribute(_simpleFlagEndpointOptions.PolicyName));
+        }
+
+        return endpointBuilder.Build();
+    }
 }

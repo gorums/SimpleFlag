@@ -2,10 +2,14 @@ using DemoApi.Postgresql.Features.Services;
 using DemoApi.PostgreSQL.Features;
 using DemoApi.PostgreSQL.Infrastructure.Persistence;
 using DemoApi.ServiceDefaults;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using SimpleFlag;
 using SimpleFlag.AspNetCore;
 using SimpleFlag.PostgreSQL;
+using System.Security.Claims;
+using System.Text.Encodings.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,6 +42,15 @@ builder.Services.AddSimpleFlag(options =>
     });
 });
 
+// Add mock authentication
+builder.Services.AddAuthentication("mock")
+    .AddScheme<AuthenticationSchemeOptions, MockAuthenticationHandler>("mock", options => { });
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("SimpleFlagPolicy", policy => policy.RequireClaim("SimpleFlagAdmin"));
+});
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -46,7 +59,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddEndpointsSimpleFlag(options =>
 {
     options.EndpointPrefix = "simpleflag";
-    //options.ShowApiExplorer = false;
+    options.ShowApiExplorer = true;
+    options.PolicyName = "SimpleFlagPolicy";
 });
 
 // Add services to the container.
@@ -71,3 +85,25 @@ TodoFeature.MapEndpoints(app);
 app.MapSimpleFlagEndpoints();
 
 app.Run();
+
+
+public class MockAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
+{
+    public MockAuthenticationHandler(
+        IOptionsMonitor<AuthenticationSchemeOptions> options,
+        ILoggerFactory logger,
+        UrlEncoder encoder)
+        : base(options, logger, encoder)
+    {
+    }
+
+    protected override Task<AuthenticateResult> HandleAuthenticateAsync()
+    {
+        var claims = new[] { new Claim("SimpleFlagAdmin", "true"), new Claim(ClaimTypes.Name, "SimpleFlagTestUser") };
+        var identity = new ClaimsIdentity(claims, "mock");
+        var principal = new ClaimsPrincipal(identity);
+        var ticket = new AuthenticationTicket(principal, "mock");
+
+        return Task.FromResult(AuthenticateResult.Success(ticket));
+    }
+}
