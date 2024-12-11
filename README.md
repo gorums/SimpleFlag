@@ -1,3 +1,5 @@
+> **This repository is still in the early stages of development. Additionally, it includes many experimental approaches. Please consider this as a place to experiment with my ideas. Do not use it in a product under any circumstances.**
+
 # SimpleFlag
 
 [![.NET](https://github.com/gorums/SimpleFlag/actions/workflows/dotnet.yml/badge.svg)](https://github.com/gorums/SimpleFlag/actions/workflows/dotnet.yml)
